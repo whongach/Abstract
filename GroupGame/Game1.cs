@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Input;
 namespace GroupGame
 {
     /// <summary>
-    /// This is the main type for your game.
+    /// Kevin Billotti would like to check your vibe
     /// </summary>
     public class Game1 : Game
     {
