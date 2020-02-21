@@ -4,6 +4,17 @@ using Microsoft.Xna.Framework.Input;
 
 namespace GroupGame
 {
+    //Enumeration of game states
+    public enum GameState
+    { 
+        MainMenu,
+        GamePlay,
+        Pause,
+        Shop,
+        Stats,
+        Gameover,
+    }
+
     /// <summary>
     /// Kyle was here.
     /// Kevin Billotti would like to check your vibe
@@ -80,6 +91,12 @@ namespace GroupGame
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);
+        }
+
+        //Draws menu/GUI to the window based on the curent game state
+        public void DrawGUI()
+        {
+
         }
     }
 }
