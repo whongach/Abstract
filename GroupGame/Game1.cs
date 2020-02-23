@@ -4,33 +4,31 @@ using Microsoft.Xna.Framework.Input;
 
 namespace GroupGame
 {
-    //Enumeration of game states
-    public enum GameState
-    { 
-        MainMenu,
-        GamePlay,
-        Pause,
-        Shop,
-        Stats,
-        Gameover,
-    }
+    /// <summary>
+    /// Enumeration for various game states.
+    /// </summary>
+    public enum GameState { MainMenu, GamePlay, Pause, Shop, Stats, Gameover }
 
     /// <summary>
-    /// Kyle was here.
-    /// Kevin Billotti would like to check your vibe
-    /// my name is Dean Jones 
+    /// This is the main type for your game.
     /// </summary>
     public class Game1 : Game
     {
+        // MonoGame Generated Fields
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        // MonoGame Generated Constructors
+        /// <summary>
+        /// Constructs the Game class.
+        /// </summary>
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
         }
 
+        // MonoGame Generated Methods
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
         /// This is where it can query for any required services and load any non-graphic
@@ -93,7 +91,10 @@ namespace GroupGame
             base.Draw(gameTime);
         }
 
-        //Draws menu/GUI to the window based on the curent game state
+        // Methods
+        /// <summary>
+        /// Draws menu/GUI to the window based on the current game state.
+        /// </summary>
         public void DrawGUI()
         {
 
