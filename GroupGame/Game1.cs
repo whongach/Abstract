@@ -7,7 +7,7 @@ namespace GroupGame
     /// <summary>
     /// Enumeration for various game states.
     /// </summary>
-    public enum GameState { MainMenu, GamePlay, Pause, Shop, Stats, Gameover }
+    public enum GameState { MainMenu, Game, Pause, Shop, Stats, Gameover }
 
     /// <summary>
     /// This is the main type for your game.
@@ -17,6 +17,11 @@ namespace GroupGame
         // MonoGame Generated Fields
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+
+        // Fields
+        private KeyboardState previousKeyboardState;
+        private KeyboardState keyboardState;
+        private GameState gameState;
 
         // MonoGame Generated Constructors
         /// <summary>
@@ -37,7 +42,8 @@ namespace GroupGame
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            // Initialize Fields
+            gameState = GameState.MainMenu;
 
             base.Initialize();
         }
@@ -73,7 +79,14 @@ namespace GroupGame
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
+            // Get KeyboardState
+            keyboardState = Keyboard.GetState();
+
+            // Finite State Machine
+            FiniteStateMachine();
+
+            // Set previous KeyboardState to current state
+            previousKeyboardState = keyboardState;
 
             base.Update(gameTime);
         }
@@ -98,6 +111,97 @@ namespace GroupGame
         public void DrawGUI()
         {
 
+        }
+
+        /// <summary>
+        /// Handles game transitions and game states.
+        /// </summary>
+        private void FiniteStateMachine()
+        {
+            switch(gameState)
+            {
+                case GameState.MainMenu:
+                    // If the user presses "Enter" in the menu, start the game
+                    // ** Temporary until menu button locations are available for mouse clicks
+                    if (SingleKeyPress(Keys.Enter))
+                        gameState = GameState.Game;
+
+                    // If the user presses "S" in the menu, show the player's statistics
+                    // ** Temporary until menu button locations are available for mouse clicks
+                    if (SingleKeyPress(Keys.S))
+                        gameState = GameState.Stats;
+
+                    break;
+
+                case GameState.Game:
+                    // If the user presses "Escape" in the game, pause it
+                    if (SingleKeyPress(Keys.Escape))
+                        gameState = GameState.Pause;
+
+                    // Handle Here:
+                    // Player Movement
+                    // Enemy Movement
+                    // Collisions
+                    // Loading Next Level
+                    // Game Over Scenarios
+
+                    break;
+
+                case GameState.Pause:
+                    // If the user presses "Escape" in the pause menu, return to the game
+                    if (SingleKeyPress(Keys.Escape))
+                        gameState = GameState.Game;
+                    
+
+                    // If the user presses "S" in the pause menu, go to the shop
+                    // ** Temporary until pause button locations are available for mouse clicks
+                    if (SingleKeyPress(Keys.S))
+                        gameState = GameState.Shop;
+                    
+
+                    break;
+
+                case GameState.Shop:
+                    // If the user presses "Escape" in the shop menu, return to the pause menu
+                    // ** Temporary until shop button locations are available for mouse clicks
+                    if (SingleKeyPress(Keys.Escape))
+                        gameState = GameState.Pause;
+                    
+                    // Handle Here:
+                    // Player Updates
+
+                    break;
+
+                case GameState.Stats:
+                    // If the user presses "Escape" in the stats menu, return to the menu
+                    // ** Temporary until stats button locations are available for mouse clicks
+                    if (SingleKeyPress(Keys.Escape))
+                        gameState = GameState.MainMenu;
+
+                    break;
+
+                case GameState.Gameover:
+                    // If the user presses "Enter" in the gameover scenario, return to the menu
+                    // ** Temporary until gameover button locations are available for mouse clicks
+                    if (SingleKeyPress(Keys.Enter))
+                        gameState = GameState.MainMenu;
+
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Checks if the specified key is down in current state, but not in previous state.
+        /// </summary>
+        /// <param name="key">The key to check.</param>
+        /// <returns>True if this is the first frame that the key was pressed and false otherwise.</returns>
+        private bool SingleKeyPress(Keys key)
+        {
+            // Check is key was recently released, if it was, return false (not looking for release)
+            if (keyboardState.IsKeyDown(key) == false && previousKeyboardState.IsKeyDown(key) == true)
+                return false;
+
+            return keyboardState.IsKeyDown(key) != previousKeyboardState.IsKeyDown(key);
         }
     }
 }
