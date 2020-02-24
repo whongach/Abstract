@@ -23,6 +23,10 @@ namespace GroupGame
         private KeyboardState keyboardState;
         private GameState gameState;
 
+        //Graphic Fields
+        SpriteFont title;
+        SpriteFont buttons;
+
         // MonoGame Generated Constructors
         /// <summary>
         /// Constructs the Game class.
@@ -57,7 +61,9 @@ namespace GroupGame
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
+            //Loads SpriteFonts
+            title = Content.Load<SpriteFont>("Title");
+            buttons = Content.Load<SpriteFont>("Buttons");
         }
 
         /// <summary>
@@ -110,7 +116,32 @@ namespace GroupGame
         /// </summary>
         public void DrawGUI()
         {
+            switch(gameState)
+            {
+                case GameState.MainMenu:
 
+                    break;
+
+                case GameState.Game:
+
+                    break;
+
+                case GameState.Pause:
+
+                    break;
+
+                case GameState.Shop:
+
+                    break;
+
+                case GameState.Stats:
+
+                    break;
+
+                case GameState.Gameover:
+
+                    break;
+            }
         }
 
         /// <summary>
