@@ -35,10 +35,6 @@ namespace GroupGame
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-
-            //Adjusts console window
-            graphics.PreferredBackBufferWidth = 1280;
-            graphics.PreferredBackBufferHeight = 720;
         }
 
         // MonoGame Generated Methods
