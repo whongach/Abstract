@@ -28,6 +28,8 @@ namespace GroupGame
         SpriteFont buttons;
         SpriteFont stats;
         SpriteFont heading;
+        Texture2D squareTest;
+        Texture2D circleTest;
 
         // MonoGame Generated Constructors
         /// <summary>
@@ -72,6 +74,10 @@ namespace GroupGame
             buttons = Content.Load<SpriteFont>("Buttons");
             stats = Content.Load<SpriteFont>("Stats");
             heading = Content.Load<SpriteFont>("Heading");
+
+            //Loads Textures
+            squareTest = Content.Load<Texture2D>("square");
+            circleTest = Content.Load<Texture2D>("circle");
         }
 
         /// <summary>
@@ -108,7 +114,7 @@ namespace GroupGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.DarkBlue);
             spriteBatch.Begin();
 
             DrawGUI(spriteBatch);
@@ -125,48 +131,74 @@ namespace GroupGame
         {
             switch(gameState)
             {
-                //Draws text for Main Menu GUI
+                //All cases draw for their appropriate gamestate
                 case GameState.MainMenu:
+                    //Draws buttons for main menu
+                    sb.Draw(squareTest, new Rectangle(graphics.PreferredBackBufferWidth / 2 - 45, 290, 100, 60), Color.Gray);
+                    sb.Draw(squareTest, new Rectangle(graphics.PreferredBackBufferWidth / 2 - 45, 370, 100, 60), Color.Gray);
+                    sb.Draw(squareTest, new Rectangle(graphics.PreferredBackBufferWidth / 2 - 45, 450, 100, 60), Color.Gray);
+
+                    //Draws text for main menu
                     sb.DrawString(title, "GAME TITLE", new Vector2(graphics.PreferredBackBufferWidth/2 - 220, 70), Color.Black);
                     sb.DrawString(buttons, "Start", new Vector2(graphics.PreferredBackBufferWidth/2 - 30, 300), Color.Black);
                     sb.DrawString(buttons, "Shop", new Vector2(graphics.PreferredBackBufferWidth/2 - 31, 380), Color.Black);
                     sb.DrawString(buttons, "Stats", new Vector2(graphics.PreferredBackBufferWidth/2 - 31, 460), Color.Black);
                     break;
 
-                //Draws text for in-game GUI
                 case GameState.Game:
+                    //Draws underlying boxes for GUI
+                    sb.Draw(squareTest, new Rectangle(0, 0, 300, 30), Color.LightGreen);
+                    sb.Draw(squareTest, new Rectangle(1090, 0, 300, 80), Color.Gray);
+
+                    //Draws text for in-game GUI
                     sb.DrawString(stats, "HP: 300/300", new Vector2(2, 2), Color.Black);
                     sb.DrawString(stats, "Score:", new Vector2(1100, 2), Color.Black);
                     sb.DrawString(stats, "Currency:", new Vector2(1100, 22), Color.Black);
                     sb.DrawString(stats, "Keys:", new Vector2(1100, 42), Color.Black);
                     break;
 
-                //Draws text for pause menu GUI
                 case GameState.Pause:
+                    //Draws buttons/boxes for pause menu
+                    sb.Draw(squareTest, new Rectangle(graphics.PreferredBackBufferWidth / 2 - 175, 150, 350, 400), Color.Gray);
+                    sb.Draw(squareTest, new Rectangle(graphics.PreferredBackBufferWidth / 2 - 63, 290, 130, 60), Color.DimGray);
+                    sb.Draw(squareTest, new Rectangle(graphics.PreferredBackBufferWidth / 2 - 63, 370, 130, 60), Color.DimGray);
+                    sb.Draw(squareTest, new Rectangle(graphics.PreferredBackBufferWidth / 2 - 63, 450, 130, 60), Color.DimGray);
+
+                    //Draws text for pause menu
                     sb.DrawString(heading, "PAUSED", new Vector2(graphics.PreferredBackBufferWidth/2 - 65, 200), Color.Black);
                     sb.DrawString(buttons, "Resume", new Vector2(graphics.PreferredBackBufferWidth/2 - 50, 300), Color.Black);
                     sb.DrawString(buttons, "Shop", new Vector2(graphics.PreferredBackBufferWidth/2 - 35, 380), Color.Black);
                     sb.DrawString(buttons, "Quit", new Vector2(graphics.PreferredBackBufferWidth/2 - 30, 460), Color.Black);
                     break;
 
-                //Draws text for shop GUI
                 case GameState.Shop:
+                    //Draws buttons for shop menu
+                    sb.Draw(squareTest, new Rectangle(graphics.PreferredBackBufferWidth / 2 - 50, 630, 100, 60), Color.Gray);
+
+                    //Draws text for shop menu
                     sb.DrawString(heading, "SHOP", new Vector2(graphics.PreferredBackBufferWidth/2 - 45, 50), Color.Black);
                     sb.DrawString(buttons, "Back", new Vector2(graphics.PreferredBackBufferWidth/2 - 33, 640), Color.Black);
                     break;
 
-                //Draws text for stats GUI
                 case GameState.Stats:
+                    //Draws buttons for stats menu
+                    sb.Draw(squareTest, new Rectangle(graphics.PreferredBackBufferWidth / 2 - 50, 630, 100, 60), Color.Gray);
+
+                    //Draws text for stats menu
                     sb.DrawString(heading, "STATS", new Vector2(graphics.PreferredBackBufferWidth/2 - 50, 50), Color.Black);
                     sb.DrawString(buttons, "Back", new Vector2(graphics.PreferredBackBufferWidth/2 - 33, 640), Color.Black);
                     break;
 
-                //Draws text for game over screen
                 case GameState.Gameover:
+                    //Draws buttons for gameover screen
+                    sb.Draw(squareTest, new Rectangle(graphics.PreferredBackBufferWidth / 2 - 130, 420, 100, 60), Color.Gray);
+                    sb.Draw(squareTest, new Rectangle(graphics.PreferredBackBufferWidth / 2, 420, 100, 60), Color.Gray);
+
+                    //Draws text for gameover screen
                     sb.DrawString(title, "GAME OVER", new Vector2(graphics.PreferredBackBufferWidth/2 - 240, 200), Color.Black);
                     sb.DrawString(heading, "You died lol", new Vector2(680, 300), Color.Black);
-                    sb.DrawString(buttons, "Menu", new Vector2(graphics.PreferredBackBufferWidth/2 - 100, 430), Color.Black);
-                    sb.DrawString(buttons, "Quit", new Vector2(graphics.PreferredBackBufferWidth/2, 430), Color.Black);
+                    sb.DrawString(buttons, "Menu", new Vector2(graphics.PreferredBackBufferWidth/2 - 120, 430), Color.Black);
+                    sb.DrawString(buttons, "Quit", new Vector2(graphics.PreferredBackBufferWidth/2 + 20, 430), Color.Black);
                     break;
             }
         }
