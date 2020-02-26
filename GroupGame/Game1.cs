@@ -26,6 +26,8 @@ namespace GroupGame
         //Graphic Fields
         SpriteFont title;
         SpriteFont buttons;
+        SpriteFont stats;
+        SpriteFont heading;
 
         // MonoGame Generated Constructors
         /// <summary>
@@ -35,6 +37,10 @@ namespace GroupGame
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+
+            //Adjusts console window
+            graphics.PreferredBackBufferWidth = 1280;
+            graphics.PreferredBackBufferHeight = 720;
         }
 
         // MonoGame Generated Methods
@@ -64,6 +70,8 @@ namespace GroupGame
             //Loads SpriteFonts
             title = Content.Load<SpriteFont>("Title");
             buttons = Content.Load<SpriteFont>("Buttons");
+            stats = Content.Load<SpriteFont>("Stats");
+            heading = Content.Load<SpriteFont>("Heading");
         }
 
         /// <summary>
@@ -82,9 +90,6 @@ namespace GroupGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-
             // Get KeyboardState
             keyboardState = Keyboard.GetState();
 
@@ -104,9 +109,11 @@ namespace GroupGame
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+            spriteBatch.Begin();
 
-            // TODO: Add your drawing code here
+            DrawGUI(spriteBatch);
 
+            spriteBatch.End();
             base.Draw(gameTime);
         }
 
@@ -114,32 +121,52 @@ namespace GroupGame
         /// <summary>
         /// Draws menu/GUI to the window based on the current game state.
         /// </summary>
-        public void DrawGUI()
+        public void DrawGUI(SpriteBatch sb)
         {
             switch(gameState)
             {
+                //Draws text for Main Menu GUI
                 case GameState.MainMenu:
-
+                    sb.DrawString(title, "GAME TITLE", new Vector2(graphics.PreferredBackBufferWidth/2 - 220, 70), Color.Black);
+                    sb.DrawString(buttons, "Start", new Vector2(graphics.PreferredBackBufferWidth/2 - 30, 300), Color.Black);
+                    sb.DrawString(buttons, "Shop", new Vector2(graphics.PreferredBackBufferWidth/2 - 31, 380), Color.Black);
+                    sb.DrawString(buttons, "Stats", new Vector2(graphics.PreferredBackBufferWidth/2 - 31, 460), Color.Black);
                     break;
 
+                //Draws text for in-game GUI
                 case GameState.Game:
-
+                    sb.DrawString(stats, "HP: 300/300", new Vector2(2, 2), Color.Black);
+                    sb.DrawString(stats, "Score:", new Vector2(1100, 2), Color.Black);
+                    sb.DrawString(stats, "Currency:", new Vector2(1100, 22), Color.Black);
+                    sb.DrawString(stats, "Keys:", new Vector2(1100, 42), Color.Black);
                     break;
 
+                //Draws text for pause menu GUI
                 case GameState.Pause:
-
+                    sb.DrawString(heading, "PAUSED", new Vector2(graphics.PreferredBackBufferWidth/2 - 65, 200), Color.Black);
+                    sb.DrawString(buttons, "Resume", new Vector2(graphics.PreferredBackBufferWidth/2 - 50, 300), Color.Black);
+                    sb.DrawString(buttons, "Shop", new Vector2(graphics.PreferredBackBufferWidth/2 - 35, 380), Color.Black);
+                    sb.DrawString(buttons, "Quit", new Vector2(graphics.PreferredBackBufferWidth/2 - 30, 460), Color.Black);
                     break;
 
+                //Draws text for shop GUI
                 case GameState.Shop:
-
+                    sb.DrawString(heading, "SHOP", new Vector2(graphics.PreferredBackBufferWidth/2 - 45, 50), Color.Black);
+                    sb.DrawString(buttons, "Back", new Vector2(graphics.PreferredBackBufferWidth/2 - 33, 640), Color.Black);
                     break;
 
+                //Draws text for stats GUI
                 case GameState.Stats:
-
+                    sb.DrawString(heading, "STATS", new Vector2(graphics.PreferredBackBufferWidth/2 - 50, 50), Color.Black);
+                    sb.DrawString(buttons, "Back", new Vector2(graphics.PreferredBackBufferWidth/2 - 33, 640), Color.Black);
                     break;
 
+                //Draws text for game over screen
                 case GameState.Gameover:
-
+                    sb.DrawString(title, "GAME OVER", new Vector2(graphics.PreferredBackBufferWidth/2 - 240, 200), Color.Black);
+                    sb.DrawString(heading, "You died lol", new Vector2(680, 300), Color.Black);
+                    sb.DrawString(buttons, "Menu", new Vector2(graphics.PreferredBackBufferWidth/2 - 100, 430), Color.Black);
+                    sb.DrawString(buttons, "Quit", new Vector2(graphics.PreferredBackBufferWidth/2, 430), Color.Black);
                     break;
             }
         }
@@ -189,6 +216,11 @@ namespace GroupGame
                     if (SingleKeyPress(Keys.S))
                         gameState = GameState.Shop;
                     
+
+                    // If the user presses "Q" in the pause menu, go to the game over screen
+                    // ** Temporary until pause button locations are available for mouse clicks
+                    if (SingleKeyPress(Keys.Q))
+                        gameState = GameState.Gameover;
 
                     break;
 
