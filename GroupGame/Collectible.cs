@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,11 @@ namespace GroupGame
 {
     class Collectible : GameObject, ICollidable
     {
+        //fields
         Rectangle hitbox;
         bool circleBox;
 
+        //properties
         public Rectangle Hitbox
         {
             get { return hitbox; }
@@ -20,6 +23,13 @@ namespace GroupGame
         public bool CircleBox
         {
             get { return circleBox; }
+        }
+
+        //constructor
+        //constructor
+        public Collectible(Rectangle position, Texture2D sprite) : base(position, sprite)
+        {
+
         }
     }
 }

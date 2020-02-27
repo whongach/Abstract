@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,21 +10,16 @@ namespace GroupGame
 {
     abstract class Weapon : Collectible, ICollidable
     {
-        int damage;
+        //fields
+        protected int damage;
 
-        Rectangle hitbox;
-        bool circleBox;
-
-        public Rectangle Hitbox
+        //constructor
+        public Weapon(Rectangle position, Texture2D sprite) : base(position, sprite)
         {
-            get { return hitbox; }
+
         }
 
-        public bool CircleBox
-        {
-            get { return circleBox; }
-        }
-
-        public abstract void Attack(Rectangle position, double angle);
+        //methods
+        public abstract void Attack(Vector2 position, double angle);
     }
 }

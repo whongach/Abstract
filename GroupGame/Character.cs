@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,13 +9,15 @@ using System.Threading.Tasks;
 
 namespace GroupGame
 {
-    class Character : GameObject , ICollidable
+    abstract class Character : GameObject , ICollidable
     {
-        int health;
-        Weapon weapon;
-        Rectangle hitbox;
-        bool circleBox;
+        //fields
+        protected int health;
+        protected Weapon weapon;
+        protected Rectangle hitbox;
+        protected bool circleBox;
 
+        //properties
         public Rectangle Hitbox
         {
             get { return hitbox; }
@@ -23,5 +27,14 @@ namespace GroupGame
         {
             get { return circleBox; }
         }
+
+        //constructor
+        public Character(int health, Weapon weapon, Rectangle position, Texture2D sprite) : base(position, sprite)
+        {
+            this.health = health;
+            this.weapon = weapon;
+        }
+
+       
     }
 }

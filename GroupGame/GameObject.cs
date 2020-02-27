@@ -11,8 +11,21 @@ namespace GroupGame
     class GameObject
     {
         //fields
-        Rectangle position;
-        Texture2D sprite;
+        protected Rectangle position;
+        protected Texture2D sprite;
+
+        //properties
+        public Rectangle Position
+        {
+            get { return position; }
+            set { position = value; }
+        }
+
+        public Texture2D Sprite
+        {
+            get { return sprite; }
+            set { sprite = value; }
+        }
 
         //constructor
         public GameObject(Rectangle position, Texture2D sprite)
