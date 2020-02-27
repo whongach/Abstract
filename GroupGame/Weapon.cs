@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GroupGame
 {
-    class Weapon : Collectible, ICollidable
+    abstract class Weapon : Collectible, ICollidable
     {
         int damage;
 
@@ -23,5 +23,7 @@ namespace GroupGame
         {
             get { return circleBox; }
         }
+
+        public abstract void Attack(Rectangle position, double angle);
     }
 }

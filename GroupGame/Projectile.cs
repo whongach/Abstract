@@ -6,8 +6,18 @@ using System.Threading.Tasks;
 
 namespace GroupGame
 {
-    class Projectile : Weapon
+    class Projectile : GameObject
     {
+        //fields
         int speed;
+        double direction;
+        int damage;
+
+        //constructor
+        public Projectile(double angle, Rectangle position, int speed, int damage, Texture2D sprite)
+        {
+
+        }
+
     }
 }
