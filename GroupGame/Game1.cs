@@ -31,6 +31,11 @@ namespace GroupGame
         Texture2D squareTest;
         Texture2D circleTest;
 
+        //AttackTesting Fields
+        Player attackTest;
+        Projectile basicArrow;
+        RangedWeapon basicBow;
+
         // MonoGame Generated Constructors
         /// <summary>
         /// Constructs the Game class.
@@ -78,6 +83,11 @@ namespace GroupGame
             //Loads Textures
             squareTest = Content.Load<Texture2D>("square");
             circleTest = Content.Load<Texture2D>("circle");
+
+            //creates a player, weapon and a projectile for attacking purposes
+            basicArrow = new Projectile(0, new Rectangle(new Point(-20, -20), new Point(20, 5)), 2, 5, circleTest);
+            basicBow = new RangedWeapon(basicArrow, new Rectangle(75, 75, 30, 30), squareTest, 5);
+            attackTest = new Player(10, basicBow, new Rectangle(50, 50, 50, 50), circleTest);
         }
 
         /// <summary>
@@ -100,7 +110,7 @@ namespace GroupGame
             keyboardState = Keyboard.GetState();
 
             // Finite State Machine
-            FiniteStateMachine();
+            FiniteStateMachineUpdate();
 
             // Set previous KeyboardState to current state
             previousKeyboardState = keyboardState;
@@ -118,6 +128,7 @@ namespace GroupGame
             spriteBatch.Begin();
 
             DrawGUI(spriteBatch);
+            FiniteStateMachineDraw();
 
             spriteBatch.End();
             base.Draw(gameTime);
@@ -206,7 +217,7 @@ namespace GroupGame
         /// <summary>
         /// Handles game transitions and game states.
         /// </summary>
-        private void FiniteStateMachine()
+        private void FiniteStateMachineUpdate()
         {
             switch(gameState)
             {
@@ -230,6 +241,7 @@ namespace GroupGame
 
                     // Handle Here:
                     // Player Movement
+                    attackTest.Update();
                     // Enemy Movement
                     // Collisions
                     // Loading Next Level
@@ -280,6 +292,46 @@ namespace GroupGame
                     // ** Temporary until gameover button locations are available for mouse clicks
                     if (SingleKeyPress(Keys.Enter))
                         gameState = GameState.MainMenu;
+
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Handles all drawing
+        /// </summary>
+        private void FiniteStateMachineDraw()
+        {
+            switch (gameState)
+            {
+                case GameState.MainMenu:
+                    
+
+                    break;
+
+                case GameState.Game:
+
+                    attackTest.Draw(spriteBatch);
+
+                    break;
+
+                case GameState.Pause:
+                    
+
+                    break;
+
+                case GameState.Shop:
+                    
+
+                    break;
+
+                case GameState.Stats:
+                    
+
+                    break;
+
+                case GameState.Gameover:
+                    
 
                     break;
             }
