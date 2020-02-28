@@ -21,6 +21,8 @@ namespace GroupGame
         // Fields
         private KeyboardState previousKeyboardState;
         private KeyboardState keyboardState;
+        private MouseState previousMouseState;
+        private MouseState mouseState;
         private GameState gameState;
 
         //Graphic Fields
@@ -85,9 +87,9 @@ namespace GroupGame
             circleTest = Content.Load<Texture2D>("circle");
 
             //creates a player, weapon and a projectile for attacking purposes
-            basicArrow = new Projectile(0, new Rectangle(new Point(-20, -20), new Point(20, 5)), 2, 5, circleTest);
-            basicBow = new RangedWeapon(basicArrow, new Rectangle(75, 75, 30, 30), squareTest, 5);
-            attackTest = new Player(10, basicBow, new Rectangle(50, 50, 50, 50), circleTest);
+            basicArrow = new Projectile(0, new Rectangle(new Point(-20, -20), new Point(20, 5)), 20, 5, circleTest);
+            basicBow = new RangedWeapon(basicArrow, new Rectangle(175, 175, 30, 30), squareTest, 5);
+            attackTest = new Player(10, basicBow, new Rectangle(150, 150, 50, 50), circleTest);
         }
 
         /// <summary>
@@ -108,12 +110,14 @@ namespace GroupGame
         {
             // Get KeyboardState
             keyboardState = Keyboard.GetState();
+            mouseState = Mouse.GetState();
 
             // Finite State Machine
             FiniteStateMachineUpdate();
 
             // Set previous KeyboardState to current state
             previousKeyboardState = keyboardState;
+            previousMouseState = mouseState;
 
             base.Update(gameTime);
         }
@@ -241,7 +245,7 @@ namespace GroupGame
 
                     // Handle Here:
                     // Player Movement
-                    attackTest.Update();
+                    attackTest.Update(mouseState, previousMouseState, keyboardState);
                     // Enemy Movement
                     // Collisions
                     // Loading Next Level
@@ -342,13 +346,9 @@ namespace GroupGame
         /// </summary>
         /// <param name="key">The key to check.</param>
         /// <returns>True if this is the first frame that the key was pressed and false otherwise.</returns>
-        private bool SingleKeyPress(Keys key)
+        public bool SingleKeyPress(Keys key)
         {
-            // Check is key was recently released, if it was, return false (not looking for release)
-            if (keyboardState.IsKeyDown(key) == false && previousKeyboardState.IsKeyDown(key) == true)
-                return false;
-
-            return keyboardState.IsKeyDown(key) != previousKeyboardState.IsKeyDown(key);
+            return keyboardState.IsKeyDown(key) && !previousKeyboardState.IsKeyDown(key);
         }
     }
 }

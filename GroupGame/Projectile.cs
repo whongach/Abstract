@@ -13,6 +13,8 @@ namespace GroupGame
         //fields
         private int speed;
         private double angle;
+        double x;
+        double y;
         private int damage;
 
         //properties
@@ -40,6 +42,8 @@ namespace GroupGame
             this.speed = speed;
             this.angle = angle;
             this.damage = damage;
+            x = position.X;
+            y = position.Y;
         }
 
         /// <summary>
@@ -47,8 +51,17 @@ namespace GroupGame
         /// </summary>
         public override void Update()
         {
-            position.X += (int)Math.Cos(angle)*speed;
-            position.Y += (int)Math.Sin(angle)*speed;
+            x += (Math.Cos(angle) * speed);
+            y += (Math.Sin(angle) * speed);
+        }
+
+        /// <summary>
+        /// allows the projectiles to move in 360 degrees
+        /// </summary>
+        /// <param name="sb"></param>
+        public override void Draw(SpriteBatch sb)
+        {
+            sb.Draw(sprite, new Rectangle((int)(x),(int)(y),position.Width, position.Height), Color.White);
         }
 
     }

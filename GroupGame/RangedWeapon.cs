@@ -43,11 +43,9 @@ namespace GroupGame
         /// </summary>
         /// <param name="position"></param>
         /// <param name="angle"></param>
-        public override void Attack(Vector2 position, double angle)
+        public override void Attack(Rectangle launchPoint, double angle)
         {
-            ammoType.Angle = angle;
-            ammoType.Position = new Rectangle((int)position.X, (int)position.Y, ammoType.Position.Width, ammoType.Position.Height);
-            projectiles.Add(ammoType);
+            projectiles.Add(new Projectile(angle, new Rectangle(launchPoint.X, launchPoint.Y, ammoType.Position.Width, ammoType.Position.Height), ammoType.Speed, damage, ammoType.Sprite));
         }
 
         /// <summary>
@@ -60,5 +58,20 @@ namespace GroupGame
                 projectiles[i].Update();
             }
         }
+
+        /// <summary>
+        /// calls necessary draws for this weapon
+        /// </summary>
+        /// <param name="sb">spritebatch used to draw</param>
+        public override void Draw(SpriteBatch sb)
+        {
+            base.Draw(sb);
+            for(int i = 0; i<projectiles.Count; i++)
+            {
+                projectiles[i].Draw(sb);
+            }
+        }
+
+
     }
 }

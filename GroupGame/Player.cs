@@ -31,8 +31,34 @@ namespace GroupGame
         public void Attack()
         {
             MouseState mousePosition = Mouse.GetState();
-            double angle = Math.Atan((mousePosition.Y - position.Y) / (mousePosition.X - position.X));
-            weapon.Attack(new Vector2(position.X, position.Y), angle);
+            double angle = 0;
+            if (mousePosition.X - position.X == 0)
+                angle = Math.Atan(((double)mousePosition.Y - (double)position.Y) / ((double)mousePosition.X - (double)position.X - .00000001));
+            else
+                angle = Math.Atan(((double)mousePosition.Y - (double)position.Y) / ((double)mousePosition.X - (double)position.X));
+            if (mousePosition.X < position.X)
+                angle -= Math.PI;
+            weapon.Attack(position, angle);
+        }
+
+        /// <summary>
+        /// necessary updates made for player
+        /// </summary>
+        public void Update(MouseState mouseState, MouseState previousMouseState, KeyboardState keyState)
+        {
+            if (mouseState.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton == ButtonState.Released)
+                Attack();
+            weapon.Update();
+        }
+
+        /// <summary>
+        /// necessary draws made for player
+        /// </summary>
+        /// <param name="sb"></param>
+        public override void Draw(SpriteBatch sb)
+        {
+            base.Draw(sb);
+            weapon.Draw(sb);
         }
     }
 }

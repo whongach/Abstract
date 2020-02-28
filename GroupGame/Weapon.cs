@@ -20,6 +20,6 @@ namespace GroupGame
         }
 
         //methods
-        public abstract void Attack(Vector2 position, double angle);
+        public abstract void Attack(Rectangle launchPoint, double angle);
     }
 }
