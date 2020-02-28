@@ -13,6 +13,8 @@ namespace GroupGame
         //fields
         int rotationDegrees;
         int rotationSpeed;
+        bool attacking;
+        int attackFrame;
 
         //constructor
         public MeleeWeapon(Rectangle position, Texture2D sprite, int rotationDegrees, int rotationSpeed) : base(position, sprite)
