@@ -21,8 +21,8 @@ namespace GroupGame
 
         public void Update(MouseState mouseState)
         {
-            position.X = mouseState.X;
-            position.Y = mouseState.Y;
+            position.X = mouseState.X - position.Width / 2;
+            position.Y = mouseState.Y - position.Height / 2;
         }
 
     }
