@@ -52,6 +52,7 @@
     <Compile Include="LootTile.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="MeleeWeapon.cs" />
+    <Compile Include="MouseCursor.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Projectile.cs" />
