@@ -150,7 +150,6 @@ namespace GroupGame
             base.Draw(gameTime);
         }
 
-        // Methods
         /// <summary>
         /// Draws menu/GUI to the window based on the current game state.
         /// </summary>
@@ -259,6 +258,7 @@ namespace GroupGame
                     // Player Movement
                     attackTest.Update(mouseState, previousMouseState, keyboardState);
                     // Enemy Movement
+
                     // Collisions
                     // Loading Next Level
                     // Game Over Scenarios
