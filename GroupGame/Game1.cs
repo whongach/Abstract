@@ -42,6 +42,9 @@ namespace GroupGame
         Projectile basicArrow;
         RangedWeapon basicBow;
 
+        //Enemy Movement Test Fields
+        Enemy enemyTest;
+
         // MonoGame Generated Constructors
         /// <summary>
         /// Constructs the Game class.
@@ -96,6 +99,9 @@ namespace GroupGame
             basicBow = new RangedWeapon(basicArrow, new Rectangle(175, 175, 30, 30), squareTest, 5);
             attackTest = new Player(10, basicBow, new Rectangle(150, 150, 50, 50), circleTest);
 
+            //Creates an enemy to test movement
+            enemyTest = new Enemy(10, basicBow, new Rectangle(300, 300, 50, 50), circleTest, EnemyType.Random, 3, attackTest);
+
             //creates the mousecursor
             cursor = new MouseCursor(new Rectangle(0, 0, 50, 50), cursorTest);
         }
@@ -125,6 +131,7 @@ namespace GroupGame
 
             cursor.Update(mouseState);
             attackTest.Move(keyboardState);
+            enemyTest.Move();
 
             // Set previous KeyboardState to current state
             previousKeyboardState = keyboardState;
@@ -257,7 +264,8 @@ namespace GroupGame
                     // Handle Here:
                     // Player Movement
                     attackTest.Update(mouseState, previousMouseState, keyboardState);
-                    // Enemy Movement
+
+                    // Enemy Movement - Not necessary?? May be useful for enemy attacks - KEVIN
 
                     // Collisions
                     // Loading Next Level
@@ -328,7 +336,7 @@ namespace GroupGame
                 case GameState.Game:
 
                     attackTest.Draw(spriteBatch);
-
+                    enemyTest.Draw(spriteBatch);
                     break;
 
                 case GameState.Pause:

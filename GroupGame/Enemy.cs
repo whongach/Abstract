@@ -19,9 +19,14 @@ namespace GroupGame
     class Enemy : Character
     {
         //Fields
-        EnemyType type;
-        int speed;
-        Random rng;
+        private EnemyType type;
+        private EnemyDirection direction;
+        private int numDirection; //This field is specifically for Random enemy types so that their direction can be generated easily
+        private int speed;
+        private int travelled;
+        private int maxWidth;
+        private int maxHeight;
+        private Random rng;
         Player player;
 
         //Constructors
@@ -30,24 +35,48 @@ namespace GroupGame
             this.type = type;
             this.speed = speed;
             this.player = player;
+            travelled = 0;
             rng = new Random();
+
+            //Sets start direction and lengths for certain types of enemies
+            if (type == EnemyType.LeftRight)
+            {
+                direction = EnemyDirection.Right;
+                maxWidth = rng.Next(100, 600);
+            }
+            else if (type == EnemyType.Rectangle)
+            {
+                direction = EnemyDirection.Right;
+                maxWidth = rng.Next(100, 600);
+                maxHeight = rng.Next(100, 400);
+            }
+            else if (type == EnemyType.UpDown)
+            {
+                direction = EnemyDirection.Down;
+                maxHeight = rng.Next(100, 400);
+            }
+            else if(type == EnemyType.Random)
+            {
+                numDirection = rng.Next(0, 8);
+                maxWidth = rng.Next(0, 100);
+            }
         }
 
         //Methods
         //Enemy calls the corresponding move method based on its type
-        protected void Move()
+        public void Move()
         {
             if(type == EnemyType.LeftRight)
             {
-                LRWalk(rng.Next(100,600));
+                LRWalk(maxWidth);
             }
             else if(type == EnemyType.Rectangle)
             {
-                RectangleWalk(rng.Next(100, 600), rng.Next(100, 400));
+                RectangleWalk(maxHeight, maxWidth);
             }
             else if(type == EnemyType.UpDown)
             {
-                UDWalk(rng.Next(100, 400));
+                UDWalk(maxHeight);
             }
             else if(type == EnemyType.Chase)
             {
@@ -55,17 +84,13 @@ namespace GroupGame
             }
             else
             {
-                RandomWalk(rng.Next(0, 100));
+                RandomWalk(maxWidth);
             }
         }
 
         //Enemy walks in a left-right pattern
         protected void LRWalk(int lineWidth)
         {
-            //Sets default values for movement
-            int travelled = 0;
-            EnemyDirection direction = EnemyDirection.Right;
-
             //Enemy moves [speed] pixels in the appropriate direction
             travelled += speed;
             if(direction == EnemyDirection.Right)
@@ -98,10 +123,6 @@ namespace GroupGame
         //Enemy walks in a square pattern
         protected void RectangleWalk(int rectWidth, int rectHeight)
         {
-            //Sets default values for movement
-            int travelled = 0;
-            EnemyDirection direction = EnemyDirection.Right;
-
             //Enemy moves [speed] pixels in the appropriate direction, if they complete the direction, they change it
             travelled += speed;
             if (direction == EnemyDirection.Right)
@@ -149,10 +170,6 @@ namespace GroupGame
         //Enemy walks in an up-down pattern
         protected void UDWalk(int lineHeight)
         {
-            //Sets default values for movement
-            int travelled = 0;
-            EnemyDirection direction = EnemyDirection.Down;
-
             //Enemy moves [speed] pixels in the appropriate direction
             travelled += speed;
             if (direction == EnemyDirection.Down)
@@ -212,39 +229,35 @@ namespace GroupGame
         //Enemy moves randomly, one direction at a time
         protected void RandomWalk(int lineLength)
         {
-            //Sets default values for movement
-            int travelled = 0;
-            int direction = rng.Next(0, 8);
-
             //Enemy moves [speed] pixels in a random direction
             travelled += speed;
-            if (direction == 0)
+            if (numDirection == 0)
             {
                 position.X += speed;
             }
-            else if (direction == 1)
+            else if (numDirection == 1)
             {
                 position.X -= speed;
             }
-            else if (direction == 2)
+            else if (numDirection == 2)
             {
                 position.Y -= speed;
             }
-            else if(direction == 3)
+            else if(numDirection == 3)
             {
                 position.Y += speed;
             }
-            else if (direction == 4)
+            else if (numDirection == 4)
             {
                 position.X += speed;
                 position.Y -= speed;
             }
-            else if (direction == 5)
+            else if (numDirection == 5)
             {
                 position.X += speed;
                 position.Y += speed;
             }
-            else if (direction == 6)
+            else if (numDirection == 6)
             {
                 position.X -= speed;
                 position.Y -= speed;
@@ -263,7 +276,7 @@ namespace GroupGame
             if (travelled >= lineLength)
             {
                 travelled = 0;
-                direction = rng.Next(0, 8);
+                numDirection = rng.Next(0, 8);
             }
         }
     }
