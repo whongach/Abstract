@@ -20,6 +20,7 @@ namespace GroupGame
         {
             offHand = null;
             currentItem = null;
+            this.position = position;
         }
 
 
@@ -49,6 +50,26 @@ namespace GroupGame
             if (mouseState.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton == ButtonState.Released)
                 Attack();
             weapon.Update();
+        }
+
+        public void Move(KeyboardState keyboardState)
+        {
+            if (keyboardState.IsKeyDown(Keys.A))
+            {
+                this.position.X -= 3;
+            }
+            else if (keyboardState.IsKeyDown(Keys.D))
+            {
+                this.position.X += 3;
+            }
+            if (keyboardState.IsKeyDown(Keys.W))
+            {
+                this.position.Y -= 3;
+            }
+            else if (keyboardState.IsKeyDown(Keys.S))
+            {
+                this.position.Y += 3;
+            }
         }
 
         /// <summary>

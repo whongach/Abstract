@@ -124,6 +124,7 @@ namespace GroupGame
             FiniteStateMachineUpdate();
 
             cursor.Update(mouseState);
+            attackTest.Move(keyboardState);
 
             // Set previous KeyboardState to current state
             previousKeyboardState = keyboardState;
