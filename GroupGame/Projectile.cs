@@ -60,6 +60,8 @@ namespace GroupGame
         {
             x += (Math.Cos(angle) * speed);
             y += (Math.Sin(angle) * speed);
+            position.X = (int)x;
+            position.Y = (int)y;
         }
 
         /// <summary>

@@ -100,16 +100,16 @@ namespace GroupGame
                 }
                 else
                 {
-                    if (obj2 is MeleeWeapon)
-                        Collision(obj1, (MeleeWeapon)obj2);
-
-                    if (obj2 is RangedWeapon)
-                        Collision(obj1, (RangedWeapon)obj2);
                 }
                 
             }
 
-            
+
+            if (obj2 is MeleeWeapon)
+                Collision(obj1, (MeleeWeapon)obj2);
+
+            if (obj2 is RangedWeapon)
+                Collision(obj1, (RangedWeapon)obj2);
         }
 
         /// <summary>
