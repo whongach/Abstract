@@ -66,7 +66,7 @@ namespace GroupGame
             else if(type == EnemyType.Random)
             {
                 numDirection = rng.Next(0, 8);
-                maxWidth = rng.Next(0, 100);
+                maxWidth = rng.Next(25, 100);
             }
         }
 
