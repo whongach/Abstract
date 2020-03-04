@@ -110,7 +110,7 @@ namespace GroupGame
             attackTest = new Player(10, basicBow, new Rectangle(150, 150, 50, 50), circleTest, true);
 
             //Creates an enemy to test movement
-            enemyTest = new Enemy(10, basicBow, new Rectangle(300, 300, 50, 50), circleTest, EnemyType.Chase, 1, 0, attackTest, true);
+            enemyTest = new Enemy(10, basicBow, new Rectangle(300, 300, 50, 50), circleTest, EnemyType.Chase, 2, 0, attackTest, true);
             gameObjects.Add(enemyTest);
 
             //creates the mousecursor
@@ -273,9 +273,11 @@ namespace GroupGame
 
                     // Handle Here:
                     // All Updates of game objects
-                    for(int i = 0; i<gameObjects.Count; i++)
+
+
+                    attackTest.Update(mouseState, previousMouseState, keyboardState, previousKeyboardState);
+                    for (int i = 0; i<gameObjects.Count; i++)
                     {
-                        attackTest.Update(mouseState, previousMouseState, keyboardState, previousKeyboardState);
                         gameObjects[i].Update();
                     }
 
