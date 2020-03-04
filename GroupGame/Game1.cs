@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 
 namespace GroupGame
 {
@@ -27,6 +28,8 @@ namespace GroupGame
 
         //Object Fields
         MouseCursor cursor;
+        List<GameObject> gameObjects;
+        EventManager eM;
 
         //Graphic Fields
         SpriteFont title;
@@ -82,7 +85,11 @@ namespace GroupGame
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            
+
+            //initializes the gameobjects list and event manager
+            gameObjects = new List<GameObject>();
+            eM = new EventManager();
+
             //allows window to resize
             Window.AllowUserResizing = true;
 
@@ -99,11 +106,12 @@ namespace GroupGame
 
             //creates a player, weapon and a projectile for attacking purposes
             basicArrow = new Projectile(0, new Rectangle(new Point(-20, -20), new Point(20, 5)), 20, 5, squareTest, false);
-            basicBow = new RangedWeapon(basicArrow, new Rectangle(175, 175, 30, 30), squareTest, 5, false);
+            basicBow = new RangedWeapon(basicArrow, new Rectangle(175, 175, 30, 30), squareTest, 5, false, true);
             attackTest = new Player(10, basicBow, new Rectangle(150, 150, 50, 50), circleTest, true);
 
             //Creates an enemy to test movement
-            enemyTest = new Enemy(10, basicBow, new Rectangle(300, 300, 50, 50), circleTest, EnemyType.Random, 3, attackTest, true);
+            enemyTest = new Enemy(10, basicBow, new Rectangle(300, 300, 50, 50), circleTest, EnemyType.Random, 3, 0, attackTest, true);
+            gameObjects.Add(enemyTest);
 
             //creates the mousecursor
             cursor = new MouseCursor(new Rectangle(0, 0, 50, 50), cursorTest);
@@ -129,12 +137,11 @@ namespace GroupGame
             keyboardState = Keyboard.GetState();
             mouseState = Mouse.GetState();
 
+            //updates cursor
+            cursor.Update(mouseState);
+
             // Finite State Machine
             FiniteStateMachineUpdate();
-
-            cursor.Update(mouseState);
-            attackTest.Move(keyboardState);
-            enemyTest.Move();
 
             // Set previous KeyboardState to current state
             previousKeyboardState = keyboardState;
@@ -184,13 +191,13 @@ namespace GroupGame
                 case GameState.Game:
                     //Draws underlying boxes for GUI
                     sb.Draw(squareTest, new Rectangle(0, 0, 300, 30), Color.LightGreen);
-                    sb.Draw(squareTest, new Rectangle(1090, 0, 300, 80), Color.Gray);
+                    sb.Draw(squareTest, new Rectangle(Window.ClientBounds.Width-300, 0, 300, 80), Color.Gray);
 
                     //Draws text for in-game GUI
                     sb.DrawString(stats, "HP: 300/300", new Vector2(2, 2), Color.Black);
-                    sb.DrawString(stats, "Score:", new Vector2(1100, 2), Color.Black);
-                    sb.DrawString(stats, "Currency:", new Vector2(1100, 22), Color.Black);
-                    sb.DrawString(stats, "Keys:", new Vector2(1100, 42), Color.Black);
+                    sb.DrawString(stats, "Score:", new Vector2(Window.ClientBounds.Width - 290, 2), Color.Black);
+                    sb.DrawString(stats, "Currency:", new Vector2(Window.ClientBounds.Width - 290, 22), Color.Black);
+                    sb.DrawString(stats, "Keys:", new Vector2(Window.ClientBounds.Width - 290, 42), Color.Black);
                     break;
 
                 case GameState.Pause:
@@ -265,12 +272,31 @@ namespace GroupGame
                         gameState = GameState.Pause;
 
                     // Handle Here:
-                    // Player Movement
-                    attackTest.Update(mouseState, previousMouseState, keyboardState);
+                    // All Updates of game objects
+                    for(int i = 0; i<gameObjects.Count; i++)
+                    {
+                        attackTest.Update(mouseState, previousMouseState, keyboardState, previousKeyboardState);
+                        gameObjects[i].Update();
+                    }
 
-                    // Enemy Movement - Not necessary?? May be useful for enemy attacks - KEVIN
+                    //collisions
+                    for (int i = 0; i < gameObjects.Count; i++)
+                    {
+                        eM.Collision(attackTest, gameObjects[i]);
+                        if(gameObjects[i] is Enemy)
+                        {
+                            if (attackTest.Weapon != null)
+                                eM.Collision(((Enemy)gameObjects[i]), attackTest.Weapon);
+                            if (attackTest.OffHand != null)
+                                eM.Collision(((Enemy)gameObjects[i]), attackTest.OffHand);
+                            /*for (int j = 0; j < testMap.Walls.Count; j++)
+                                eM.Collision(((Enemy)gameObjects[i]), //insert reference to the walls list in the map here);*/
+                        }
+                    }
 
-                    // Collisions
+                    /*for (int i = 0; i < testMap.Walls.Count; i++)
+                        eM.Collision((Character)attackTest, //insert reference to the walls list in the map here);*/
+
                     // Loading Next Level
                     // Game Over Scenarios
 
@@ -338,8 +364,11 @@ namespace GroupGame
 
                 case GameState.Game:
 
-                    attackTest.Draw(spriteBatch);
-                    enemyTest.Draw(spriteBatch);
+                    for(int i = 0; i<gameObjects.Count; i++)
+                    {
+                        attackTest.Draw(spriteBatch);
+                        gameObjects[i].Draw(spriteBatch);
+                    }
                     break;
 
                 case GameState.Pause:

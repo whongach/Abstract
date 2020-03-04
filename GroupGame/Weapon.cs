@@ -14,8 +14,14 @@ namespace GroupGame
         protected int damage;
         protected double angle;
 
+        //properties
+        public int Damage
+        {
+            get { return damage; }
+        }
+
         //constructor
-        public Weapon(Rectangle position, Texture2D sprite, bool circular) : base(position, sprite, circular)
+        public Weapon(Rectangle position, Texture2D sprite, bool circular, bool equipped) : base(position, sprite, circular, equipped)
         {
 
         }

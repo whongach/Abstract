@@ -56,7 +56,7 @@ namespace GroupGame
         /// <summary>
         /// moves the projectile speed distance at the given angle
         /// </summary>
-        public override void Update()
+        public  void Update()
         {
             x += (Math.Cos(angle) * speed);
             y += (Math.Sin(angle) * speed);
@@ -71,5 +71,12 @@ namespace GroupGame
             sb.Draw(sprite, new Rectangle((int)(x)+position.Width/2, (int)(y)+position.Height/2, position.Width, position.Height), null, Color.White, (float)angle, new Vector2(position.Width / 2, position.Height / 2), SpriteEffects.None, 1);
         }
 
+        /// <summary>
+        /// estroys the projectile on collision with a character
+        /// </summary>
+        public void Destroy()
+        {
+            this.Damage = -1;
+        }
     }
 }

@@ -15,12 +15,22 @@ namespace GroupGame
         int rotationSpeed;
         bool attacking;
         int attackFrame;
+        int totalFrames;
+
+        //properties
+        public bool Attacking
+        {
+            get { return attacking; }
+            set { attacking = value; }
+        }
 
         //constructor
-        public MeleeWeapon(Rectangle position, Texture2D sprite, bool circular, int rotationDegrees, int rotationSpeed) : base(position, sprite, circular)
+        public MeleeWeapon(Rectangle position, Texture2D sprite, bool circular, bool equipped, int rotationDegrees, int rotationSpeed) : base(position, sprite, circular, equipped)
         {
             this.rotationDegrees = rotationDegrees;
             this.rotationSpeed = rotationSpeed;
+            totalFrames = rotationDegrees / rotationSpeed;
+            this.attacking = false;
         }
 
         //methods

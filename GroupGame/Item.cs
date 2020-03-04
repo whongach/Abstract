@@ -11,7 +11,7 @@ namespace GroupGame
     class Item : Collectible, ICollidable
     {
         //constructor
-        public Item(Rectangle position, Texture2D sprite, bool circular) : base(position, sprite, circular)
+        public Item(Rectangle position, Texture2D sprite, bool circular, bool equipped) : base(position, sprite, circular, equipped)
         {
 
         }

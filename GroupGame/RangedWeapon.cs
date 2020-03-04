@@ -28,7 +28,7 @@ namespace GroupGame
         }
 
         //constructor
-        public RangedWeapon(Projectile ammoType, Rectangle position, Texture2D sprite, int damage, bool circular) : base(position, sprite, circular)
+        public RangedWeapon(Projectile ammoType, Rectangle position, Texture2D sprite, int damage, bool circular, bool equipped) : base(position, sprite, circular, equipped)
         {
             this.damage = damage;
             ammoType.Damage = damage;
@@ -59,6 +59,11 @@ namespace GroupGame
             for(int i = 0; i<projectiles.Count; i++)
             {
                 projectiles[i].Update();
+                if (projectiles[i].Damage == -1)
+                {
+                    projectiles.RemoveAt(i);
+                    i--;
+                }
             }
         }
 

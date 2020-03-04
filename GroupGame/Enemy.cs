@@ -26,15 +26,23 @@ namespace GroupGame
         private int travelled;
         private int maxWidth;
         private int maxHeight;
+        private int bodyDamage;
         private Random rng;
         Player player;
 
+        //properties
+        public int BodyDamage
+        {
+            get { return bodyDamage; }
+        }
+
         //Constructors
-        public Enemy(int health, Weapon weapon, Rectangle position, Texture2D sprite, EnemyType type, int speed, Player player, bool circular) : base(health, weapon, position, sprite, circular)
+        public Enemy(int health, Weapon weapon, Rectangle position, Texture2D sprite, EnemyType type, int speed, int bodyDamage, Player player, bool circular) : base(health, weapon, position, sprite, circular)
         {
             this.type = type;
             this.speed = speed;
             this.player = player;
+            this.bodyDamage = bodyDamage;
             travelled = 0;
             rng = new Random();
 
@@ -278,6 +286,11 @@ namespace GroupGame
                 travelled = 0;
                 numDirection = rng.Next(0, 8);
             }
+        }
+
+        public override void Update()
+        {
+            Move();
         }
     }
 }

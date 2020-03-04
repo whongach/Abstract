@@ -17,10 +17,20 @@ namespace GroupGame
         protected bool circleBox;
 
         //properties
+        public Weapon Weapon
+        {
+            get { return weapon; }
+        }
 
         public bool CircleBox
         {
             get { return circleBox; }
+        }
+
+        public int Health
+        {
+            get { return health; }
+            set { health = value; }
         }
 
         //constructor
