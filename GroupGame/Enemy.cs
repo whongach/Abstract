@@ -27,6 +27,7 @@ namespace GroupGame
         private int maxWidth;
         private int maxHeight;
         private int bodyDamage;
+        private double weaponAngle;
         private Random rng;
         Player player;
 
@@ -116,7 +117,8 @@ namespace GroupGame
 
             //Checks if enemy has travelled full distance of pattern direction
             if(travelled >= lineWidth)
-            {
+            { 
+                
                 travelled = 0;
                 if(direction == EnemyDirection.Right)
                 {
@@ -290,7 +292,21 @@ namespace GroupGame
 
         public override void Update()
         {
+            //Moves enemy
             Move();
+            //Makes enemy weapon point at player
+            weaponAngle = Math.Atan(((double)player.Position.Y - (double)position.Y) / ((double)player.Position.X - (double)position.X));
+            if(player.Position.X < position.X)
+            {
+                weaponAngle -= Math.PI;
+            }
+            weapon.Update(position, weaponAngle);
+        }
+
+        public override void Draw(SpriteBatch sb)
+        {
+            base.Draw(sb);
+            weapon.Draw(sb);
         }
     }
 }
