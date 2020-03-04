@@ -217,14 +217,14 @@ namespace GroupGame
                 Rectangle newLocation = obj1.Position;
                 if (xOverlap <= yOverlap)
                 {
-                    if (xPos == obj2.Position.X)
+                    if (obj1.Position.X < obj2.Position.X)
                         newLocation.X -= xOverlap;
                     else
                         newLocation.X += xOverlap;
                 }
                 else
                 {
-                    if (yPos == obj2.Position.Y)
+                    if (obj1.Position.Y < obj2.Position.Y)
                         newLocation.Y -= yOverlap;
                     else
                         newLocation.Y += yOverlap;

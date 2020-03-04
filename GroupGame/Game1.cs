@@ -198,6 +198,15 @@ namespace GroupGame
                     sb.DrawString(stats, "Score:", new Vector2(Window.ClientBounds.Width - 290, 2), Color.Black);
                     sb.DrawString(stats, "Currency:", new Vector2(Window.ClientBounds.Width - 290, 22), Color.Black);
                     sb.DrawString(stats, "Keys:", new Vector2(Window.ClientBounds.Width - 290, 42), Color.Black);
+
+                    //draws icons for GUI
+                    if (attackTest.CurrentItem != null)
+                        attackTest.CurrentItem.Draw(sb, new Rectangle(2, Window.ClientBounds.Height-148, 46, 46));
+                    if (attackTest.Weapon != null)
+                        attackTest.Weapon.Draw(sb, new Rectangle(2, Window.ClientBounds.Height-98, 96, 96));
+                    if (attackTest.OffHand != null)
+                        attackTest.OffHand.Draw(sb, new Rectangle(52, Window.ClientBounds.Height - 148, 46, 46));
+
                     break;
 
                 case GameState.Pause:
