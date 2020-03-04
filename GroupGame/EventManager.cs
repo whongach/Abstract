@@ -215,14 +215,21 @@ namespace GroupGame
 
                 //adjusts new location and sets the characters location to it
                 Rectangle newLocation = obj1.Position;
-                if (xPos == obj2.Position.X)
-                    newLocation.X -= xOverlap;
+                if (xOverlap <= yOverlap)
+                {
+                    if (xPos == obj2.Position.X)
+                        newLocation.X -= xOverlap;
+                    else
+                        newLocation.X += xOverlap;
+                }
                 else
-                    newLocation.X += xOverlap;
-                if (yPos == obj2.Position.Y)
-                    newLocation.Y -= yOverlap;
-                else
-                    newLocation.Y += yOverlap;
+                {
+                    if (yPos == obj2.Position.Y)
+                        newLocation.Y -= yOverlap;
+                    else
+                        newLocation.Y += yOverlap;
+                }
+                
                 obj1.Position = newLocation;
             }
         }
