@@ -39,7 +39,7 @@ namespace GroupGame
             {
                 if (centerDist.X >= radius1 + center2.X || centerDist.Y >= radius1 + center2.Y)
                     return false;
-                if (centerDist.X < center2.X || centerDist.Y < center2.Y)
+                if (centerDist.X < hit2.Width/2 || centerDist.Y < hit2.Height/2)
                     return true;
                 centerDist.X -= center2.X;
                 centerDist.Y -= center2.Y;
@@ -53,7 +53,7 @@ namespace GroupGame
             {
                 if (centerDist.X >= radius2 + center1.X || centerDist.Y >= radius2 + center1.Y)
                     return false;
-                if (centerDist.X < center1.X || centerDist.Y < center1.Y)
+                if (centerDist.X < hit1.Width/2 || centerDist.Y < hit2.Height/2)
                     return true;
                 centerDist.X -= center1.X;
                 centerDist.Y -= center1.Y;
@@ -104,12 +104,12 @@ namespace GroupGame
                         Collision(obj1, (MeleeWeapon)obj2);
 
                     if (obj2 is RangedWeapon)
-                    {
                         Collision(obj1, (RangedWeapon)obj2);
-                    }
                 }
-                 
+                
             }
+
+            
         }
 
         /// <summary>
