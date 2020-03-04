@@ -201,11 +201,11 @@ namespace GroupGame
 
                     //draws icons for GUI
                     if (attackTest.CurrentItem != null)
-                        attackTest.CurrentItem.Draw(sb, new Rectangle(2, Window.ClientBounds.Height-148, 46, 46));
+                        attackTest.CurrentItem.Draw(sb, new Rectangle(5, Window.ClientBounds.Height-145, 40, 40));
                     if (attackTest.Weapon != null)
-                        attackTest.Weapon.Draw(sb, new Rectangle(2, Window.ClientBounds.Height-98, 96, 96));
+                        attackTest.Weapon.Draw(sb, new Rectangle(5, Window.ClientBounds.Height-95, 90, 90));
                     if (attackTest.OffHand != null)
-                        attackTest.OffHand.Draw(sb, new Rectangle(52, Window.ClientBounds.Height - 148, 46, 46));
+                        attackTest.OffHand.Draw(sb, new Rectangle(55, Window.ClientBounds.Height - 145, 40, 40));
 
                     break;
 
