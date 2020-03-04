@@ -14,6 +14,7 @@ namespace GroupGame
         //fields
         Weapon offHand;
         Item currentItem;
+        double angle;
 
         //constructor
         public Player(int health, Weapon weapon, Rectangle position, Texture2D sprite) : base(health, weapon, position, sprite)
@@ -21,6 +22,7 @@ namespace GroupGame
             offHand = null;
             currentItem = null;
             this.position = position;
+            angle = 0;
         }
 
 
@@ -31,15 +33,7 @@ namespace GroupGame
         /// </summary>
         public void Attack()
         {
-            MouseState mousePosition = Mouse.GetState();
-            double angle = 0;
-            if (mousePosition.X - position.X == 0)
-                angle = Math.Atan(((double)mousePosition.Y - (double)position.Y) / ((double)mousePosition.X - (double)position.X - .00000001));
-            else
-                angle = Math.Atan(((double)mousePosition.Y - (double)position.Y) / ((double)mousePosition.X - (double)position.X));
-            if (mousePosition.X < position.X)
-                angle -= Math.PI;
-            weapon.Attack(position, angle);
+            weapon.Attack();
         }
 
         /// <summary>
@@ -47,9 +41,16 @@ namespace GroupGame
         /// </summary>
         public void Update(MouseState mouseState, MouseState previousMouseState, KeyboardState keyState)
         {
+            
+            if (mouseState.X - position.X == 0)
+                angle = Math.Atan(((double)mouseState.Y - (double)position.Y) / ((double)mouseState.X - (double)position.X - .00000001));
+            else
+                angle = Math.Atan(((double)mouseState.Y - (double)position.Y) / ((double)mouseState.X - (double)position.X));
+            if (mouseState.X < position.X)
+                angle -= Math.PI;
+            weapon.Update(position, angle);
             if (mouseState.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton == ButtonState.Released)
                 Attack();
-            weapon.Update();
         }
 
         public void Move(KeyboardState keyboardState)

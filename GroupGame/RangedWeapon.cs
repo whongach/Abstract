@@ -43,16 +43,19 @@ namespace GroupGame
         /// </summary>
         /// <param name="position"></param>
         /// <param name="angle"></param>
-        public override void Attack(Rectangle launchPoint, double angle)
+        public override void Attack()
         {
-            projectiles.Add(new Projectile(angle, new Rectangle(launchPoint.X, launchPoint.Y, ammoType.Position.Width, ammoType.Position.Height), ammoType.Speed, damage, ammoType.Sprite));
+            int projX = position.X + position.Width / 2 - ammoType.Position.Width/ 2 + (int)(Math.Cos(angle) * position.Width / 2);
+            int projY = position.Y + position.Height / 2 - ammoType.Position.Height / 2 + (int)(Math.Sin(angle) * position.Height / 2);
+            projectiles.Add(new Projectile(angle, new Rectangle(projX, projY, ammoType.Position.Width, ammoType.Position.Height), ammoType.Speed, damage, ammoType.Sprite));
         }
 
         /// <summary>
         /// calls update in each of the projectiles it has spawned
         /// </summary>
-        public override void Update()
+        public override void Update(Rectangle position, double angle)
         {
+            base.Update(position, angle);
             for(int i = 0; i<projectiles.Count; i++)
             {
                 projectiles[i].Update();

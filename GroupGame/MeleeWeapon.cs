@@ -26,7 +26,7 @@ namespace GroupGame
         //methods
 
         //temporary attack method
-        public override void Attack(Rectangle launchPoint, double angle)
+        public override void Attack()
         {
             throw new NotImplementedException();
         }

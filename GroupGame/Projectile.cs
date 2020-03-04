@@ -61,7 +61,7 @@ namespace GroupGame
         /// <param name="sb"></param>
         public override void Draw(SpriteBatch sb)
         {
-            sb.Draw(sprite, new Rectangle((int)(x),(int)(y),position.Width, position.Height), Color.White);
+            sb.Draw(sprite, new Rectangle((int)(x)+position.Width/2, (int)(y)+position.Height/2, position.Width, position.Height), null, Color.White, (float)angle, new Vector2(position.Width / 2, position.Height / 2), SpriteEffects.None, 1);
         }
 
     }

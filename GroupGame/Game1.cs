@@ -82,6 +82,9 @@ namespace GroupGame
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            
+            //allows window to resize
+            Window.AllowUserResizing = true;
 
             //Loads SpriteFonts
             title = Content.Load<SpriteFont>("Title");
