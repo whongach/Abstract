@@ -15,7 +15,7 @@ namespace GroupGame
         protected double angle;
 
         //constructor
-        public Weapon(Rectangle position, Texture2D sprite) : base(position, sprite)
+        public Weapon(Rectangle position, Texture2D sprite, bool circular) : base(position, sprite, circular)
         {
 
         }

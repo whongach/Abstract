@@ -14,14 +14,9 @@ namespace GroupGame
         //fields
         protected int health;
         protected Weapon weapon;
-        protected Rectangle hitbox;
         protected bool circleBox;
 
         //properties
-        public Rectangle Hitbox
-        {
-            get { return hitbox; }
-        }
 
         public bool CircleBox
         {
@@ -29,10 +24,11 @@ namespace GroupGame
         }
 
         //constructor
-        public Character(int health, Weapon weapon, Rectangle position, Texture2D sprite) : base(position, sprite)
+        public Character(int health, Weapon weapon, Rectangle position, Texture2D sprite, bool circular) : base(position, sprite)
         {
             this.health = health;
             this.weapon = weapon;
+            circleBox = circular;
         }
 
        

@@ -11,15 +11,9 @@ namespace GroupGame
     class Collectible : GameObject, ICollidable
     {
         //fields
-        Rectangle hitbox;
         bool circleBox;
 
-        //properties
-        public Rectangle Hitbox
-        {
-            get { return hitbox; }
-        }
-
+        //properties 
         public bool CircleBox
         {
             get { return circleBox; }
@@ -27,9 +21,9 @@ namespace GroupGame
 
         //constructor
         //constructor
-        public Collectible(Rectangle position, Texture2D sprite) : base(position, sprite)
+        public Collectible(Rectangle position, Texture2D sprite, bool circular) : base(position, sprite)
         {
-
+            circleBox = circular;
         }
     }
 }

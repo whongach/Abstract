@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GroupGame
 {
-    class Projectile : GameObject
+    class Projectile : GameObject, ICollidable
     {
         //fields
         private int speed;
@@ -16,6 +16,7 @@ namespace GroupGame
         double x;
         double y;
         private int damage;
+        private bool circleBox;
 
         //properties
         public int Speed
@@ -36,14 +37,20 @@ namespace GroupGame
             set { damage = value; }
         }
 
+        public bool CircleBox
+        {
+            get { return circleBox; }
+        }
+
         //constructor
-        public Projectile(double angle, Rectangle position, int speed, int damage, Texture2D sprite) : base(position, sprite)
+        public Projectile(double angle, Rectangle position, int speed, int damage, Texture2D sprite, bool circular) : base(position, sprite)
         {
             this.speed = speed;
             this.angle = angle;
             this.damage = damage;
             x = position.X;
             y = position.Y;
+            circleBox = circular;
         }
 
         /// <summary>

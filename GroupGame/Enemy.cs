@@ -16,7 +16,7 @@ namespace GroupGame
     public enum EnemyDirection
     { Up, Right, Down, Left}
 
-    class Enemy : Character
+    class Enemy : Character, ICollidable
     {
         //Fields
         private EnemyType type;
@@ -30,7 +30,7 @@ namespace GroupGame
         Player player;
 
         //Constructors
-        public Enemy(int health, Weapon weapon, Rectangle position, Texture2D sprite, EnemyType type, int speed, Player player) : base(health, weapon, position, sprite)
+        public Enemy(int health, Weapon weapon, Rectangle position, Texture2D sprite, EnemyType type, int speed, Player player, bool circular) : base(health, weapon, position, sprite, circular)
         {
             this.type = type;
             this.speed = speed;

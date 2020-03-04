@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace GroupGame
 {
-    class Player : Character
+    class Player : Character, ICollidable
     {
         //fields
         Weapon offHand;
@@ -17,7 +17,7 @@ namespace GroupGame
         double angle;
 
         //constructor
-        public Player(int health, Weapon weapon, Rectangle position, Texture2D sprite) : base(health, weapon, position, sprite)
+        public Player(int health, Weapon weapon, Rectangle position, Texture2D sprite, bool circular) : base(health, weapon, position, sprite, circular)
         {
             offHand = null;
             currentItem = null;

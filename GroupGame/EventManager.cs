@@ -8,5 +8,9 @@ namespace GroupGame
 {
     class EventManager
     {
+        public void CollisionCheck()
+        {
+
+        }
     }
 }

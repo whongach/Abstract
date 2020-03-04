@@ -28,7 +28,7 @@ namespace GroupGame
         }
 
         //constructor
-        public RangedWeapon(Projectile ammoType, Rectangle position, Texture2D sprite, int damage) : base(position, sprite)
+        public RangedWeapon(Projectile ammoType, Rectangle position, Texture2D sprite, int damage, bool circular) : base(position, sprite, circular)
         {
             this.damage = damage;
             ammoType.Damage = damage;
@@ -47,7 +47,7 @@ namespace GroupGame
         {
             int projX = position.X + position.Width / 2 - ammoType.Position.Width/ 2 + (int)(Math.Cos(angle) * position.Width / 2);
             int projY = position.Y + position.Height / 2 - ammoType.Position.Height / 2 + (int)(Math.Sin(angle) * position.Height / 2);
-            projectiles.Add(new Projectile(angle, new Rectangle(projX, projY, ammoType.Position.Width, ammoType.Position.Height), ammoType.Speed, damage, ammoType.Sprite));
+            projectiles.Add(new Projectile(angle, new Rectangle(projX, projY, ammoType.Position.Width, ammoType.Position.Height), ammoType.Speed, damage, ammoType.Sprite, ammoType.CircleBox));
         }
 
         /// <summary>

@@ -98,12 +98,12 @@ namespace GroupGame
             cursorTest = Content.Load<Texture2D>("mouseCursor");
 
             //creates a player, weapon and a projectile for attacking purposes
-            basicArrow = new Projectile(0, new Rectangle(new Point(-20, -20), new Point(20, 5)), 20, 5, circleTest);
-            basicBow = new RangedWeapon(basicArrow, new Rectangle(175, 175, 30, 30), squareTest, 5);
-            attackTest = new Player(10, basicBow, new Rectangle(150, 150, 50, 50), circleTest);
+            basicArrow = new Projectile(0, new Rectangle(new Point(-20, -20), new Point(20, 5)), 20, 5, squareTest, false);
+            basicBow = new RangedWeapon(basicArrow, new Rectangle(175, 175, 30, 30), squareTest, 5, false);
+            attackTest = new Player(10, basicBow, new Rectangle(150, 150, 50, 50), circleTest, true);
 
             //Creates an enemy to test movement
-            enemyTest = new Enemy(10, basicBow, new Rectangle(300, 300, 50, 50), circleTest, EnemyType.Random, 3, attackTest);
+            enemyTest = new Enemy(10, basicBow, new Rectangle(300, 300, 50, 50), circleTest, EnemyType.Random, 3, attackTest, true);
 
             //creates the mousecursor
             cursor = new MouseCursor(new Rectangle(0, 0, 50, 50), cursorTest);

@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace GroupGame
 {
-    class Item : Collectible
+    class Item : Collectible, ICollidable
     {
         //constructor
-        public Item(Rectangle position, Texture2D sprite) : base(position, sprite)
+        public Item(Rectangle position, Texture2D sprite, bool circular) : base(position, sprite, circular)
         {
 
         }

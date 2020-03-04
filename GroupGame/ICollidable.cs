@@ -9,7 +9,6 @@ namespace GroupGame
 {
     interface ICollidable
     {
-        Rectangle Hitbox { get; }
         bool CircleBox { get; }
     }
 }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GroupGame
 {
-    class MeleeWeapon : Weapon
+    class MeleeWeapon : Weapon, ICollidable
     {
         //fields
         int rotationDegrees;
@@ -17,7 +17,7 @@ namespace GroupGame
         int attackFrame;
 
         //constructor
-        public MeleeWeapon(Rectangle position, Texture2D sprite, int rotationDegrees, int rotationSpeed) : base(position, sprite)
+        public MeleeWeapon(Rectangle position, Texture2D sprite, bool circular, int rotationDegrees, int rotationSpeed) : base(position, sprite, circular)
         {
             this.rotationDegrees = rotationDegrees;
             this.rotationSpeed = rotationSpeed;
