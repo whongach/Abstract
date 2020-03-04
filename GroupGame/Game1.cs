@@ -112,7 +112,7 @@ namespace GroupGame
 
             //Creates an enemy to test movement
             enemyBow = new RangedWeapon(basicArrow, new Rectangle(175, 175, 30, 30), squareTest, 5, false, true);
-            enemyTest = new Enemy(10, enemyBow, new Rectangle(300, 300, 50, 50), circleTest, EnemyType.Chase, 0, 0, attackTest, true);
+            enemyTest = new Enemy(10, enemyBow, new Rectangle(300, 300, 50, 50), circleTest, EnemyType.Chase, 0, 5, 0, attackTest, true);
             gameObjects.Add(enemyTest);
 
             //creates the mousecursor

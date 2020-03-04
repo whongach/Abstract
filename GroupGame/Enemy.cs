@@ -27,6 +27,7 @@ namespace GroupGame
         private int maxWidth;
         private int maxHeight;
         private int bodyDamage;
+        private int attackInterval;
         private double weaponAngle;
         private Random rng;
         Player player;
@@ -38,12 +39,13 @@ namespace GroupGame
         }
 
         //Constructors
-        public Enemy(int health, Weapon weapon, Rectangle position, Texture2D sprite, EnemyType type, int speed, int bodyDamage, Player player, bool circular) : base(health, weapon, position, sprite, circular)
+        public Enemy(int health, Weapon weapon, Rectangle position, Texture2D sprite, EnemyType type, int speed, int attackInterval, int bodyDamage, Player player, bool circular) : base(health, weapon, position, sprite, circular)
         {
             this.type = type;
             this.speed = speed;
             this.player = player;
             this.bodyDamage = bodyDamage;
+            this.attackInterval = attackInterval;
             travelled = 0;
             rng = new Random();
 
