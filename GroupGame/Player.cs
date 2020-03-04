@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace GroupGame
 {
@@ -105,12 +106,6 @@ namespace GroupGame
         {
             base.Draw(sb);
             weapon.Draw(sb);
-            if (currentItem != null)
-                currentItem.Draw(sb, new Rectangle(320, 0, currentItem.Position.Width, currentItem.Position.Height));
-            if (weapon != null)
-                weapon.Draw(sb, new Rectangle(390, 0, weapon.Position.Width, weapon.Position.Height));
-            if (offHand != null)
-                offHand.Draw(sb, new Rectangle(460, 0, offHand.Position.Width/2, offHand.Position.Height/2));
         }
     }
 }
