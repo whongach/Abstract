@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace GroupGame
 {
-    class GameObject
+    abstract class GameObject
     {
         //fields
         protected Rectangle position;
