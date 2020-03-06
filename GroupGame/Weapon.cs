@@ -32,8 +32,10 @@ namespace GroupGame
         //overrides position to draw the weapon by the player at the correct angle
         public virtual void Update(Rectangle position, double angle)
         {
-            this.position.X = position.X + position.Width / 2 - this.position.Width / 2 +(int)(Math.Cos(angle)*this.position.Height/2);
-            this.position.Y = position.Y + position.Height / 2 - this.position.Height / 2 + (int)(Math.Sin(angle) * this.position.Height / 2);
+            this.position.X = position.X + position.Width / 2 - this.position.Width / 2 +
+                (int)(Math.Cos(angle)*this.position.Height/2) + (int)(Math.Sin(angle) * position.Height / 2) - (int)(Math.Sin(angle) * this.position.Height / 2);
+            this.position.Y = position.Y + position.Height / 2 - this.position.Height / 2 + 
+                (int)(Math.Sin(angle) * this.position.Height / 2) - (int)(Math.Cos(angle) * position.Width / 2) + (int)(Math.Cos(angle) * this.position.Height / 2);
             this.angle = angle;
         }
 

@@ -128,11 +128,10 @@ namespace GroupGame
 
             //creates a player, weapon and a projectile for attacking purposes
             basicArrow = new Projectile(0, new Rectangle(new Point(-20, -20), new Point(20, 5)), 20, 5, squareTest, false);
-            basicBow = new RangedWeapon(basicArrow, new Rectangle(175, 175, 30, 30), squareTest, 5, false, true);
             basicArrow = new Projectile(0, new Rectangle(new Point(-20, -20), new Point(20, 5)), 20, 5, arrowTest, false);
             basicBow = new RangedWeapon(basicArrow, new Rectangle(175, 175, 40, 40), bowTest, 5, false, true);
-            basicSword = new MeleeWeapon(new Rectangle(0, 0, 50, 50), swordTest, false, true, 90, 5);
-            basicSpear = new MeleeWeapon(new Rectangle(0, 0, 75, 25), squareTest, false, true, 20);
+            basicSword = new MeleeWeapon(new Rectangle(0, 0, 40, 40), swordTest, false, true, 90, 5);
+            basicSpear = new MeleeWeapon(new Rectangle(0, 0, 40, 40), swordTest, false, true, 20);
             player = new Player(10, basicSpear, new Rectangle(150, 150, 50, 50), circleTest, true);
             player.OffHand = basicBow;
 
