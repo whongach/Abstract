@@ -127,10 +127,9 @@ namespace GroupGame
             wandTest = Content.Load<Texture2D>("wand");
             keyTest = Content.Load<Texture2D>("key");
 
-            //creates a player, weapon and a projectile for attacking purposes
-            basicArrow = new Projectile(0, new Rectangle(new Point(-20, -20), new Point(20, 5)), 20, 5, squareTest, false);
-            basicArrow = new Projectile(0, new Rectangle(new Point(-20, -20), new Point(20, 5)), 20, 5, arrowTest, false);
-            basicBow = new RangedWeapon(basicArrow, new Rectangle(175, 175, 40, 40), bowTest, 5, false, true);
+            //creates a player, weapon and a projectile for attacking purposes\
+            basicArrow = new Projectile(0, new Rectangle(new Point(-20, -20), new Point(20, 5)), 20, 2, arrowTest, false);
+            basicBow = new RangedWeapon(basicArrow, new Rectangle(175, 175, 40, 40), bowTest, 2, false, true);
             basicSword = new MeleeWeapon(new Rectangle(0, 0, 40, 40), swordTest, false, true, 90, 5);
             basicSpear = new MeleeWeapon(new Rectangle(0, 0, 40, 40), swordTest, false, true, 20);
             player = new Player(10, basicSpear, new Rectangle(150, 150, 50, 50), circleTest, true);
@@ -142,7 +141,7 @@ namespace GroupGame
             //Creates an enemy to test movement
             basicSpell = new Projectile(0, new Rectangle(new Point(-20, -20), new Point(20, 20)), 12, 3, spellTest, false);
             enemyWand = new RangedWeapon(basicSpell, new Rectangle(175, 175, 50, 50), wandTest, 0, false, true);
-            enemyTest = new Enemy(10, enemyWand, new Rectangle(300, 300, 50, 50), circleTest, EnemyType.Chase, 0, 5, 0, player, true);
+            enemyTest = new Enemy(10, enemyWand, new Rectangle(300, 300, 50, 50), circleTest, EnemyType.Rectangle, 1, 5, 0, player, true);
             gameObjects.Add(enemyTest);
 
             //creates a test key
