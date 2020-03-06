@@ -1,40 +1,43 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
+/// <summary>
+/// The namespace for the Game.
+/// </summary>
 namespace GroupGame
 {
+    /// <summary>
+    /// Class to manage events.
+    /// </summary>
     class EventManager
     {
         /// <summary>
-        /// returns true if 2 shapes overlap and false if otherwise
+        /// Checks if two shapes collide.
         /// </summary>
-        /// <param name="hit1">the rectangle of the first object</param>
-        /// <param name="hit2">the rectangle of the second object</param>
-        /// <param name="circle1">a boolean set to true if the first object is a circle</param>
-        /// <param name="circle2">a boolean set to true if the second object is a circle</param>
-        /// <returns></returns>
+        /// <param name="hit1">Object one rectangle.</param>
+        /// <param name="hit2">Object two rectangle.</param>
+        /// <param name="circle1">Whether or not object one is a circle.</param>
+        /// <param name="circle2">Whether or not object two is a circle.</param>
+        /// <returns>True if the shapes collide, false otherwise.</returns>
         public bool CollisionCheck(Rectangle hit1, Rectangle hit2, bool circle1, bool circle2)
         {
-            //uses prebuild method for rectangles
+            // Checks rectangles
             if (!circle1 && !circle2)
                 return hit1.Intersects(hit2);
 
-            //creates variables to ease calculation
+            // Checks circles
+            // Calculate circular properties
             int radius1 = Math.Min(hit1.Width / 2, hit1.Height / 2);
             int radius2 = Math.Min(hit2.Width / 2, hit2.Height / 2);
             Vector2 center1 = new Vector2((hit1.X + hit1.Width / 2), (hit1.Y + hit1.Height / 2));
             Vector2 center2 = new Vector2((hit2.X + hit2.Width / 2), (hit2.Y + hit2.Height / 2));
             Vector2 centerDist = new Vector2(Math.Abs((center1.X - center2.X)), Math.Abs((center1.Y - center2.Y)));
 
-            //compares distance by sum of radii for circles
+            // Compares distance by sum of radii
             if (circle1 && circle2)
                 return Math.Sqrt(Math.Pow(centerDist.X, 2) + Math.Pow(centerDist.Y, 2)) <= (radius1 + radius2);
 
-            //code to check rectangle and circle collision based on code from Blindman67 on stackoverflow
+            // Code to check rectangle and circle collision (Blindman67 on StackOverflow)
             if (circle1 && !circle2)
             {
                 if (centerDist.X >= radius1 + center2.X || centerDist.Y >= radius1 + center2.Y)
@@ -48,7 +51,7 @@ namespace GroupGame
                 return false;
             }
 
-            //reverse of previous method
+            // Reverse prior method
             if (!circle1 && circle2)
             {
                 if (centerDist.X >= radius2 + center1.X || centerDist.Y >= radius2 + center1.Y)
@@ -59,16 +62,18 @@ namespace GroupGame
                 centerDist.Y -= center1.Y;
                 if (Math.Sqrt(Math.Pow(centerDist.X, 2) + Math.Pow(centerDist.Y, 2)) <= radius2)
                     return true;
-            }  
+            }
+
+            // If nothing collides, return false
             return false;
         }
         
 
         /// <summary>
-        /// deals body damage to the player if it collides with an enemy and checks the player against the enemy's weapon
+        /// Deals body damage to the player if it collides with an Enemy and checks the Player against the Enemy's Weapon
         /// </summary>
-        /// <param name="obj1">the player</param>
-        /// <param name="obj2">the enemy to be checked</param>
+        /// <param name="obj1">The Player.</param>
+        /// <param name="obj2">The Enemy to be checked.</param>
         public void Collision(Player obj1, Enemy obj2)
         {
             if(CollisionCheck(obj1.Position, obj2.Position, obj1.CircleBox, obj2.CircleBox))
