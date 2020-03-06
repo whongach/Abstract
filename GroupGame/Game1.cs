@@ -25,6 +25,7 @@ namespace GroupGame
         private MouseState previousMouseState;
         private MouseState mouseState;
         private GameState gameState;
+        private Player player;
 
         //Object Fields
         MouseCursor cursor;
@@ -41,7 +42,6 @@ namespace GroupGame
         Texture2D cursorTest;
 
         //AttackTesting Fields
-        Player attackTest;
         Projectile basicArrow;
         RangedWeapon basicBow;
         RangedWeapon enemyBow;
@@ -108,11 +108,11 @@ namespace GroupGame
             //creates a player, weapon and a projectile for attacking purposes
             basicArrow = new Projectile(0, new Rectangle(new Point(-20, -20), new Point(20, 5)), 20, 5, squareTest, false);
             basicBow = new RangedWeapon(basicArrow, new Rectangle(175, 175, 30, 30), squareTest, 5, false, true);
-            attackTest = new Player(10, basicBow, new Rectangle(150, 150, 50, 50), circleTest, true);
+            player = new Player(10, basicBow, new Rectangle(150, 150, 50, 50), circleTest, true);
 
             //Creates an enemy to test movement
             enemyBow = new RangedWeapon(basicArrow, new Rectangle(175, 175, 30, 30), squareTest, 5, false, true);
-            enemyTest = new Enemy(10, enemyBow, new Rectangle(300, 300, 50, 50), circleTest, EnemyType.Chase, 0, 5, 0, attackTest, true);
+            enemyTest = new Enemy(10, enemyBow, new Rectangle(300, 300, 50, 50), circleTest, EnemyType.Chase, 0, 5, 1, player, true);
             gameObjects.Add(enemyTest);
 
             //creates the mousecursor
@@ -203,18 +203,18 @@ namespace GroupGame
 
 
                     //Draws text for in-game GUI
-                    sb.DrawString(stats, "HP: 300/300", new Vector2(2, 2), Color.Black);
+                    sb.DrawString(stats, $"HP: {player.Health}/300", new Vector2(2, 2), Color.Black);
                     sb.DrawString(stats, "Score:", new Vector2(Window.ClientBounds.Width - 290, 2), Color.Black);
                     sb.DrawString(stats, "Currency:", new Vector2(Window.ClientBounds.Width - 290, 22), Color.Black);
                     sb.DrawString(stats, "Keys:", new Vector2(Window.ClientBounds.Width - 290, 42), Color.Black);
 
                     //draws icons for GUI
-                    if (attackTest.CurrentItem != null)
-                        attackTest.CurrentItem.Draw(sb, new Rectangle(5, Window.ClientBounds.Height-145, 40, 40));
-                    if (attackTest.Weapon != null)
-                        attackTest.Weapon.Draw(sb, new Rectangle(5, Window.ClientBounds.Height-95, 90, 90));
-                    if (attackTest.OffHand != null)
-                        attackTest.OffHand.Draw(sb, new Rectangle(55, Window.ClientBounds.Height - 145, 40, 40));
+                    if (player.CurrentItem != null)
+                        player.CurrentItem.Draw(sb, new Rectangle(5, Window.ClientBounds.Height-145, 40, 40));
+                    if (player.Weapon != null)
+                        player.Weapon.Draw(sb, new Rectangle(5, Window.ClientBounds.Height-95, 90, 90));
+                    if (player.OffHand != null)
+                        player.OffHand.Draw(sb, new Rectangle(55, Window.ClientBounds.Height - 145, 40, 40));
 
                     break;
 
@@ -289,11 +289,15 @@ namespace GroupGame
                     if (SingleKeyPress(Keys.Escape))
                         gameState = GameState.Pause;
 
+                    // If the Player health drops below zero, transition to Gameover GameState
+                    if (player.Health <= 0)
+                        gameState = GameState.Gameover;
+
                     // Handle Here:
                     // All Updates of game objects
 
 
-                    attackTest.Update(mouseState, previousMouseState, keyboardState, previousKeyboardState);
+                    player.Update(mouseState, previousMouseState, keyboardState, previousKeyboardState);
                     for (int i = 0; i<gameObjects.Count; i++)
                     {
                         gameObjects[i].Update();
@@ -302,20 +306,20 @@ namespace GroupGame
                     //collisions
                     for (int i = 0; i < gameObjects.Count; i++)
                     {
-                        eM.Collision(attackTest, gameObjects[i]);
+                        eM.Collision(player, gameObjects[i]);
                         if(gameObjects[i] is Enemy)
                         {
-                            if (attackTest.Weapon != null)
-                                eM.Collision(((Enemy)gameObjects[i]), attackTest.Weapon);
-                            if (attackTest.OffHand != null)
-                                eM.Collision(((Enemy)gameObjects[i]), attackTest.OffHand);
+                            if (player.Weapon != null)
+                                eM.Collision(((Enemy)gameObjects[i]), player.Weapon);
+                            if (player.OffHand != null)
+                                eM.Collision(((Enemy)gameObjects[i]), player.OffHand);
                             /*for (int j = 0; j < testMap.Walls.Count; j++)
                                 eM.Collision(((Enemy)gameObjects[i]), //insert reference to the walls list in the map here);*/
                         }
                     }
 
                     /*for (int i = 0; i < testMap.Walls.Count; i++)
-                        eM.Collision((Character)attackTest, //insert reference to the walls list in the map here);*/
+                        eM.Collision((Character)player, //insert reference to the walls list in the map here);*/
 
                     // Loading Next Level
                     // Game Over Scenarios
@@ -386,7 +390,7 @@ namespace GroupGame
 
                     for(int i = 0; i<gameObjects.Count; i++)
                     {
-                        attackTest.Draw(spriteBatch);
+                        player.Draw(spriteBatch);
                         gameObjects[i].Draw(spriteBatch);
                     }
                     break;
