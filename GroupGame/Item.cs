@@ -15,5 +15,13 @@ namespace GroupGame
         {
 
         }
+
+        //methods
+
+        public override void Draw(SpriteBatch sb)
+        {
+            if(!PickedUp)
+                base.Draw(sb);
+        }
     }
 }

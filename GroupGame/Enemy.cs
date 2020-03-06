@@ -97,6 +97,8 @@ namespace GroupGame
             {
                 RandomWalk(maxWidth);
             }
+            if (rng.Next(attackInterval*200)==0)
+                weapon.Attack();
         }
 
         //Enemy walks in a left-right pattern

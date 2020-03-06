@@ -39,15 +39,27 @@ namespace GroupGame
         Texture2D squareTest;
         Texture2D circleTest;
         Texture2D cursorTest;
+        Texture2D bowTest;
+        Texture2D arrowTest;
+        Texture2D swordTest;
+        Texture2D spellTest;
+        Texture2D wandTest;
+        Texture2D keyTest;
 
         //AttackTesting Fields
         Player attackTest;
         Projectile basicArrow;
+        Projectile basicSpell;
         RangedWeapon basicBow;
-        RangedWeapon enemyBow;
+        RangedWeapon enemyWand;
+        MeleeWeapon basicSword;
+        MeleeWeapon basicSpear;
 
         //Enemy Movement Test Fields
         Enemy enemyTest;
+
+        //Item test fields
+        Item key;
 
         // MonoGame Generated Constructors
         /// <summary>
@@ -104,16 +116,30 @@ namespace GroupGame
             squareTest = Content.Load<Texture2D>("square");
             circleTest = Content.Load<Texture2D>("circle");
             cursorTest = Content.Load<Texture2D>("mouseCursor");
+            bowTest = Content.Load<Texture2D>("bow");
+            arrowTest = Content.Load<Texture2D>("arrow");
+            swordTest = Content.Load<Texture2D>("sword");
+            spellTest = Content.Load<Texture2D>("spell");
+            wandTest = Content.Load<Texture2D>("wand");
+            keyTest = Content.Load<Texture2D>("key");
 
             //creates a player, weapon and a projectile for attacking purposes
-            basicArrow = new Projectile(0, new Rectangle(new Point(-20, -20), new Point(20, 5)), 20, 5, squareTest, false);
-            basicBow = new RangedWeapon(basicArrow, new Rectangle(175, 175, 30, 30), squareTest, 5, false, true);
-            attackTest = new Player(10, basicBow, new Rectangle(150, 150, 50, 50), circleTest, true);
+            basicArrow = new Projectile(0, new Rectangle(new Point(-20, -20), new Point(20, 5)), 20, 5, arrowTest, false);
+            basicBow = new RangedWeapon(basicArrow, new Rectangle(175, 175, 40, 40), bowTest, 5, false, true);
+            basicSword = new MeleeWeapon(new Rectangle(0, 0, 50, 50), swordTest, false, true, 90, 5);
+            basicSpear = new MeleeWeapon(new Rectangle(0, 0, 75, 25), squareTest, false, true, 20);
+            attackTest = new Player(10, basicSpear, new Rectangle(150, 150, 50, 50), circleTest, true);
+            attackTest.OffHand = basicBow;
 
             //Creates an enemy to test movement
-            enemyBow = new RangedWeapon(basicArrow, new Rectangle(175, 175, 30, 30), squareTest, 5, false, true);
-            enemyTest = new Enemy(10, enemyBow, new Rectangle(300, 300, 50, 50), circleTest, EnemyType.Chase, 0, 5, 0, attackTest, true);
+            basicSpell = new Projectile(0, new Rectangle(new Point(-20, -20), new Point(20, 20)), 12, 3, spellTest, false);
+            enemyWand = new RangedWeapon(basicSpell, new Rectangle(175, 175, 50, 50), wandTest, 0, false, true);
+            enemyTest = new Enemy(10, enemyWand, new Rectangle(300, 300, 50, 50), circleTest, EnemyType.Chase, 0, 5, 0, attackTest, true);
             gameObjects.Add(enemyTest);
+
+            //creates a test key
+            key = new Item(new Rectangle(500, 500, 50, 50), keyTest, true, false);
+            gameObjects.Add(key);
 
             //creates the mousecursor
             cursor = new MouseCursor(new Rectangle(0, 0, 50, 50), cursorTest);

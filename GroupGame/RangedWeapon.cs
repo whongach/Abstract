@@ -74,7 +74,16 @@ namespace GroupGame
         public override void Draw(SpriteBatch sb)
         {
             base.Draw(sb);
-            for(int i = 0; i<projectiles.Count; i++)
+            DrawProjectiles(sb);
+        }
+
+        /// <summary>
+        /// draws all projectiles created by this weapon
+        /// </summary>
+        /// <param name="sb">spritebatch used to draw</param>
+        public void DrawProjectiles(SpriteBatch sb)
+        {
+            for (int i = 0; i < projectiles.Count; i++)
             {
                 projectiles[i].Draw(sb);
             }

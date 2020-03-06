@@ -43,14 +43,6 @@ namespace GroupGame
         //methods
 
         /// <summary>
-        /// determines the angle between the mouse and this player and calls attack at this player's position and in that angle
-        /// </summary>
-        public void Attack()
-        {
-            weapon.Attack();
-        }
-
-        /// <summary>
         /// necessary updates made for player
         /// </summary>
         public void Update(MouseState mouseState, MouseState previousMouseState, KeyboardState keyState, KeyboardState previousKeyState)
@@ -59,19 +51,28 @@ namespace GroupGame
             Move(keyState);
 
             //calculates angle
-            if (mouseState.X - position.X == 0)
-                angle = Math.Atan(((double)mouseState.Y - (double)position.Y) / ((double)mouseState.X - (double)position.X - .00000001));
+            if ((double)mouseState.X - (double)(position.X + position.Width / 2) == 0)
+                angle = Math.Atan(((double)mouseState.Y - (double)(position.Y+position.Height/2)) / ((double)mouseState.X - (double)(position.X+position.Width/2) - .00000001));
             else
-                angle = Math.Atan(((double)mouseState.Y - (double)position.Y) / ((double)mouseState.X - (double)position.X));
-            if (mouseState.X < position.X)
+                angle = Math.Atan(((double)mouseState.Y - (double)(position.Y + position.Height / 2)) / ((double)mouseState.X - (double)(position.X + position.Width / 2)));
+            if (mouseState.X <= position.X+position.Width/2)
                 angle -= Math.PI;
 
-            //updates weapon
-            weapon.Update(position, angle);
+            //checks for weapon switch
+            if (keyState.IsKeyDown(Keys.Q) && !previousKeyState.IsKeyDown(Keys.Q))
+            {
+                Weapon placeholder = weapon;
+                weapon = offHand;
+                offHand = placeholder;
+            }
 
             //checks for attack
             if (mouseState.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton == ButtonState.Released)
-                Attack();
+                weapon.Attack();
+
+            //updates weapon
+            weapon.Update(position, angle);
+            offHand.Update(position, angle);
         }
 
         /// <summary>
@@ -106,6 +107,8 @@ namespace GroupGame
         {
             base.Draw(sb);
             weapon.Draw(sb);
+            if (OffHand is RangedWeapon)
+                ((RangedWeapon)OffHand).DrawProjectiles(sb);
         }
     }
 }
