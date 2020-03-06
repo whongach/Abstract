@@ -110,6 +110,9 @@ namespace GroupGame
             basicBow = new RangedWeapon(basicArrow, new Rectangle(175, 175, 30, 30), squareTest, 5, false, true);
             player = new Player(10, basicBow, new Rectangle(150, 150, 50, 50), circleTest, true);
 
+            // Set to true if testing [DEBUG MODE]
+            player.Debug = true;
+
             //Creates an enemy to test movement
             enemyBow = new RangedWeapon(basicArrow, new Rectangle(175, 175, 30, 30), squareTest, 5, false, true);
             enemyTest = new Enemy(10, enemyBow, new Rectangle(300, 300, 50, 50), circleTest, EnemyType.Chase, 0, 5, 1, player, true);

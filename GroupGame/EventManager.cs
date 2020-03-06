@@ -73,7 +73,9 @@ namespace GroupGame
         {
             if(CollisionCheck(obj1.Position, obj2.Position, obj1.CircleBox, obj2.CircleBox))
             {
-                obj1.Health -= obj2.BodyDamage;
+                // Check if the Player is in debug mode
+                if (!obj1.Debug)
+                    obj1.Health -= obj2.BodyDamage;
                 Collision((Character)obj1, (Wall)new Wall(new Rectangle(obj2.Position.X - 15, obj2.Position.Y - 15, obj2.Position.Width + 30, obj2.Position.Height + 30), obj2.Sprite));
             }
 
