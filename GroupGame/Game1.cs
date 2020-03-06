@@ -8,6 +8,7 @@ using System.Collections.Generic;
 /// </summary>
 namespace GroupGame
 {
+    // Enumerations
     /// <summary>
     /// Enumeration for various game states.
     /// </summary>

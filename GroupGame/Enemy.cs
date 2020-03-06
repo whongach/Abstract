@@ -1,25 +1,31 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
+/// <summary>
+/// The namespace for the Game.
+/// </summary>
 namespace GroupGame
 {
-    //Enumerations to determine enemy movement
-    public enum EnemyType
-    { LeftRight, Rectangle, UpDown, Chase, Random}
+    // Enumerations
+    /// <summary>
+    /// Enumeration for various Enemy types.
+    /// </summary>
+    public enum EnemyType { LeftRight, Rectangle, UpDown, Chase, Random }
 
+    /// <summary>
+    /// Enumeration for Enemy movement directions.
+    /// </summary>
     public enum EnemyDirection
     { Up, Right, Down, Left}
 
+    /// <summary>
+    /// Class for Enemy type Characters.
+    /// </summary>
     class Enemy : Character, ICollidable
     {
-        //Fields
-        private EnemyType type; // controls the type of movement
+        // Fields
+        private EnemyType type; // Type of Enemy movement
         private EnemyDirection direction;
         private int numDirection; //This field is specifically for Random enemy types so that their direction can be generated easily
         private int speed;
@@ -30,17 +36,31 @@ namespace GroupGame
         private int attackInterval;
         private double weaponAngle;
         private Random rng;
-        Player player;
+        private Player player;
 
-        //properties
-        public int BodyDamage
-        {
-            get { return bodyDamage; }
-        }
+        // Properties
+        /// <summary>
+        /// Gets the damage that the Player takes when they collide with the Enemy.
+        /// </summary>
+        public int BodyDamage { get { return bodyDamage; } }
 
-        //Constructors
+        // Constructors
+        /// <summary>
+        /// Constructs an Enemy Character object that is Collidable.
+        /// </summary>
+        /// <param name="health">The Enemy's health.</param>
+        /// <param name="weapon">The Enemy's weapon.</param>
+        /// <param name="position">The Enemy's position.</param>
+        /// <param name="sprite">The Enemy's sprite.</param>
+        /// <param name="type">The Enemy's type of movement.</param>
+        /// <param name="speed">The Enemy's speed.</param>
+        /// <param name="attackInterval">The time between the Enemy's attacks.</param>
+        /// <param name="bodyDamage">The damage the Enemy deals at close range.</param>
+        /// <param name="player">The Player character.</param>
+        /// <param name="circular">Whether or not the Enemy's shape is circular or rectangular.</param>
         public Enemy(int health, Weapon weapon, Rectangle position, Texture2D sprite, EnemyType type, int speed, int attackInterval, int bodyDamage, Player player, bool circular) : base(health, weapon, position, sprite, circular)
         {
+            // Initializes fields
             this.type = type;
             this.speed = speed;
             this.player = player;
@@ -49,7 +69,7 @@ namespace GroupGame
             travelled = 0;
             rng = new Random();
 
-            //Sets start direction and lengths for certain types of enemies
+            // Sets start direction and length of movement
             if (type == EnemyType.LeftRight)
             {
                 direction = EnemyDirection.Right;
@@ -73,23 +93,26 @@ namespace GroupGame
             }
         }
 
-        //Methods
-        //Enemy calls the corresponding move method based on its type
+        // Methods
+        /// <summary>
+        /// Moves the enemy based on it's movement pattern.
+        /// </summary>
         public void Move()
         {
-            if(type == EnemyType.LeftRight)
+            // Check movement type
+            if (type == EnemyType.LeftRight)
             {
                 LRWalk(maxWidth);
             }
-            else if(type == EnemyType.Rectangle)
+            else if (type == EnemyType.Rectangle)
             {
                 RectangleWalk(maxHeight, maxWidth);
             }
-            else if(type == EnemyType.UpDown)
+            else if (type == EnemyType.UpDown)
             {
                 UDWalk(maxHeight);
             }
-            else if(type == EnemyType.Chase)
+            else if (type == EnemyType.Chase)
             {
                 Chase(player);
             }
@@ -97,51 +120,62 @@ namespace GroupGame
             {
                 RandomWalk(maxWidth);
             }
-            if (rng.Next(attackInterval*200)==0)
+
+            // Attack every interval
+            if (rng.Next(attackInterval*200) == 0)
                 weapon.Attack();
         }
 
-        //Enemy walks in a left-right pattern
+        /// <summary>
+        /// Enemy Left-Right walk pattern.
+        /// </summary>
+        /// <param name="lineWidth">The length of the path for the Enemy to walk.</param>
         protected void LRWalk(int lineWidth)
         {
-            //Enemy moves [speed] pixels in the appropriate direction
+            // Move number of pixels
             travelled += speed;
+
+            // Check direction for the Enemy and move appropriately
             if(direction == EnemyDirection.Right)
-            {
                 position.X += speed;
-            }
             else
-            {
                 position.X -= speed;
-            }
 
             //
             //CODE TO CHECK FOR WALL COLLISION WILL BE ADDED ONCE IMPLEMENTED
             //
 
-            //Checks if enemy has travelled full distance of pattern direction
+            // Checks if Enemy has traveled full distance of pattern direction
             if(travelled >= lineWidth)
             { 
-                
+                // Reset distance traveled
                 travelled = 0;
+
+                // Transition direction to move
                 if(direction == EnemyDirection.Right)
-                {
                     direction = EnemyDirection.Left;
-                }
                 else
-                {
                     direction = EnemyDirection.Right;
-                }
             }
         }
-        //Enemy walks in a square pattern
+
+        /// <summary>
+        /// Enemy Square walk pattern.
+        /// </summary>
+        /// <param name="rectWidth">Distance to walk in the x direction.</param>
+        /// <param name="rectHeight">Distance to walk in the y direction.</param>
         protected void RectangleWalk(int rectWidth, int rectHeight)
         {
-            //Enemy moves [speed] pixels in the appropriate direction, if they complete the direction, they change it
+            // Move number of pixels
             travelled += speed;
+
+            // Check direction for the Enemy and move appropriately
             if (direction == EnemyDirection.Right)
             {
-                position.X += speed;        
+                // Move in the x direction
+                position.X += speed;      
+                
+                // Change direction if distance has been traveled
                 if(travelled >= rectWidth)
                 {
                     travelled = 0;
@@ -150,7 +184,10 @@ namespace GroupGame
             }
             else if(direction == EnemyDirection.Left)
             {
+                // Move in the x direction
                 position.X -= speed;
+
+                // Change direction if distance has been traveled
                 if (travelled >= rectWidth)
                 {
                     travelled = 0;
@@ -159,7 +196,10 @@ namespace GroupGame
             }
             else if(direction == EnemyDirection.Up)
             {
+                // Move in the y direction
                 position.Y -= speed;
+
+                // Change direction if distance has been traveled
                 if (travelled >= rectHeight)
                 {
                     travelled = 0;
@@ -168,7 +208,10 @@ namespace GroupGame
             }
             else
             {
+                // Move in the y direction
                 position.Y += speed;
+
+                // Change direction if distance has been traveled
                 if (travelled >= rectHeight)
                 {
                     travelled = 0;
@@ -181,11 +224,16 @@ namespace GroupGame
             //
         }
 
-        //Enemy walks in an up-down pattern
+        /// <summary>
+        /// Enemy Up-Down walk pattern.
+        /// </summary>
+        /// <param name="lineHeight">Distance to walk.</param>
         protected void UDWalk(int lineHeight)
         {
-            //Enemy moves [speed] pixels in the appropriate direction
+            // Move number of pixels
             travelled += speed;
+
+            // Check direction of Enemy and move appropriately
             if (direction == EnemyDirection.Down)
             {
                 position.Y += speed;
@@ -199,7 +247,7 @@ namespace GroupGame
             //CODE TO CHECK FOR WALL COLLISION WILL BE ADDED ONCE IMPLEMENTED
             //
 
-            //Checks if enemy has travelled full distance of pattern direction
+            // Change direction if distance has been traveled
             if (travelled >= lineHeight)
             {
                 travelled = 0;
@@ -214,37 +262,39 @@ namespace GroupGame
             }
         }
 
-        //Enemy chases player directly
+        /// <summary>
+        /// Enemy Chase movement pattern.
+        /// </summary>
+        /// <param name="player">The Player Character.</param>
         protected void Chase(Player player)
         {
-            if(player.Position.X > position.X)
-            {
+            // Check Player x position and move Enemy towards them
+            if (player.Position.X > position.X)
                 position.X += speed;
-            }
-            else if(player.Position.X < position.X)
-            {
+            else if (player.Position.X < position.X)
                 position.X -= speed;
-            }
 
+            // Check Player y position and move Enemy towards them
             if (player.Position.Y > position.Y)
-            {
                 position.Y += speed;
-            }
             else if (player.Position.Y < position.Y)
-            {
                 position.Y -= speed;
-            }
 
             //
             //CODE TO CHECK FOR WALL COLLISION WILL BE ADDED ONCE IMPLEMENTED
             //
         }
 
-        //Enemy moves randomly, one direction at a time
+        /// <summary>
+        /// Random Enemy movement pattern.
+        /// </summary>
+        /// <param name="lineLength"></param>
         protected void RandomWalk(int lineLength)
         {
-            //Enemy moves [speed] pixels in a random direction
+            // Move number of pixes
             travelled += speed;
+
+            // Check direction and move in that direction
             if (numDirection == 0)
             {
                 position.X += speed;
@@ -286,7 +336,7 @@ namespace GroupGame
             //CODE TO CHECK FOR WALL COLLISION WILL BE ADDED ONCE IMPLEMENTED
             //
 
-            //Changes direction if enemy reaches lineLength
+            // Changes direction if follows the traveled distance
             if (travelled >= lineLength)
             {
                 travelled = 0;
@@ -294,19 +344,30 @@ namespace GroupGame
             }
         }
 
+        /// <summary>
+        /// Updates the Enemy Character.
+        /// </summary>
         public override void Update()
         {
-            //Moves enemy
+            // Moves Enemy
             Move();
-            //Makes enemy weapon point at player
+
+            // Calculate angle of Weapon to Player
             weaponAngle = Math.Atan(((double)player.Position.Y - (double)position.Y) / ((double)player.Position.X - (double)position.X));
+            
             if(player.Position.X < position.X)
             {
                 weaponAngle -= Math.PI;
             }
+
+            // Update the Weapon
             weapon.Update(position, weaponAngle);
         }
 
+        /// <summary>
+        /// Draws the Enemy object.
+        /// </summary>
+        /// <param name="sb">The SpriteBatch object.</param>
         public override void Draw(SpriteBatch sb)
         {
             base.Draw(sb);
