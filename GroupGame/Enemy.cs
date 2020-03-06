@@ -19,7 +19,7 @@ namespace GroupGame
     class Enemy : Character, ICollidable
     {
         //Fields
-        private EnemyType type;
+        private EnemyType type; // controls the type of movement
         private EnemyDirection direction;
         private int numDirection; //This field is specifically for Random enemy types so that their direction can be generated easily
         private int speed;

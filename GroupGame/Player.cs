@@ -12,23 +12,27 @@ namespace GroupGame
 {
     class Player : Character, ICollidable
     {
-        //fields
-        Weapon offHand;
-        Item currentItem;
-        double angle;
+        // Fields
+        private Weapon offHand;
+        private Item currentItem;
+        private double angle;
+        private bool debug;
 
-        //properties
-        public Item CurrentItem
-        {
-            get { return currentItem; }
-            set { currentItem = value; }
-        }
+        // Properties
+        /// <summary>
+        /// Gets and sets whether or not the Player is in debug mode.
+        /// </summary>
+        public bool Debug { get { return debug; } set { debug = value; } }
 
-        public Weapon OffHand
-        {
-            get { return offHand; }
-            set { offHand = value; }
-        }
+        /// <summary>
+        /// Gets and sets the Current Item that the player has.
+        /// </summary>
+        public Item CurrentItem { get { return currentItem; } set { currentItem = value; } }
+
+        /// <summary>
+        /// Gets and sets the Weapon that the player has in the Off Hand.
+        /// </summary>
+        public Weapon OffHand { get { return offHand; } set { offHand = value; } }
 
         //constructor
         public Player(int health, Weapon weapon, Rectangle position, Texture2D sprite, bool circular) : base(health, weapon, position, sprite, circular)
