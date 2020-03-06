@@ -3,6 +3,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 
+/// <summary>
+/// The namespace for the Game.
+/// </summary>
 namespace GroupGame
 {
     /// <summary>

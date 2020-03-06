@@ -1,46 +1,51 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
+/// <summary>
+/// The namespace for the Game.
+/// </summary>
 namespace GroupGame
 {
+    /// <summary>
+    /// Parent class for Character type GameObjects.
+    /// </summary>
     abstract class Character : GameObject , ICollidable
     {
-        //fields
+        // Fields
         protected int health;
         protected Weapon weapon;
         protected bool circleBox;
 
-        //properties
-        public Weapon Weapon
-        {
-            get { return weapon; }
-        }
+        // Properties
+        /// <summary>
+        /// Gets the Weapon that the Character is using.
+        /// </summary>
+        public Weapon Weapon { get { return weapon; } }
 
-        public bool CircleBox
-        {
-            get { return circleBox; }
-        }
+        /// <summary>
+        /// Gets whether the Character is a Circle or a Box.
+        /// </summary>
+        public bool CircleBox { get { return circleBox; } }
 
-        public int Health
-        {
-            get { return health; }
-            set { health = value; }
-        }
+        /// <summary>
+        /// Gets and sets the Character's Health.
+        /// </summary>
+        public int Health { get { return health; } set { health = value; } }
 
-        //constructor
+        // Constructors
+        /// <summary>
+        /// Constructs a Character GameObject that is Collidable.
+        /// </summary>
+        /// <param name="health">The Character's Health.</param>
+        /// <param name="weapon">The Character's Weapon.</param>
+        /// <param name="position">The Character's position.</param>
+        /// <param name="sprite">The Character's texture.</param>
+        /// <param name="circular">Whether or not the Character's shape is circular or rectangular.</param>
         public Character(int health, Weapon weapon, Rectangle position, Texture2D sprite, bool circular) : base(position, sprite)
         {
             this.health = health;
             this.weapon = weapon;
             circleBox = circular;
         }
-
-       
     }
 }
