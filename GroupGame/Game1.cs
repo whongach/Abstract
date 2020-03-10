@@ -50,6 +50,9 @@ namespace GroupGame
         Texture2D spellTest;
         Texture2D wandTest;
         Texture2D keyTest;
+        Texture2D playerTest;
+        Texture2D wallTest;
+        Texture2D floorTest;
 
         //AttackTesting Fields
         Projectile basicArrow;
@@ -126,13 +129,16 @@ namespace GroupGame
             spellTest = Content.Load<Texture2D>("spell");
             wandTest = Content.Load<Texture2D>("wand");
             keyTest = Content.Load<Texture2D>("key");
+            playerTest = Content.Load<Texture2D>("playerTest");
+            floorTest = Content.Load<Texture2D>("floorTest");
+            wallTest = Content.Load<Texture2D>("wallTest");
 
             //creates a player, weapon and a projectile for attacking purposes\
             basicArrow = new Projectile(0, new Rectangle(new Point(-20, -20), new Point(20, 5)), 20, 2, arrowTest, false);
             basicBow = new RangedWeapon(basicArrow, new Rectangle(175, 175, 40, 40), bowTest, 2, false, true);
             basicSword = new MeleeWeapon(new Rectangle(0, 0, 40, 40), swordTest, false, true, 90, 5);
             basicSpear = new MeleeWeapon(new Rectangle(0, 0, 40, 40), swordTest, false, true, 20);
-            player = new Player(10, basicSpear, new Rectangle(150, 150, 50, 50), circleTest, true);
+            player = new Player(10, basicSpear, new Rectangle(150, 150, 50, 50), playerTest, true);
             player.OffHand = basicBow;
 
             // Set to true if testing [DEBUG MODE]
@@ -424,6 +430,7 @@ namespace GroupGame
                     for(int i = 0; i<gameObjects.Count; i++)
                     {
                         player.Draw(spriteBatch);
+                        player.Weapon.DrawHands(spriteBatch, player.Position, circleTest, Color.Black);
                         gameObjects[i].Draw(spriteBatch);
                     }
                     break;

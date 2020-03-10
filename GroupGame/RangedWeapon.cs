@@ -45,8 +45,8 @@ namespace GroupGame
         /// <param name="angle"></param>
         public override void Attack()
         {
-            int projX = position.X + position.Width / 2 - ammoType.Position.Width/ 2 + (int)(Math.Cos(angle) * position.Width / 2);
-            int projY = position.Y + position.Height / 2 - ammoType.Position.Height / 2 + (int)(Math.Sin(angle) * position.Height / 2);
+            int projX = position.X + position.Width / 2 - ammoType.Position.Width/ 2;
+            int projY = position.Y + position.Height / 2 - ammoType.Position.Height / 2;
             projectiles.Add(new Projectile(angle, new Rectangle(projX, projY, ammoType.Position.Width, ammoType.Position.Height), ammoType.Speed, damage, ammoType.Sprite, ammoType.CircleBox));
         }
 

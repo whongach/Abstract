@@ -100,5 +100,22 @@ namespace GroupGame
                     (int)(Math.Sin(angle) * this.position.Height / 2) - (int)(Math.Cos(angle) * position.Width / 2) + (int)(Math.Cos(angle) * this.position.Height / 2);
             }
         }
+
+        public override void DrawHands(SpriteBatch sb, Rectangle playerPosition, Texture2D handSprite, Color handColor)
+        {
+            if (!attacking)
+            {
+                sb.Draw(handSprite, new Rectangle(playerPosition.X + playerPosition.Width * 7 / 16 + (int)(playerPosition.Width / 8 * Math.Cos(angle)),
+                playerPosition.Y + playerPosition.Height * 7 / 16 + (int)(playerPosition.Height / 8 * Math.Sin(angle)),
+                playerPosition.Width / 8, playerPosition.Height / 8), handColor);
+                if (angle < Math.PI / 2 && angle > 0 - Math.PI / 2)
+                    sb.Draw(handSprite, new Rectangle(playerPosition.X + playerPosition.Width / 5, playerPosition.Y + playerPosition.Height / 2, playerPosition.Width / 8, playerPosition.Height / 8), handColor);
+                else
+                    sb.Draw(handSprite, new Rectangle(playerPosition.X + playerPosition.Width * 28 / 40, playerPosition.Y + playerPosition.Height / 2, playerPosition.Width / 8, playerPosition.Height / 8), handColor);
+
+            }
+            else
+                base.DrawHands(sb, playerPosition, handSprite, handColor);
+        }
     }
 }
