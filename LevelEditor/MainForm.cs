@@ -28,34 +28,8 @@ namespace LevelEditor
         /// <param name="e">unused event argument variable</param>
         private void CreateButton_Click(object sender, EventArgs e)
         {
-            List<string> errors = new List<string>();
-            if(int.TryParse(widthBox.Text, out int width)&&int.TryParse(heightBox.Text, out int height))
-            {
-                //adds all errors to a list
-                if (height < 1)
-                    errors.Add("- Height too low (min 1)");
-                if (width < 1)
-                    errors.Add("- Width too low (min 1)");
-                if (height > 28)
-                    errors.Add("- Height too high (max 28)");
-                if (width > 58)
-                    errors.Add("- Width too high (max 58)");
-                //if no errors, starts a new editor
-                if (errors.Count == 0)
-                {
-                    LevelEdit editor = new LevelEdit(width, height);
-                    editor.ShowDialog();
-                }
-                //shows a message box with all errors
-                else if (errors.Count == 2)
-                    MessageBox.Show("Errors:\n" + errors[0] + "\n" + errors[1],"Error loading map");
-                else
-                    MessageBox.Show("Errors:\n" + errors[0],"Error loading map");
-            }
-            else
-            {
-                MessageBox.Show("Please enter numbers in the text boxes","Error loading map");
-            }
+            LevelEdit editor = new LevelEdit();
+            editor.ShowDialog();
         }
 
         /// <summary>

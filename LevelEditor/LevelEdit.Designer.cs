@@ -31,17 +31,18 @@ namespace LevelEditor
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LevelEdit));
             this.loadButton = new System.Windows.Forms.Button();
             this.saveButton = new System.Windows.Forms.Button();
             this.tileSelect = new System.Windows.Forms.GroupBox();
             this.wallSelect = new System.Windows.Forms.Button();
             this.floorSelect = new System.Windows.Forms.Button();
             this.mapBox = new System.Windows.Forms.GroupBox();
-            this.currentTile = new System.Windows.Forms.PictureBox();
             this.currentBox = new System.Windows.Forms.GroupBox();
+            this.currentTile = new System.Windows.Forms.PictureBox();
             this.tileSelect.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.currentTile)).BeginInit();
             this.currentBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.currentTile)).BeginInit();
             this.SuspendLayout();
             // 
             // loadButton
@@ -89,7 +90,7 @@ namespace LevelEditor
             // floorSelect
             // 
             this.floorSelect.ForeColor = System.Drawing.Color.Black;
-            this.floorSelect.Image = global::LevelEditor.Properties.Resources.floorSprite;
+            this.floorSelect.Image = ((System.Drawing.Image)(resources.GetObject("floorSelect.Image")));
             this.floorSelect.Location = new System.Drawing.Point(15, 20);
             this.floorSelect.Name = "floorSelect";
             this.floorSelect.Size = new System.Drawing.Size(40, 40);
@@ -106,15 +107,6 @@ namespace LevelEditor
             this.mapBox.TabStop = false;
             this.mapBox.Text = "Map";
             // 
-            // currentTile
-            // 
-            this.currentTile.BackColor = System.Drawing.Color.Transparent;
-            this.currentTile.Location = new System.Drawing.Point(18, 16);
-            this.currentTile.Name = "currentTile";
-            this.currentTile.Size = new System.Drawing.Size(53, 54);
-            this.currentTile.TabIndex = 0;
-            this.currentTile.TabStop = false;
-            // 
             // currentBox
             // 
             this.currentBox.Controls.Add(this.currentTile);
@@ -124,6 +116,15 @@ namespace LevelEditor
             this.currentBox.TabIndex = 3;
             this.currentBox.TabStop = false;
             this.currentBox.Text = "Current Tile";
+            // 
+            // currentTile
+            // 
+            this.currentTile.BackColor = System.Drawing.Color.Transparent;
+            this.currentTile.Location = new System.Drawing.Point(18, 16);
+            this.currentTile.Name = "currentTile";
+            this.currentTile.Size = new System.Drawing.Size(53, 54);
+            this.currentTile.TabIndex = 0;
+            this.currentTile.TabStop = false;
             // 
             // LevelEdit
             // 
@@ -139,8 +140,8 @@ namespace LevelEditor
             this.Text = "Map Editor";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.LevelEdit_FormClosing);
             this.tileSelect.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.currentTile)).EndInit();
             this.currentBox.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.currentTile)).EndInit();
             this.ResumeLayout(false);
 
         }

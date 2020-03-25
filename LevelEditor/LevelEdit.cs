@@ -15,8 +15,6 @@ namespace LevelEditor
     public partial class LevelEdit : Form
     {
         //fields
-        private int height;
-        private int width;
         private int tileSize;
         private PictureBox[,] map;
         private int[,] tileTypes;
@@ -29,24 +27,20 @@ namespace LevelEditor
         /// <summary>
         /// Constructor with dimensions
         /// </summary>
-        /// <param name="width">the width of the map</param>
-        /// <param name="height">the height of the map</param>
-        public LevelEdit(int width, int height)
+        public LevelEdit()
         {
-            this.height = height;
-            this.width = width;
             tileSize = 32;
             InitializeComponent();
             this.unsaved = false;
             //adding buttons to mapBox
-            this.mapBox.Size = new System.Drawing.Size(width*tileSize+50, height*tileSize+50);
+            this.mapBox.Size = new System.Drawing.Size(16*tileSize+50, 16*tileSize+50);
             this.ClientSize = new System.Drawing.Size(300, 103 + mapBox.Height);
             if (mapBox.Width > 290)
                 this.ClientSize = new System.Drawing.Size(mapBox.Width + 10, mapBox.Height + 103);
-            tileTypes = new int[width, height];
-            map = new PictureBox[width, height];
-            for (int i = 0; i < width; i++)
-                for (int j = 0; j < height; j++)
+            tileTypes = new int[16, 16];
+            map = new PictureBox[16, 16];
+            for (int i = 0; i < 16; i++)
+                for (int j = 0; j < 16; j++)
                 {
                     map[i, j] = new PictureBox();
                     map[i, j].BackColor = Color.Transparent;
@@ -68,22 +62,21 @@ namespace LevelEditor
         /// <param name="fileName">the name of the file to read in from</param>
         public LevelEdit(string fileName)
         {
+            InitializeComponent();
             this.fileName = fileName;
             file = File.OpenRead(fileName);
             reader = new BinaryReader(file);
-            width = reader.ReadInt32();
-            height = reader.ReadInt32();
             tileSize = 32;
             this.unsaved = false;
             //adding buttons to mapBox
-            this.mapBox.Size = new System.Drawing.Size(width * tileSize + 50, height * tileSize + 50);
+            this.mapBox.Size = new System.Drawing.Size(16 * tileSize + 50, 16 * tileSize + 50);
             this.ClientSize = new System.Drawing.Size(300, 103 + mapBox.Height);
             if (mapBox.Width > 290)
                 this.ClientSize = new System.Drawing.Size(mapBox.Width + 10, mapBox.Height + 103);
-            tileTypes = new int[width, height];
-            map = new PictureBox[width, height];
-            for (int i = 0; i < width; i++)
-                for (int j = 0; j < height; j++)
+            tileTypes = new int[16, 16];
+            map = new PictureBox[16, 16];
+            for (int i = 0; i < 16; i++)
+                for (int j = 0; j < 16; j++)
                 {
                     map[i, j] = new PictureBox();
                     map[i, j].Size = new Size(tileSize, tileSize);
@@ -166,20 +159,18 @@ namespace LevelEditor
                 this.fileName = name;
                 file = File.OpenRead(fileName);
                 reader = new BinaryReader(file);
-                width = reader.ReadInt32();
-                height = reader.ReadInt32();
                 tileSize = 32;
                 this.unsaved = false;
                 //adding buttons to mapBox
-                this.mapBox.Size = new System.Drawing.Size(width * tileSize + 50, height * tileSize + 50);
+                this.mapBox.Size = new System.Drawing.Size(16 * tileSize + 50, 16 * tileSize + 50);
                 this.ClientSize = new System.Drawing.Size(300, 103 + mapBox.Height);
                 if (mapBox.Width > 290)
                     this.ClientSize = new System.Drawing.Size(mapBox.Width + 10, mapBox.Height + 103);
                 mapBox.Controls.Clear();
-                tileTypes = new int[width, height];
-                map = new PictureBox[width, height];
-                for (int i = 0; i < width; i++)
-                    for (int j = 0; j < height; j++)
+                tileTypes = new int[16, 16];
+                map = new PictureBox[16, 16];
+                for (int i = 0; i < 16; i++)
+                    for (int j = 0; j < 16; j++)
                     {
                         map[i, j] = new PictureBox();
                         map[i, j].Size = new Size(tileSize, tileSize);
@@ -213,10 +204,8 @@ namespace LevelEditor
                 this.fileName = name;
                 file = File.OpenWrite(fileName);
                 writer = new BinaryWriter(file);
-                writer.Write(width);
-                writer.Write(height);
-                for (int i = 0; i < width; i++)
-                    for (int j = 0; j < height; j++)
+                for (int i = 0; i < 16; i++)
+                    for (int j = 0; j < 16; j++)
                         writer.Write(tileTypes[i,j]);
                 file.Close();
                 this.Text = "Map Editor - " + fileName;
@@ -247,9 +236,9 @@ namespace LevelEditor
         /// </summary>
         private void SyncImgToInt()
         {
-            for (int i = 0; i < width; i++)
+            for (int i = 0; i < 16; i++)
             {
-                for (int j = 0; j < height; j++)
+                for (int j = 0; j < 16; j++)
                 {
                     if(map[i,j].Image == floorSelect.Image)
                         tileTypes[i, j] = 0;
@@ -264,9 +253,9 @@ namespace LevelEditor
         /// </summary>
         private void SyncIntToImg()
         {
-            for (int i = 0; i < width; i++)
+            for (int i = 0; i < 16; i++)
             {
-                for (int j = 0; j < height; j++)
+                for (int j = 0; j < 16; j++)
                 {
                     if (tileTypes[i, j] == 0)
                         map[i, j].Image = floorSelect.Image;
