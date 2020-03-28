@@ -24,12 +24,23 @@ namespace GroupGame
         }
 
         //constructor
-        public Map(Texture2D wallSprite, Texture2D floorSprite, int tileSize)
+        public Map(Texture2D wallSprite, Texture2D floorSprite, int tileSize, int[,] layout)
         {
             //initializes variables
             this.wallSprite = wallSprite;
             this.floorSprite = floorSprite;
             this.tileSize = tileSize;
+            this.layout = new Tile[16,16];
+            for (int i = 0; i < 16; i++) 
+            {
+                for (int j = 0; j < 16; j++) 
+                {
+                    if (layout[i, j] == 1)
+                        this.layout[i, j] = new Wall(new Rectangle(i * tileSize, j * tileSize, tileSize, tileSize), wallSprite);
+                    else
+                        this.layout[i, j] = new Tile(new Rectangle(i * tileSize, j * tileSize, tileSize, tileSize), floorSprite);
+                }
+            }
         }
 
     }

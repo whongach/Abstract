@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
+using System.IO;
 
 /// <summary>
 /// The namespace for the Game.
@@ -64,6 +65,9 @@ namespace GroupGame
 
         //Enemy Movement Test Fields
         Enemy enemyTest;
+
+        //map list
+        List<Map> maps;
 
         //Item test fields
         Item key;
@@ -156,6 +160,9 @@ namespace GroupGame
 
             //creates the mousecursor
             cursor = new MouseCursor(new Rectangle(0, 0, 50, 50), cursorTest);
+
+            //calls method to load resources
+            LoadResources();
         }
 
         /// <summary>
@@ -465,6 +472,35 @@ namespace GroupGame
         public bool SingleKeyPress(Keys key)
         {
             return keyboardState.IsKeyDown(key) && !previousKeyboardState.IsKeyDown(key);
+        }
+
+        /// <summary>
+        /// loads all maps, weapons and enemies from the resource file
+        /// </summary>
+        public void LoadResources()
+        {
+            maps = new List<Map>();
+            FileStream resources = File.OpenRead("..\\..\\Resources\\master.rsrc:");
+            BinaryReader reader = new BinaryReader(resources);
+            int[,] tiles = new int[16, 16];
+            int tileSize = 16;
+            while (reader.PeekChar() != -1)
+            {
+                switch (reader.ReadString())
+                {
+                    case "Map":
+                        reader.ReadString();
+                        for (int i = 0; i < 16; i++) 
+                        {
+                            for (int j = 0; j < 16; j++) 
+                            {
+                                tiles[i, j] = reader.ReadInt32();
+                            }
+                        }
+                        maps.Add(new Map(wallTest, floorTest, tileSize, tiles));
+                        break;
+                }
+            }
         }
     }
 }
