@@ -27,14 +27,26 @@ namespace GroupGame
             set { projectiles = value; }
         }
 
-        //constructor
-        public RangedWeapon(Projectile ammoType, Rectangle position, Texture2D sprite, int damage, bool circular, bool equipped) : base(position, sprite, circular, equipped)
+        //constructors
+
+        //constructor for weapon on the ground
+        public RangedWeapon(Projectile ammoType, Rectangle position, Texture2D sprite, int damage) : base(position, sprite, false, false)
         {
             this.damage = damage;
             ammoType.Damage = damage;
             this.ammoType = ammoType;
             projectiles = new List<Projectile>();
         }
+
+        //constructor for weapon in hand
+        public RangedWeapon(Projectile ammoType, Point size, Texture2D sprite, int damage) : base(new Rectangle(new Point(0,0), size), sprite, false, true)
+        {
+            this.damage = damage;
+            ammoType.Damage = damage;
+            this.ammoType = ammoType;
+            projectiles = new List<Projectile>();
+        }
+
 
         //methods
 

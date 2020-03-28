@@ -134,19 +134,19 @@ namespace GroupGame
             wallTest = Content.Load<Texture2D>("wallTest");
 
             //creates a player, weapon and a projectile for attacking purposes\
-            basicArrow = new Projectile(0, new Rectangle(new Point(-20, -20), new Point(20, 5)), 20, 2, arrowTest, false);
-            basicBow = new RangedWeapon(basicArrow, new Rectangle(175, 175, 40, 40), bowTest, 2, false, true);
-            basicSword = new MeleeWeapon(new Rectangle(0, 0, 40, 40), swordTest, false, true, 90, 5);
-            basicSpear = new MeleeWeapon(new Rectangle(0, 0, 40, 40), swordTest, false, true, 20);
-            player = new Player(10, basicSpear, new Rectangle(150, 150, 50, 50), playerTest, true);
+            basicArrow = new Projectile(new Point(20, 5), 20, arrowTest, false);
+            basicBow = new RangedWeapon(basicArrow, new Point(40, 40), bowTest, 2);
+            basicSword = new MeleeWeapon(new Point(40, 40), swordTest, false, 90, 5);
+            basicSpear = new MeleeWeapon(new Point(80, 40), swordTest, false, 20);
+            player = new Player(10, basicSword, new Rectangle(150, 150, 50, 50), playerTest, true);
             player.OffHand = basicBow;
 
             // Set to true if testing [DEBUG MODE]
             player.Debug = true;
 
             //Creates an enemy to test movement
-            basicSpell = new Projectile(0, new Rectangle(new Point(-20, -20), new Point(20, 20)), 12, 3, spellTest, false);
-            enemyWand = new RangedWeapon(basicSpell, new Rectangle(175, 175, 50, 50), wandTest, 0, false, true);
+            basicSpell = new Projectile(new Point(20, 20), 12, spellTest, false);
+            enemyWand = new RangedWeapon(basicSpell, new Point(50, 50), wandTest, 0);
             enemyTest = new Enemy(10, enemyWand, new Rectangle(300, 300, 50, 50), circleTest, EnemyType.Rectangle, 1, 5, 0, player, true);
             gameObjects.Add(enemyTest);
 
