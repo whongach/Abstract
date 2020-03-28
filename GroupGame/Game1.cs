@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -65,12 +66,17 @@ namespace GroupGame
 
         //Enemy Movement Test Fields
         Enemy enemyTest;
+        List<Enemy> enemies;
 
         //map list
         List<Map> maps;
+        Map currentMap;
 
         //Item test fields
         Item key;
+
+        //Random field
+        Random rng;
 
         // MonoGame Generated Constructors
         /// <summary>
@@ -112,6 +118,7 @@ namespace GroupGame
 
             //initializes the gameobjects list and event manager
             gameObjects = new List<GameObject>();
+            enemies = new List<Enemy>();
             eM = new EventManager();
 
             //allows window to resize
@@ -158,11 +165,15 @@ namespace GroupGame
             key = new Item(new Rectangle(500, 500, 50, 50), keyTest, true, false);
             gameObjects.Add(key);
 
+            //initializes random variables
+            rng = new Random();
+
             //creates the mousecursor
             cursor = new MouseCursor(new Rectangle(0, 0, 50, 50), cursorTest);
 
             //calls method to load resources
             LoadResources();
+            currentMap = maps[rng.Next(maps.Count)];
         }
 
         /// <summary>
@@ -207,9 +218,9 @@ namespace GroupGame
             GraphicsDevice.Clear(Color.DarkBlue);
             spriteBatch.Begin();
 
+            FiniteStateMachineDraw();
             DrawGUI(spriteBatch);
             cursor.Draw(spriteBatch);
-            FiniteStateMachineDraw();
 
             spriteBatch.End();
             base.Draw(gameTime);
@@ -341,33 +352,59 @@ namespace GroupGame
 
                     // Handle Here:
                     // All Updates of game objects
+                    
 
-
+                    //updates of player, objects, and enemies
                     player.Update(mouseState, previousMouseState, keyboardState, previousKeyboardState);
                     for (int i = 0; i<gameObjects.Count; i++)
                     {
                         gameObjects[i].Update();
                     }
+                    for(int i = 0; i<enemies.Count; i++)
+                    {
+                        enemies[i].Update();
+                    }
+                    
 
                     //collisions
                     for (int i = 0; i < gameObjects.Count; i++)
                     {
                         eM.Collision(player, gameObjects[i]);
-                        if(gameObjects[i] is Enemy)
-                        {
-                            if (player.Weapon != null)
-                                eM.Collision(((Enemy)gameObjects[i]), player.Weapon);
-                            if (player.OffHand != null)
-                                eM.Collision(((Enemy)gameObjects[i]), player.OffHand);
-                            /*for (int j = 0; j < testMap.Walls.Count; j++)
-                                eM.Collision(((Enemy)gameObjects[i]), //insert reference to the walls list in the map here);*/
-                        }
+                    }
+                    for(int i = 0; i<enemies.Count; i++)
+                    {
+                        if (player.Weapon != null)
+                            eM.Collision(enemies[i], player.Weapon);
+                        if (player.OffHand != null)
+                            eM.Collision(enemies[i], player.OffHand);
+                        for (int j = 0; j < currentMap.Walls.Count; j++)
+                            eM.Collision(enemies[i], currentMap.Walls[j]);
+                    }
+                    for (int i = 0; i < currentMap.Walls.Count; i++)
+                        eM.Collision((Character)player, currentMap.Walls[i]);
+                    
+                    
+                    //removes dead enemies from the list
+                    for (int i = 0; i < enemies.Count; i++)
+                    {
+                        if (enemies[i].Health <= 0)
+                            enemies.RemoveAt(i);
                     }
 
-                    /*for (int i = 0; i < testMap.Walls.Count; i++)
-                        eM.Collision((Character)player, //insert reference to the walls list in the map here);*/
+
 
                     // Loading Next Level
+                    if (enemies.Count == 0 && player.CurrentItem == key && player.Position.Y <= 5)
+                    {
+                        gameObjects.Clear();
+                        currentMap = maps[rng.Next(maps.Count)];
+                        player.Position = new Rectangle(new Point(510, 900), new Point(player.Position.Width, player.Position.Height));
+                        enemies.Add(new Enemy(5, basicSpear, new Rectangle(240, 120, 50, 50), circleTest, EnemyType.Rectangle, 1, 10, 0, player, true));
+                        enemies.Add(new Enemy(5, basicSpear, new Rectangle(120, 120, 50, 50), circleTest, EnemyType.Rectangle, 1, 10, 0, player, true));
+                        enemies.Add(new Enemy(5, basicSpear, new Rectangle(240, 240, 50, 50), circleTest, EnemyType.Rectangle, 1, 10, 0, player, true));
+                        enemies.Add(new Enemy(5, basicSpear, new Rectangle(120, 240, 50, 50), circleTest, EnemyType.Rectangle, 1, 10, 0, player, true));
+                        gameObjects.Add(key);
+                    }
                     // Game Over Scenarios
 
                     break;
@@ -434,11 +471,16 @@ namespace GroupGame
 
                 case GameState.Game:
 
-                    for(int i = 0; i<gameObjects.Count; i++)
+                    currentMap.Draw(spriteBatch);
+                    for (int i = 0; i<gameObjects.Count; i++)
                     {
-                        player.Draw(spriteBatch);
-                        player.Weapon.DrawHands(spriteBatch, player.Position, circleTest, Color.Black);
                         gameObjects[i].Draw(spriteBatch);
+                    }
+                    player.Draw(spriteBatch);
+                    player.Weapon.DrawHands(spriteBatch, player.Position, circleTest, Color.Black);
+                    for (int i = 0; i<enemies.Count; i++)
+                    {
+                        enemies[i].Draw(spriteBatch);
                     }
                     break;
 
@@ -480,10 +522,10 @@ namespace GroupGame
         public void LoadResources()
         {
             maps = new List<Map>();
-            FileStream resources = File.OpenRead("..\\..\\Resources\\master.rsrc:");
+            FileStream resources = File.OpenRead("../../../../../Resources/master.rsrc");
             BinaryReader reader = new BinaryReader(resources);
             int[,] tiles = new int[16, 16];
-            int tileSize = 16;
+            int tileSize = 60;
             while (reader.PeekChar() != -1)
             {
                 switch (reader.ReadString())
@@ -501,6 +543,7 @@ namespace GroupGame
                         break;
                 }
             }
+            reader.Close();
         }
     }
 }
