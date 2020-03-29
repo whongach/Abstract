@@ -159,7 +159,7 @@ namespace GroupGame
             basicSpell = new Projectile(new Point(20, 20), 12, spellTest, false);
             enemyWand = new RangedWeapon(basicSpell, new Point(50, 50), wandTest, 0);
             enemyTest = new Enemy(10, enemyWand, new Rectangle(300, 300, 50, 50), circleTest, EnemyType.Rectangle, 1, 5, 0, player, true);
-            gameObjects.Add(enemyTest);
+            enemies.Add(enemyTest);
 
             //creates a test key
             key = new Item(new Rectangle(500, 500, 50, 50), keyTest, true, false);
