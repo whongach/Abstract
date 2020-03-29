@@ -28,12 +28,6 @@ namespace ResourceManager
         public Form1()
         {
             InitializeComponent();
-            do
-            {
-                open = new OpenFileDialog();
-                open.Title = "Open Resource File";
-                open.Filter = "Resource Files|*.rsrc";
-            } while (open.ShowDialog() != DialogResult.OK);
         }
         /// <summary>
         /// opens the necessary file and initializes the writer
@@ -48,7 +42,7 @@ namespace ResourceManager
         /// </summary>
         private void addMap_Click(object sender, EventArgs e)
         {
-            mainFile = new FileStream(open.FileName, FileMode.Append, FileAccess.Write);
+            mainFile = new FileStream("../../../../Resources/master.rsrc", FileMode.Append, FileAccess.Write);
             writer = new BinaryWriter(mainFile);
             data = new OpenFileDialog();
             data.Title = "Open Map File";
@@ -88,8 +82,8 @@ namespace ResourceManager
         /// </summary>
         private void resetData_Click(object sender, EventArgs e)
         {
-            File.Delete(open.FileName);
-            mainFile = File.OpenWrite(open.FileName);
+            File.Delete("../../../../Resources/master.rsrc");
+            mainFile = File.OpenWrite("../../../../Resources/master.rsrc");
             writer = new BinaryWriter(mainFile);
             writer.Close();
         }
@@ -104,7 +98,7 @@ namespace ResourceManager
             int type = 0;
             data = new OpenFileDialog();
             data.Title = "Open Data File";
-            mainFile = File.OpenRead(open.FileName);
+            mainFile = File.OpenRead("../../../../Resources/master.rsrc");
             reader = new BinaryReader(mainFile);
             if (data.ShowDialog() == DialogResult.OK)
             {
@@ -133,7 +127,7 @@ namespace ResourceManager
             }
             reader.Close();
             //rewrites the file, skipping the data to be deleted
-            mainFile = File.OpenRead(open.FileName);
+            mainFile = File.OpenRead("../../../../Resources/master.rsrc");
             reader = new BinaryReader(mainFile);
             dataFile = File.OpenWrite("temp.bin");
             writer = new BinaryWriter(dataFile);
@@ -183,7 +177,7 @@ namespace ResourceManager
             }
             writer.Close();
             reader.Close();
-            File.Replace("temp.bin", open.FileName, "resBack.bin");
+            File.Replace("temp.bin", "../../../../Resources/master.rsrc", "resBack.bin");
         }
 
         /// <summary>
@@ -192,7 +186,7 @@ namespace ResourceManager
         private void viewItems_Click(object sender, EventArgs e)
         {
             List<string> items = new List<string>();
-            mainFile = File.OpenRead(open.FileName);
+            mainFile = File.OpenRead("../../../../Resources/master.rsrc");
             reader = new BinaryReader(mainFile);
             string messageText = "";
             while (reader.PeekChar() != -1)
