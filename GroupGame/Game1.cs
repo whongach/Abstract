@@ -149,7 +149,7 @@ namespace GroupGame
             basicBow = new RangedWeapon(basicArrow, new Point(40, 40), bowTest, 2);
             basicSword = new MeleeWeapon(new Point(40, 40), swordTest, false, 90, 5);
             basicSpear = new MeleeWeapon(new Point(80, 40), swordTest, false, 20);
-            player = new Player(10, basicSword, new Rectangle(150, 150, 50, 50), playerTest, true);
+            player = new Player(10, basicSword, new Rectangle(150, 150, 50, 50), playerTest, false);
             player.OffHand = basicBow;
 
             // Set to true if testing [DEBUG MODE]
@@ -158,11 +158,11 @@ namespace GroupGame
             //Creates an enemy to test movement
             basicSpell = new Projectile(new Point(20, 20), 12, spellTest, false);
             enemyWand = new RangedWeapon(basicSpell, new Point(50, 50), wandTest, 0);
-            enemyTest = new Enemy(10, enemyWand, new Rectangle(300, 300, 50, 50), circleTest, EnemyType.Rectangle, 1, 5, 0, player, true);
+            enemyTest = new Enemy(10, enemyWand, new Rectangle(300, 300, 50, 50), circleTest, EnemyType.Rectangle, 1, 5, 0, player, false);
             enemies.Add(enemyTest);
 
             //creates a test key
-            key = new Item(new Rectangle(500, 500, 50, 50), keyTest, true, false);
+            key = new Item(new Rectangle(500, 500, 50, 50), keyTest, false, false);
             gameObjects.Add(key);
 
             //initializes random variables
@@ -404,6 +404,13 @@ namespace GroupGame
                         enemies.Add(new Enemy(5, basicSpear, new Rectangle(240, 240, 50, 50), circleTest, EnemyType.Rectangle, 1, 10, 0, player, true));
                         enemies.Add(new Enemy(5, basicSpear, new Rectangle(120, 240, 50, 50), circleTest, EnemyType.Rectangle, 1, 10, 0, player, true));
                         gameObjects.Add(key);
+                        do
+                        {
+                            key.Position = new Rectangle(rng.Next(16), rng.Next(16), key.Position.Width, key.Position.Height);
+                        } while (currentMap.Layout[key.Position.X, key.Position.Y] is Wall);
+                        player.CurrentItem = null;
+                        key.PickedUp = false;
+                        key.Position = new Rectangle(key.Position.X * 60, key.Position.Y * 60, key.Position.Width, key.Position.Height);
                     }
                     // Game Over Scenarios
 

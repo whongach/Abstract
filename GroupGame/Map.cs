@@ -23,6 +23,11 @@ namespace GroupGame
             get { return walls; }
         }
 
+        public Tile[,] Layout
+        {
+            get { return layout; }
+        }
+
         //constructor
         public Map(Texture2D wallSprite, Texture2D floorSprite, int tileSize, int[,] layout)
         {
