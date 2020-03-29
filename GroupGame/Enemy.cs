@@ -361,7 +361,8 @@ namespace GroupGame
             }
 
             // Update the Weapon
-            weapon.Update(position, weaponAngle);
+            if(weapon!=null)
+                weapon.Update(position, weaponAngle);
         }
 
         /// <summary>
@@ -371,7 +372,8 @@ namespace GroupGame
         public override void Draw(SpriteBatch sb)
         {
             base.Draw(sb);
-            weapon.Draw(sb);
+            if(weapon!=null)
+                weapon.Draw(sb);
         }
     }
 }

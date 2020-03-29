@@ -30,18 +30,16 @@ namespace GroupGame
         //constructors
 
         //constructor for weapon on the ground
-        public RangedWeapon(Projectile ammoType, Rectangle position, Texture2D sprite, int damage) : base(position, sprite, false, false)
+        public RangedWeapon(int damage, Projectile ammoType, Rectangle position, Texture2D sprite) : base(position, sprite, false, false, damage)
         {
-            this.damage = damage;
             ammoType.Damage = damage;
             this.ammoType = ammoType;
             projectiles = new List<Projectile>();
         }
 
         //constructor for weapon in hand
-        public RangedWeapon(Projectile ammoType, Point size, Texture2D sprite, int damage) : base(new Rectangle(new Point(0,0), size), sprite, false, true)
+        public RangedWeapon(int damage, Projectile ammoType, Point size, Texture2D sprite) : base(new Rectangle(new Point(0,0), size), sprite, false, true, damage)
         {
-            this.damage = damage;
             ammoType.Damage = damage;
             this.ammoType = ammoType;
             projectiles = new List<Projectile>();

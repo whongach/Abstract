@@ -21,9 +21,9 @@ namespace GroupGame
         }
 
         //constructor
-        public Weapon(Rectangle position, Texture2D sprite, bool circular, bool equipped) : base(position, sprite, circular, equipped)
+        public Weapon(Rectangle position, Texture2D sprite, bool circular, bool equipped, int damage) : base(position, sprite, circular, equipped)
         {
-
+            this.damage = damage;
         }
 
         //methods

@@ -146,18 +146,18 @@ namespace GroupGame
 
             //creates a player, weapon and a projectile for attacking purposes\
             basicArrow = new Projectile(new Point(20, 5), 20, arrowTest, false);
-            basicBow = new RangedWeapon(basicArrow, new Point(40, 40), bowTest, 2);
-            basicSword = new MeleeWeapon(new Point(40, 40), swordTest, false, 90, 5);
-            basicSpear = new MeleeWeapon(new Point(80, 40), swordTest, false, 20);
+            basicBow = new RangedWeapon(2, basicArrow, new Point(40, 40), bowTest);
+            basicSword = new MeleeWeapon(5, new Point(40, 40), swordTest, false, 90, 5);
+            basicSpear = new MeleeWeapon(8, new Point(80, 40), swordTest, false, 20);
             player = new Player(10, basicSword, new Rectangle(150, 150, 50, 50), playerTest, false);
             player.OffHand = basicBow;
 
             // Set to true if testing [DEBUG MODE]
-            player.Debug = true;
+            player.Debug = false;
 
             //Creates an enemy to test movement
             basicSpell = new Projectile(new Point(20, 20), 12, spellTest, false);
-            enemyWand = new RangedWeapon(basicSpell, new Point(50, 50), wandTest, 0);
+            enemyWand = new RangedWeapon(1, basicSpell, new Point(50, 50), wandTest);
             enemyTest = new Enemy(10, enemyWand, new Rectangle(300, 300, 50, 50), circleTest, EnemyType.Rectangle, 1, 5, 0, player, false);
             enemies.Add(enemyTest);
 
@@ -381,7 +381,13 @@ namespace GroupGame
                             eM.Collision(enemies[i], currentMap.Walls[j]);
                     }
                     for (int i = 0; i < currentMap.Walls.Count; i++)
+                    {
                         eM.Collision((Character)player, currentMap.Walls[i]);
+                        if (player.Weapon != null)
+                            eM.Collision(currentMap.Walls[i], player.Weapon);
+                        if (player.OffHand != null)
+                            eM.Collision(currentMap.Walls[i], player.OffHand);
+                    }
                     
                     
                     //removes dead enemies from the list
@@ -399,10 +405,10 @@ namespace GroupGame
                         gameObjects.Clear();
                         currentMap = maps[rng.Next(maps.Count)];
                         player.Position = new Rectangle(new Point(510, 900), new Point(player.Position.Width, player.Position.Height));
-                        enemies.Add(new Enemy(5, basicSpear, new Rectangle(240, 120, 50, 50), circleTest, EnemyType.Rectangle, 1, 10, 0, player, true));
-                        enemies.Add(new Enemy(5, basicSpear, new Rectangle(120, 120, 50, 50), circleTest, EnemyType.Rectangle, 1, 10, 0, player, true));
-                        enemies.Add(new Enemy(5, basicSpear, new Rectangle(240, 240, 50, 50), circleTest, EnemyType.Rectangle, 1, 10, 0, player, true));
-                        enemies.Add(new Enemy(5, basicSpear, new Rectangle(120, 240, 50, 50), circleTest, EnemyType.Rectangle, 1, 10, 0, player, true));
+                        enemies.Add(new Enemy(5, null, new Rectangle(240, 120, 50, 50), circleTest, EnemyType.Rectangle, 1, 10, 0, player, false));
+                        enemies.Add(new Enemy(5, null, new Rectangle(120, 120, 50, 50), circleTest, EnemyType.Rectangle, 1, 10, 0, player, false));
+                        enemies.Add(new Enemy(5, enemyWand, new Rectangle(240, 240, 50, 50), circleTest, EnemyType.Rectangle, 1, 10, 0, player, false));
+                        enemies.Add(new Enemy(5, basicSpear, new Rectangle(120, 240, 50, 50), circleTest, EnemyType.Rectangle, 1, 10, 0, player, false));
                         gameObjects.Add(key);
                         do
                         {

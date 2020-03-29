@@ -75,8 +75,10 @@ namespace GroupGame
                 weapon.Attack();
 
             //updates weapon
-            weapon.Update(position, angle);
-            offHand.Update(position, angle);
+            if(weapon!=null)
+                weapon.Update(position, angle);
+            if(offHand!=null)
+                offHand.Update(position, angle);
         }
 
         /// <summary>
@@ -110,7 +112,8 @@ namespace GroupGame
         public override void Draw(SpriteBatch sb)
         {
             base.Draw(sb);
-            weapon.Draw(sb);
+            if(weapon!=null)
+                weapon.Draw(sb);
             if (OffHand is RangedWeapon)
                 ((RangedWeapon)OffHand).DrawProjectiles(sb);
         }

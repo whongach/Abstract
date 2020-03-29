@@ -69,7 +69,7 @@ namespace GroupGame
         /// <summary>
         /// moves the projectile speed distance at the given angle
         /// </summary>
-        public  void Update()
+        public override void Update()
         {
             x += (Math.Cos(angle) * speed);
             y += (Math.Sin(angle) * speed);

@@ -182,6 +182,35 @@ namespace GroupGame
         }
 
         /// <summary>
+        /// calls the collision for a ranged weapon against the walls if the weapon is ranged
+        /// </summary>
+        /// <param name="obj1">the wall to be checked</param>
+        /// <param name="obj2">the weapon to be checked</param>
+        public void Collision(Wall obj1, Weapon obj2)
+        {
+            if (obj2 is RangedWeapon)
+            {
+                for (int i = 0; i < ((RangedWeapon)obj2).Projectiles.Count; i++)
+                {
+                    Collision(obj1, ((RangedWeapon)obj2).Projectiles[i]);
+                }
+            }
+        }
+
+        /// <summary>
+        /// destroys the projectile 
+        /// </summary>
+        /// <param name="obj1">the wall to be checked</param>
+        /// <param name="obj2">the projectile to be checked</param>
+        public void Collision(Wall obj1, Projectile obj2)
+        {
+            if (CollisionCheck(obj1.Position, obj2.Position, obj1.CircleBox, obj2.CircleBox))
+            {
+                obj2.Destroy();
+            }
+        }
+
+        /// <summary>
         /// pushes the character in question out of the wall
         /// </summary>
         /// <param name="obj1">character to be checked</param>

@@ -11,14 +11,9 @@ namespace GroupGame
     class Wall : Tile, ICollidable
     {
         //fields
-        Rectangle hitbox;
         bool circleBox;
 
         //properties
-        public Rectangle Hitbox
-        {
-            get { return hitbox; }
-        }
 
         public bool CircleBox
         {
@@ -28,7 +23,7 @@ namespace GroupGame
         //constructor
         public Wall(Rectangle position, Texture2D sprite) : base(position, sprite)
         {
-
+            circleBox = false;
         }
     }
 }
