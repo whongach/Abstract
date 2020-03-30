@@ -122,8 +122,11 @@ namespace GroupGame
             }
 
             // Attack every interval
-            if (rng.Next(attackInterval*200) == 0)
-                weapon.Attack();
+            if (weapon != null)
+            {
+                if (rng.Next(attackInterval * 200) == 0)
+                    weapon.Attack();
+            }
         }
 
         /// <summary>

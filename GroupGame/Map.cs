@@ -71,5 +71,21 @@ namespace GroupGame
             }
         }
 
+        /// <summary>
+        /// Shifts all tile in the map to adjust for the origin and tilesize
+        /// </summary>
+        /// <param name="origin">The top left corner of the map</param>
+        /// <param name="tileSize">the width and height of each tile</param>
+        public void SetOrigin(Point origin, int scaledSize)
+        {
+            for (int i = 0; i < layout.GetLength(0); i++)
+            {
+                for (int j = 0; j < layout.GetLength(1); j++)
+                {
+                    layout[i, j].Position = new Rectangle(origin.X + i * scaledSize, origin.Y + j * scaledSize, scaledSize, scaledSize);
+                }
+            }
+        }
+
     }
 }

@@ -32,6 +32,8 @@ namespace GroupGame
         private MouseState mouseState;
         private GameState gameState;
         private Player player;
+        private int tileSize;
+        private Point mapOrigin;
 
         //Object Fields
         MouseCursor cursor;
@@ -71,6 +73,8 @@ namespace GroupGame
         //map list
         List<Map> maps;
         Map currentMap;
+        Wall topBarrier;
+        Wall bottomBarrier;
 
         //Item test fields
         Item key;
@@ -144,27 +148,6 @@ namespace GroupGame
             floorTest = Content.Load<Texture2D>("floorTest");
             wallTest = Content.Load<Texture2D>("wallTest");
 
-            //creates a player, weapon and a projectile for attacking purposes\
-            basicArrow = new Projectile(new Point(20, 5), 20, arrowTest, false);
-            basicBow = new RangedWeapon(2, basicArrow, new Point(40, 40), bowTest);
-            basicSword = new MeleeWeapon(5, new Point(40, 40), swordTest, false, 90, 5);
-            basicSpear = new MeleeWeapon(8, new Point(80, 40), swordTest, false, 20);
-            player = new Player(10, basicSword, new Rectangle(150, 150, 50, 50), playerTest, false);
-            player.OffHand = basicBow;
-
-            // Set to true if testing [DEBUG MODE]
-            player.Debug = false;
-
-            //Creates an enemy to test movement
-            basicSpell = new Projectile(new Point(20, 20), 12, spellTest, false);
-            enemyWand = new RangedWeapon(1, basicSpell, new Point(50, 50), wandTest);
-            enemyTest = new Enemy(10, enemyWand, new Rectangle(300, 300, 50, 50), circleTest, EnemyType.Rectangle, 1, 5, 0, player, false);
-            enemies.Add(enemyTest);
-
-            //creates a test key
-            key = new Item(new Rectangle(500, 500, 50, 50), keyTest, false, false);
-            gameObjects.Add(key);
-
             //initializes random variables
             rng = new Random();
 
@@ -173,7 +156,9 @@ namespace GroupGame
 
             //calls method to load resources
             LoadResources();
-            currentMap = maps[rng.Next(maps.Count)];
+
+            // Set to true if testing [DEBUG MODE]
+            player.Debug = false;
         }
 
         /// <summary>
@@ -215,7 +200,7 @@ namespace GroupGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.DarkBlue);
+            GraphicsDevice.Clear(Color.TransparentBlack);
             spriteBatch.Begin();
 
             FiniteStateMachineDraw();
@@ -332,7 +317,12 @@ namespace GroupGame
                     // If the user presses "Enter" in the menu, start the game
                     // ** Temporary until menu button locations are available for mouse clicks
                     if (SingleKeyPress(Keys.Enter))
+                    {
                         gameState = GameState.Game;
+                        //disallows window to resize
+                        Window.AllowUserResizing = false;
+                        NextLevel();
+                    }
 
                     // If the user presses "S" in the menu, show the player's statistics
                     // ** Temporary until menu button locations are available for mouse clicks
@@ -388,6 +378,8 @@ namespace GroupGame
                         if (player.OffHand != null)
                             eM.Collision(currentMap.Walls[i], player.OffHand);
                     }
+                    eM.Collision((Character)player, topBarrier);
+                    eM.Collision((Character)player, bottomBarrier);
                     
                     
                     //removes dead enemies from the list
@@ -402,21 +394,7 @@ namespace GroupGame
                     // Loading Next Level
                     if (enemies.Count == 0 && player.CurrentItem == key && player.Position.Y <= 5)
                     {
-                        gameObjects.Clear();
-                        currentMap = maps[rng.Next(maps.Count)];
-                        player.Position = new Rectangle(new Point(510, 900), new Point(player.Position.Width, player.Position.Height));
-                        enemies.Add(new Enemy(5, null, new Rectangle(240, 120, 50, 50), circleTest, EnemyType.Rectangle, 1, 10, 0, player, false));
-                        enemies.Add(new Enemy(5, null, new Rectangle(120, 120, 50, 50), circleTest, EnemyType.Rectangle, 1, 10, 0, player, false));
-                        enemies.Add(new Enemy(5, enemyWand, new Rectangle(240, 240, 50, 50), circleTest, EnemyType.Rectangle, 1, 10, 0, player, false));
-                        enemies.Add(new Enemy(5, basicSpear, new Rectangle(120, 240, 50, 50), circleTest, EnemyType.Rectangle, 1, 10, 0, player, false));
-                        gameObjects.Add(key);
-                        do
-                        {
-                            key.Position = new Rectangle(rng.Next(16), rng.Next(16), key.Position.Width, key.Position.Height);
-                        } while (currentMap.Layout[key.Position.X, key.Position.Y] is Wall);
-                        player.CurrentItem = null;
-                        key.PickedUp = false;
-                        key.Position = new Rectangle(key.Position.X * 60, key.Position.Y * 60, key.Position.Width, key.Position.Height);
+                        NextLevel();
                     }
                     // Game Over Scenarios
 
@@ -557,6 +535,50 @@ namespace GroupGame
                 }
             }
             reader.Close();
+
+            basicArrow = new Projectile(new Point(20, 5), 20, arrowTest, false);
+            basicBow = new RangedWeapon(2, basicArrow, new Point(40, 40), bowTest);
+            basicSword = new MeleeWeapon(5, new Point(40, 40), swordTest, false, 90, 5);
+            basicSpear = new MeleeWeapon(8, new Point(80, 40), swordTest, false, 20);
+            player = new Player(10, basicSword, new Rectangle(150, 150, 50, 50), playerTest, false);
+            player.OffHand = basicBow;
+            basicSpell = new Projectile(new Point(20, 20), 12, spellTest, false);
+            enemyWand = new RangedWeapon(1, basicSpell, new Point(50, 50), wandTest);
+            key = new Item(new Rectangle(500, 500, 50, 50), keyTest, false, false);
+        }
+
+        /// <summary>
+        /// sets the map to a new map and adjusts size of the map to fit the screen
+        /// </summary>
+        public void NewMap()
+        {
+            currentMap = maps[rng.Next(maps.Count)];
+            if (Window.ClientBounds.Height <= Window.ClientBounds.Width)
+                tileSize = Window.ClientBounds.Height / 16;
+            else
+                tileSize = Window.ClientBounds.Width / 16;
+            mapOrigin = new Point((Window.ClientBounds.Width - tileSize * 16) / 2, 0);
+            currentMap.SetOrigin(mapOrigin, tileSize);
+            topBarrier = new Wall(new Rectangle(mapOrigin.X, mapOrigin.Y - tileSize, tileSize * 16, tileSize), wallTest);
+            bottomBarrier = new Wall(new Rectangle(mapOrigin.X, mapOrigin.Y + 16 * tileSize, tileSize * 16, tileSize), wallTest);
+        }
+
+        /// <summary>
+        /// Moves Game to the Next Level
+        /// </summary>
+        public void NextLevel()
+        {
+            gameObjects.Clear();
+            NewMap();
+            player.Position = new Rectangle(new Point((int)(mapOrigin.X + 8.5 * tileSize), mapOrigin.Y + 15 * tileSize), new Point(player.Position.Width, player.Position.Height));
+            gameObjects.Add(key);
+            do
+            {
+                key.Position = new Rectangle(rng.Next(16), rng.Next(16), key.Position.Width, key.Position.Height);
+            } while (currentMap.Layout[key.Position.X, key.Position.Y] is Wall);
+            player.CurrentItem = null;
+            key.PickedUp = false;
+            key.Position = new Rectangle(key.Position.X * tileSize + mapOrigin.X, key.Position.Y * tileSize + mapOrigin.Y, key.Position.Width, key.Position.Height);
         }
     }
 }
