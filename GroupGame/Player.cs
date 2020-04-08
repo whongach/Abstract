@@ -17,6 +17,7 @@ namespace GroupGame
         private Item currentItem;
         private double angle;
         private bool debug;
+        private double distTravelled; // stat tracking
 
         // Properties
         /// <summary>
@@ -34,6 +35,11 @@ namespace GroupGame
         /// </summary>
         public Weapon OffHand { get { return offHand; } set { offHand = value; } }
 
+        /// <summary>
+        /// Gets the distance travelled by the player.
+        /// </summary>
+        public double DistTravelled { get { return distTravelled; } }
+
         //constructor
         public Player(int health, Weapon weapon, Rectangle position, Texture2D sprite, bool circular) : base(health, weapon, position, sprite, circular)
         {
@@ -41,6 +47,7 @@ namespace GroupGame
             currentItem = null;
             this.position = position;
             angle = 0;
+            distTravelled = 0;
         }
 
 
@@ -90,18 +97,22 @@ namespace GroupGame
             if (keyboardState.IsKeyDown(Keys.A))
             {
                 this.position.X -= 3;
+                distTravelled += 3;
             }
             else if (keyboardState.IsKeyDown(Keys.D))
             {
                 this.position.X += 3;
+                distTravelled += 3;
             }
             if (keyboardState.IsKeyDown(Keys.W))
             {
                 this.position.Y -= 3;
+                distTravelled += 3;
             }
             else if (keyboardState.IsKeyDown(Keys.S))
             {
                 this.position.Y += 3;
+                distTravelled += 3;
             }
         }
 

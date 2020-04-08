@@ -289,8 +289,14 @@ namespace GroupGame
                     sb.Draw(squareTest, new Rectangle(graphics.PreferredBackBufferWidth / 2 - 50, 630, 100, 60), Color.Gray);
 
                     //Draws text for stats menu
-                    sb.DrawString(heading, "STATS", new Vector2(graphics.PreferredBackBufferWidth/2 - 50, 50), Color.Black);
+                    sb.DrawString(heading, "STATS", new Vector2(graphics.PreferredBackBufferWidth/2 - 50, 50), Color.White);
                     sb.DrawString(buttons, "Back", new Vector2(graphics.PreferredBackBufferWidth/2 - 33, 640), Color.Black);
+
+                    // Draws text for tracked stats
+                    sb.DrawString(buttons, "Keys Collected: ", new Vector2(graphics.PreferredBackBufferWidth / 2 - 400, 150), Color.White);
+                    sb.DrawString(buttons, "Monsters Defeated: ", new Vector2(graphics.PreferredBackBufferWidth / 2 - 400, 200), Color.White);
+                    sb.DrawString(buttons, "Rooms Cleared: ", new Vector2(graphics.PreferredBackBufferWidth / 2 - 400, 250), Color.White);
+                    sb.DrawString(buttons, "Distance Travelled: " + player.DistTravelled, new Vector2(graphics.PreferredBackBufferWidth / 2 - 400, 300), Color.White);
                     break;
 
                 case GameState.Gameover:
