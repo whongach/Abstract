@@ -16,56 +16,10 @@ namespace GroupGame
         /// </summary>
         /// <param name="hit1">Object one rectangle.</param>
         /// <param name="hit2">Object two rectangle.</param>
-        /// <param name="circle1">Whether or not object one is a circle.</param>
-        /// <param name="circle2">Whether or not object two is a circle.</param>
         /// <returns>True if the shapes collide, false otherwise.</returns>
-        public bool CollisionCheck(Rectangle hit1, Rectangle hit2, bool circle1, bool circle2)
+        public bool CollisionCheck(Rectangle hit1, Rectangle hit2)
         {
-            // Checks rectangles
-            if (!circle1 && !circle2)
-                return hit1.Intersects(hit2);
-
-            // Checks circles
-            // Calculate circular properties
-            int radius1 = Math.Min(hit1.Width / 2, hit1.Height / 2);
-            int radius2 = Math.Min(hit2.Width / 2, hit2.Height / 2);
-            Vector2 center1 = new Vector2((hit1.X + hit1.Width / 2), (hit1.Y + hit1.Height / 2));
-            Vector2 center2 = new Vector2((hit2.X + hit2.Width / 2), (hit2.Y + hit2.Height / 2));
-            Vector2 centerDist = new Vector2(Math.Abs((center1.X - center2.X)), Math.Abs((center1.Y - center2.Y)));
-
-            // Compares distance by sum of radii
-            if (circle1 && circle2)
-                return Math.Sqrt(Math.Pow(centerDist.X, 2) + Math.Pow(centerDist.Y, 2)) <= (radius1 + radius2);
-
-            // Code to check rectangle and circle collision (Blindman67 on StackOverflow)
-            if (circle1 && !circle2)
-            {
-                if (centerDist.X >= radius1 + center2.X || centerDist.Y >= radius1 + center2.Y)
-                    return false;
-                if (centerDist.X < hit2.Width/2 || centerDist.Y < hit2.Height/2)
-                    return true;
-                centerDist.X -= center2.X;
-                centerDist.Y -= center2.Y;
-                if(Math.Sqrt(Math.Pow(centerDist.X, 2) + Math.Pow(centerDist.Y, 2))<=radius1)
-                    return true;
-                return false;
-            }
-
-            // Reverse prior method
-            if (!circle1 && circle2)
-            {
-                if (centerDist.X >= radius2 + center1.X || centerDist.Y >= radius2 + center1.Y)
-                    return false;
-                if (centerDist.X < hit1.Width/2 || centerDist.Y < hit2.Height/2)
-                    return true;
-                centerDist.X -= center1.X;
-                centerDist.Y -= center1.Y;
-                if (Math.Sqrt(Math.Pow(centerDist.X, 2) + Math.Pow(centerDist.Y, 2)) <= radius2)
-                    return true;
-            }
-
-            // If nothing collides, return false
-            return false;
+            return hit1.Intersects(hit2);
         }
         
 
@@ -76,7 +30,7 @@ namespace GroupGame
         /// <param name="obj2">The Enemy to be checked.</param>
         public void Collision(Player obj1, Enemy obj2)
         {
-            if(CollisionCheck(obj1.Position, obj2.Position, obj1.CircleBox, obj2.CircleBox))
+            if(CollisionCheck(obj1.Position, obj2.Position))
             {
                 // Check if the Player is in debug mode
                 if (!obj1.Debug)
@@ -95,7 +49,7 @@ namespace GroupGame
         /// <param name="obj2">the weapon in question</param>
         public void Collision(Character obj1, Weapon obj2)
         {
-            if (CollisionCheck(obj1.Position, obj2.Position, obj1.CircleBox, obj2.CircleBox))
+            if (CollisionCheck(obj1.Position, obj2.Position))
             {
                 if(obj1 is Player)
                 {
@@ -126,7 +80,7 @@ namespace GroupGame
         /// <param name="obj2"></param>
         public void Collision(Player obj1, Item obj2)
         {
-            if (CollisionCheck(obj1.Position, obj2.Position, obj1.CircleBox, obj2.CircleBox))
+            if (CollisionCheck(obj1.Position, obj2.Position))
             {
                 if (obj1.CurrentItem == null && !obj2.PickedUp)
                 {
@@ -144,7 +98,7 @@ namespace GroupGame
         /// <param name="obj2">the melee weapon to be checked</param>
         public void Collision(Character obj1, MeleeWeapon obj2)
         {
-            if (CollisionCheck(obj1.Position, obj2.Position, obj1.CircleBox, obj2.CircleBox))
+            if (CollisionCheck(obj1.Position, obj2.Position))
             {
                 if (obj2.Attacking)
                 {
@@ -174,7 +128,7 @@ namespace GroupGame
         /// <param name="obj2">the projectile to be checked</param>
         public void Collision(Character obj1, Projectile obj2)
         {
-            if (CollisionCheck(obj1.Position, obj2.Position, obj1.CircleBox, obj2.CircleBox))
+            if (CollisionCheck(obj1.Position, obj2.Position))
             {
                 obj1.Health -= obj2.Damage;
                 obj2.Destroy();
@@ -204,7 +158,7 @@ namespace GroupGame
         /// <param name="obj2">the projectile to be checked</param>
         public void Collision(Wall obj1, Projectile obj2)
         {
-            if (CollisionCheck(obj1.Position, obj2.Position, obj1.CircleBox, obj2.CircleBox))
+            if (CollisionCheck(obj1.Position, obj2.Position))
             {
                 obj2.Destroy();
             }
@@ -217,7 +171,7 @@ namespace GroupGame
         /// <param name="obj2">wall to be checked</param>
         public void Collision(Character obj1, Wall obj2)
         {
-            if (CollisionCheck(obj1.Position, obj2.Position, obj1.CircleBox, obj2.CircleBox))
+            if (CollisionCheck(obj1.Position, obj2.Position))
             {
                 //finds the overlap between the two shapes
                 int xOverlap = 0;

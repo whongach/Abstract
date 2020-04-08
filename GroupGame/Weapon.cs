@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GroupGame
 {
-    abstract class Weapon : Collectible, ICollidable
+    abstract class Weapon : Collectible
     {
         //fields
         protected int damage;
@@ -21,7 +21,7 @@ namespace GroupGame
         }
 
         //constructor
-        public Weapon(Rectangle position, Texture2D sprite, bool circular, bool equipped, int damage) : base(position, sprite, circular, equipped)
+        public Weapon(Rectangle position, Texture2D sprite, bool equipped, int damage) : base(position, sprite, equipped)
         {
             this.damage = damage;
         }

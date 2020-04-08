@@ -10,7 +10,7 @@ using System.Windows;
 
 namespace GroupGame
 {
-    class Player : Character, ICollidable
+    class Player : Character
     {
         // Fields
         private Weapon offHand;
@@ -35,7 +35,7 @@ namespace GroupGame
         public Weapon OffHand { get { return offHand; } set { offHand = value; } }
 
         //constructor
-        public Player(int health, Weapon weapon, Rectangle position, Texture2D sprite, bool circular) : base(health, weapon, position, sprite, circular)
+        public Player(int health, Weapon weapon, Rectangle position, Texture2D sprite) : base(health, weapon, position, sprite)
         {
             offHand = null;
             currentItem = null;

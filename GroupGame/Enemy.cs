@@ -22,7 +22,7 @@ namespace GroupGame
     /// <summary>
     /// Class for Enemy type Characters.
     /// </summary>
-    class Enemy : Character, ICollidable
+    class Enemy : Character
     {
         // Fields
         private EnemyType type; // Type of Enemy movement
@@ -58,7 +58,7 @@ namespace GroupGame
         /// <param name="bodyDamage">The damage the Enemy deals at close range.</param>
         /// <param name="player">The Player character.</param>
         /// <param name="circular">Whether or not the Enemy's shape is circular or rectangular.</param>
-        public Enemy(int health, Weapon weapon, Rectangle position, Texture2D sprite, EnemyType type, int speed, int attackInterval, int bodyDamage, Player player, bool circular) : base(health, weapon, position, sprite, circular)
+        public Enemy(int health, Weapon weapon, Rectangle position, Texture2D sprite, EnemyType type, int speed, int attackInterval, int bodyDamage, Player player) : base(health, weapon, position, sprite)
         {
             // Initializes fields
             this.type = type;

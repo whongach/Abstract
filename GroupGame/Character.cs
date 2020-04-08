@@ -9,23 +9,17 @@ namespace GroupGame
     /// <summary>
     /// Parent class for Character type GameObjects.
     /// </summary>
-    abstract class Character : GameObject , ICollidable
+    abstract class Character : GameObject
     {
         // Fields
         protected int health;
         protected Weapon weapon;
-        protected bool circleBox;
 
         // Properties
         /// <summary>
         /// Gets the Weapon that the Character is using.
         /// </summary>
         public Weapon Weapon { get { return weapon; } }
-
-        /// <summary>
-        /// Gets whether the Character is a Circle or a Box.
-        /// </summary>
-        public bool CircleBox { get { return circleBox; } }
 
         /// <summary>
         /// Gets and sets the Character's Health.
@@ -41,11 +35,10 @@ namespace GroupGame
         /// <param name="position">The Character's position.</param>
         /// <param name="sprite">The Character's texture.</param>
         /// <param name="circular">Whether or not the Character's shape is circular or rectangular.</param>
-        public Character(int health, Weapon weapon, Rectangle position, Texture2D sprite, bool circular) : base(position, sprite)
+        public Character(int health, Weapon weapon, Rectangle position, Texture2D sprite) : base(position, sprite)
         {
             this.health = health;
             this.weapon = weapon;
-            circleBox = circular;
         }
     }
 }

@@ -535,15 +535,15 @@ namespace GroupGame
             }
             reader.Close();
 
-            basicArrow = new Projectile(new Point(20, 5), 20, arrowTest, false);
+            basicArrow = new Projectile(new Point(20, 5), 20, arrowTest);
             basicBow = new RangedWeapon(2, basicArrow, new Point(40, 40), bowTest);
-            basicSword = new MeleeWeapon(5, new Point(40, 40), swordTest, false, 90, 5);
-            basicSpear = new MeleeWeapon(8, new Point(80, 40), swordTest, false, 20);
-            player = new Player(10, basicSword, new Rectangle(150, 150, 50, 50), playerTest, false);
+            basicSword = new MeleeWeapon(5, new Point(40, 40), swordTest, 90, 5);
+            basicSpear = new MeleeWeapon(8, new Point(80, 40), swordTest, 20);
+            player = new Player(10, basicSword, new Rectangle(150, 150, 50, 50), playerTest);
             player.OffHand = basicBow;
-            basicSpell = new Projectile(new Point(20, 20), 12, spellTest, false);
+            basicSpell = new Projectile(new Point(20, 20), 12, spellTest);
             enemyWand = new RangedWeapon(1, basicSpell, new Point(50, 50), wandTest);
-            key = new Item(new Rectangle(500, 500, 50, 50), keyTest, false, false);
+            key = new Item(new Rectangle(500, 500, 50, 50), keyTest, false);
         }
 
         /// <summary>
