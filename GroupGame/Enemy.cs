@@ -144,10 +144,6 @@ namespace GroupGame
             else
                 position.X -= speed;
 
-            //
-            //CODE TO CHECK FOR WALL COLLISION WILL BE ADDED ONCE IMPLEMENTED
-            //
-
             // Checks if Enemy has traveled full distance of pattern direction
             if(travelled >= lineWidth)
             { 
@@ -221,10 +217,6 @@ namespace GroupGame
                     direction = EnemyDirection.Left;
                 }
             }
-
-            //
-            //CODE TO CHECK FOR WALL COLLISION WILL BE ADDED AS SOON AS
-            //
         }
 
         /// <summary>
@@ -245,10 +237,6 @@ namespace GroupGame
             {
                 position.Y -= speed;
             }
-
-            //
-            //CODE TO CHECK FOR WALL COLLISION WILL BE ADDED ONCE IMPLEMENTED
-            //
 
             // Change direction if distance has been traveled
             if (travelled >= lineHeight)
@@ -282,10 +270,6 @@ namespace GroupGame
                 position.Y += speed;
             else if (player.Position.Y < position.Y)
                 position.Y -= speed;
-
-            //
-            //CODE TO CHECK FOR WALL COLLISION WILL BE ADDED ONCE IMPLEMENTED
-            //
         }
 
         /// <summary>
@@ -334,10 +318,6 @@ namespace GroupGame
                 position.X -= speed;
                 position.Y += speed;
             }
-
-            //
-            //CODE TO CHECK FOR WALL COLLISION WILL BE ADDED ONCE IMPLEMENTED
-            //
 
             // Changes direction if follows the traveled distance
             if (travelled >= lineLength)
