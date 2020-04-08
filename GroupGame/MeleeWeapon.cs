@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GroupGame
 {
-    class MeleeWeapon : Weapon, ICollidable
+    class MeleeWeapon : Weapon
     {
         //fields
         int rotationDegrees;
@@ -27,7 +27,7 @@ namespace GroupGame
         //constructors
 
         //constructor for spinning weapon in hand
-        public MeleeWeapon(int damage, Point size, Texture2D sprite, bool circular, int rotationDegrees, int rotationSpeed) : base(new Rectangle(new Point(0, 0), size), sprite, circular, true, damage)
+        public MeleeWeapon(int damage, Point size, Texture2D sprite, int rotationDegrees, int rotationSpeed) : base(new Rectangle(new Point(0, 0), size), sprite, true, damage)
         {
             this.rotationDegrees = rotationDegrees;
             this.rotationSpeed = rotationSpeed;
@@ -37,7 +37,7 @@ namespace GroupGame
         }
 
         //constructor for static weapon in hand
-        public MeleeWeapon(int damage, Point size, Texture2D sprite, bool circular, int duration) : base(new Rectangle(new Point(0,0),size), sprite, circular, true, damage)
+        public MeleeWeapon(int damage, Point size, Texture2D sprite, int duration) : base(new Rectangle(new Point(0,0),size), sprite, true, damage)
         {
             rotationDegrees = 0;
             rotationSpeed = 0;
@@ -47,7 +47,7 @@ namespace GroupGame
         }
 
         //constructor for spinning weapon pickup
-        public MeleeWeapon(int damage, Rectangle position, Texture2D sprite, bool circular, int rotationDegrees, int rotationSpeed) : base(position, sprite, circular, false, damage)
+        public MeleeWeapon(int damage, Rectangle position, Texture2D sprite, int rotationDegrees, int rotationSpeed) : base(position, sprite, false, damage)
         {
             this.rotationDegrees = rotationDegrees;
             this.rotationSpeed = rotationSpeed;
@@ -57,7 +57,7 @@ namespace GroupGame
         }
 
         //constructor for static weapon pickup
-        public MeleeWeapon(int damage, Rectangle position, Texture2D sprite, bool circular, int duration) : base(position, sprite, circular, false, damage)
+        public MeleeWeapon(int damage, Rectangle position, Texture2D sprite, int duration) : base(position, sprite, false, damage)
         {
             rotationDegrees = 0;
             rotationSpeed = 0;

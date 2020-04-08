@@ -8,22 +8,16 @@ using System.Threading.Tasks;
 
 namespace GroupGame
 {
-    class Wall : Tile, ICollidable
+    class Wall : Tile
     {
         //fields
-        bool circleBox;
 
         //properties
-
-        public bool CircleBox
-        {
-            get { return circleBox; }
-        }
 
         //constructor
         public Wall(Rectangle position, Texture2D sprite) : base(position, sprite)
         {
-            circleBox = false;
+
         }
     }
 }

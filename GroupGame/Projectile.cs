@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GroupGame
 {
-    class Projectile : GameObject, ICollidable
+    class Projectile : GameObject
     {
         //fields
         private int speed;
@@ -45,25 +45,23 @@ namespace GroupGame
         //constructors
 
         //constructor to create an ammotype
-        public Projectile(Point size, int speed, Texture2D sprite, bool circular) : base(new Rectangle(new Point(0,0), size), sprite)
+        public Projectile(Point size, int speed, Texture2D sprite) : base(new Rectangle(new Point(0,0), size), sprite)
         {
             this.speed = speed;
             this.angle = 0;
             this.damage = 0;
             x = position.X;
             y = position.Y;
-            circleBox = circular;
         }
 
         //constructor for projectile fired by weapon
-        public Projectile(double angle, Rectangle position, int speed, int damage, Texture2D sprite, bool circular) : base(position, sprite)
+        public Projectile(double angle, Rectangle position, int speed, int damage, Texture2D sprite) : base(position, sprite)
         {
             this.speed = speed;
             this.angle = angle;
             this.damage = damage;
             x = position.X;
             y = position.Y;
-            circleBox = circular;
         }
 
         /// <summary>

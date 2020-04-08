@@ -22,7 +22,7 @@ namespace GroupGame
     /// <summary>
     /// Class for Enemy type Characters.
     /// </summary>
-    class Enemy : Character, ICollidable
+    class Enemy : Character
     {
         // Fields
         private EnemyType type; // Type of Enemy movement
@@ -58,7 +58,7 @@ namespace GroupGame
         /// <param name="bodyDamage">The damage the Enemy deals at close range.</param>
         /// <param name="player">The Player character.</param>
         /// <param name="circular">Whether or not the Enemy's shape is circular or rectangular.</param>
-        public Enemy(int health, Weapon weapon, Rectangle position, Texture2D sprite, EnemyType type, int speed, int attackInterval, int bodyDamage, Player player, bool circular) : base(health, weapon, position, sprite, circular)
+        public Enemy(int health, Weapon weapon, Rectangle position, Texture2D sprite, EnemyType type, int speed, int attackInterval, int bodyDamage, Player player) : base(health, weapon, position, sprite)
         {
             // Initializes fields
             this.type = type;
@@ -144,10 +144,6 @@ namespace GroupGame
             else
                 position.X -= speed;
 
-            //
-            //CODE TO CHECK FOR WALL COLLISION WILL BE ADDED ONCE IMPLEMENTED
-            //
-
             // Checks if Enemy has traveled full distance of pattern direction
             if(travelled >= lineWidth)
             { 
@@ -221,10 +217,6 @@ namespace GroupGame
                     direction = EnemyDirection.Left;
                 }
             }
-
-            //
-            //CODE TO CHECK FOR WALL COLLISION WILL BE ADDED AS SOON AS
-            //
         }
 
         /// <summary>
@@ -245,10 +237,6 @@ namespace GroupGame
             {
                 position.Y -= speed;
             }
-
-            //
-            //CODE TO CHECK FOR WALL COLLISION WILL BE ADDED ONCE IMPLEMENTED
-            //
 
             // Change direction if distance has been traveled
             if (travelled >= lineHeight)
@@ -282,10 +270,6 @@ namespace GroupGame
                 position.Y += speed;
             else if (player.Position.Y < position.Y)
                 position.Y -= speed;
-
-            //
-            //CODE TO CHECK FOR WALL COLLISION WILL BE ADDED ONCE IMPLEMENTED
-            //
         }
 
         /// <summary>
@@ -334,10 +318,6 @@ namespace GroupGame
                 position.X -= speed;
                 position.Y += speed;
             }
-
-            //
-            //CODE TO CHECK FOR WALL COLLISION WILL BE ADDED ONCE IMPLEMENTED
-            //
 
             // Changes direction if follows the traveled distance
             if (travelled >= lineLength)
