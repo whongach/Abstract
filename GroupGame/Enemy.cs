@@ -58,7 +58,7 @@ namespace GroupGame
         /// <param name="bodyDamage">The damage the Enemy deals at close range.</param>
         /// <param name="player">The Player character.</param>
         /// <param name="circular">Whether or not the Enemy's shape is circular or rectangular.</param>
-        public Enemy(int health, Weapon weapon, Rectangle position, Texture2D sprite, EnemyType type, int speed, int attackInterval, int bodyDamage, Player player) : base(health, weapon, position, sprite)
+        public Enemy(int health, Weapon weapon, Rectangle position, Texture2D sprite, EnemyType type, int maxWidth, int maxHeight, int speed, int attackInterval, int bodyDamage, Player player) : base(health, weapon, position, sprite)
         {
             // Initializes fields
             this.type = type;
@@ -66,6 +66,8 @@ namespace GroupGame
             this.player = player;
             this.bodyDamage = bodyDamage;
             this.attackInterval = attackInterval;
+            this.maxWidth = maxWidth;
+            this.maxHeight = maxHeight;
             travelled = 0;
             rng = new Random();
 
@@ -73,23 +75,18 @@ namespace GroupGame
             if (type == EnemyType.LeftRight)
             {
                 direction = EnemyDirection.Right;
-                maxWidth = rng.Next(100, 600);
             }
             else if (type == EnemyType.Rectangle)
             {
                 direction = EnemyDirection.Right;
-                maxWidth = rng.Next(100, 600);
-                maxHeight = rng.Next(100, 400);
             }
             else if (type == EnemyType.UpDown)
             {
                 direction = EnemyDirection.Down;
-                maxHeight = rng.Next(100, 400);
             }
             else if(type == EnemyType.Random)
             {
                 numDirection = rng.Next(0, 8);
-                maxWidth = rng.Next(25, 100);
             }
         }
 
