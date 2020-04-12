@@ -10,10 +10,19 @@ namespace GroupGame
 {
     class Tile : GameObject
     {
-        //constructor
-        public Tile(Rectangle position, Texture2D sprite) : base(position, sprite)
-        {
+        //fields
+        private bool isWall;
 
+        //properties
+        public bool IsWall
+        {
+            get { return isWall; }
+        }
+
+        //constructor
+        public Tile(Rectangle position, Texture2D sprite, bool isWall) : base(position, sprite)
+        {
+            this.isWall = isWall;
         }
     }
 }

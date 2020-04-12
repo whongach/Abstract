@@ -35,7 +35,7 @@ namespace GroupGame
                 // Check if the Player is in debug mode
                 if (!obj1.Debug)
                     obj1.Health -= obj2.BodyDamage;
-                Collision((Character)obj1, (Wall)new Wall(new Rectangle(obj2.Position.X - 15, obj2.Position.Y - 15, obj2.Position.Width + 30, obj2.Position.Height + 30), obj2.Sprite));
+                Collision((Character)obj1, (Tile)new Tile(new Rectangle(obj2.Position.X - 15, obj2.Position.Y - 15, obj2.Position.Width + 30, obj2.Position.Height + 30), obj2.Sprite, true));
             }
 
             if (obj2.Weapon != null)
@@ -140,7 +140,7 @@ namespace GroupGame
         /// </summary>
         /// <param name="obj1">the wall to be checked</param>
         /// <param name="obj2">the weapon to be checked</param>
-        public void Collision(Wall obj1, Weapon obj2)
+        public void Collision(Tile obj1, Weapon obj2)
         {
             if (obj2 is RangedWeapon)
             {
@@ -156,7 +156,7 @@ namespace GroupGame
         /// </summary>
         /// <param name="obj1">the wall to be checked</param>
         /// <param name="obj2">the projectile to be checked</param>
-        public void Collision(Wall obj1, Projectile obj2)
+        public void Collision(Tile obj1, Projectile obj2)
         {
             if (CollisionCheck(obj1.Position, obj2.Position))
             {
@@ -169,7 +169,7 @@ namespace GroupGame
         /// </summary>
         /// <param name="obj1">character to be checked</param>
         /// <param name="obj2">wall to be checked</param>
-        public void Collision(Character obj1, Wall obj2)
+        public void Collision(Character obj1, Tile obj2)
         {
             if (CollisionCheck(obj1.Position, obj2.Position))
             {
@@ -205,14 +205,14 @@ namespace GroupGame
 
                 //adjusts new location and sets the characters location to it
                 Rectangle newLocation = obj1.Position;
-                if (xOverlap <= yOverlap)
+                if (xOverlap < yOverlap)
                 {
                     if (obj1.Position.X < obj2.Position.X)
                         newLocation.X -= xOverlap;
                     else
                         newLocation.X += xOverlap;
                 }
-                else
+                else if(xOverlap > yOverlap)
                 {
                     if (obj1.Position.Y < obj2.Position.Y)
                         newLocation.Y -= yOverlap;

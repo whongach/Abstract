@@ -12,13 +12,13 @@ namespace GroupGame
     {
         //fields
         Tile[,] layout;
-        List<Wall> walls;
+        List<Tile> walls;
         Texture2D wallSprite;
         Texture2D floorSprite;
         int tileSize;
 
         //properties
-        public List<Wall> Walls
+        public List<Tile> Walls
         {
             get { return walls; }
         }
@@ -36,20 +36,20 @@ namespace GroupGame
             this.floorSprite = floorSprite;
             this.tileSize = tileSize;
             this.layout = new Tile[16,16];
-            walls = new List<Wall>();
-            Wall currentWall = null;
+            walls = new List<Tile>();
+            Tile currentWall = null;
             for (int i = 0; i < 16; i++) 
             {
                 for (int j = 0; j < 16; j++) 
                 {
                     if (layout[i, j] == 1)
                     {
-                        currentWall = new Wall(new Rectangle(i * tileSize, j * tileSize, tileSize, tileSize), wallSprite);
+                        currentWall = new Tile(new Rectangle(i * tileSize, j * tileSize, tileSize, tileSize), wallSprite, true);
                         this.layout[i, j] = currentWall;
                         walls.Add(currentWall);
                     }
                     else
-                        this.layout[i, j] = new Tile(new Rectangle(i * tileSize, j * tileSize, tileSize, tileSize), floorSprite);
+                        this.layout[i, j] = new Tile(new Rectangle(i * tileSize, j * tileSize, tileSize, tileSize), floorSprite, false);
                 }
             }
         }
