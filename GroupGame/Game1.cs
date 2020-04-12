@@ -74,8 +74,8 @@ namespace GroupGame
         //map list
         List<Map> maps;
         Map currentMap;
-        Wall topBarrier;
-        Wall bottomBarrier;
+        Tile topBarrier;
+        Tile bottomBarrier;
 
         //Item test fields
         Item key;
@@ -610,8 +610,8 @@ namespace GroupGame
                 tileSize = Window.ClientBounds.Width / 16;
             mapOrigin = new Point((Window.ClientBounds.Width - tileSize * 16) / 2, 0);
             currentMap.SetOrigin(mapOrigin, tileSize);
-            topBarrier = new Wall(new Rectangle(mapOrigin.X, mapOrigin.Y - tileSize, tileSize * 16, tileSize), wallTest);
-            bottomBarrier = new Wall(new Rectangle(mapOrigin.X, mapOrigin.Y + 16 * tileSize, tileSize * 16, tileSize), wallTest);
+            topBarrier = new Tile(new Rectangle(mapOrigin.X, mapOrigin.Y - tileSize, tileSize * 16, tileSize), wallTest, true);
+            bottomBarrier = new Tile(new Rectangle(mapOrigin.X, mapOrigin.Y + 16 * tileSize, tileSize * 16, tileSize), wallTest, true);
         }
 
         /// <summary>
@@ -626,7 +626,7 @@ namespace GroupGame
             do
             {
                 key.Position = new Rectangle(rng.Next(16), rng.Next(16), key.Position.Width, key.Position.Height);
-            } while (currentMap.Layout[key.Position.X, key.Position.Y] is Wall);
+            } while (currentMap.Layout[key.Position.X, key.Position.Y].IsWall);
             player.CurrentItem = null;
             key.PickedUp = false;
             key.Position = new Rectangle(key.Position.X * tileSize + mapOrigin.X, key.Position.Y * tileSize + mapOrigin.Y, key.Position.Width, key.Position.Height);
