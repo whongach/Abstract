@@ -62,25 +62,140 @@ namespace ResourceManager
                 
                 //closes file
                 dataFile.Close();
-                MessageBox.Show("Map Added Successfully");
+                MessageBox.Show("Map added successfully.");
             }
             writer.Close();
         }
 
         /// <summary>
-        /// opens a dialogue allowing the user to add enemies to the file
+        /// Opens a dialogue allowing the user to add enemies to the file.
         /// </summary>
         private void addEnemy_Click(object sender, EventArgs e)
         {
+            // ENEMY FILE FORMAT
+            // health,damage,attackSpeed,speed,xCoord,yCoord (int,int,int,int,int,int)
+            // note, all values are stored as strings in BinaryIO
 
-        }
+            // Creates a new OpenFileDialog & opens a .weapon file
+            OpenFileDialog openFile = new OpenFileDialog();
+            openFile.Title = "Open a enemy file";
+            openFile.Filter = "Enemy Files|*.enemy";
+            DialogResult result = openFile.ShowDialog();
+
+            // If the user presses OK, load the file
+            if (result == DialogResult.OK)
+            {
+                // Create the read-stream and the reader
+                FileStream inStream = null;
+                StreamReader input = null;
+
+                try
+                {
+                    // Initializes both streams, the reader, and the writer
+                    inStream = File.OpenRead(openFile.FileName);
+                    mainFile = new FileStream("../../../../Resources/master.rsrc", FileMode.Append, FileAccess.Write);
+                    input = new StreamReader(inStream);
+                    writer = new BinaryWriter(mainFile);
+
+                    // Read in the data and store it in a size 6 array
+                    string[] fileContents = new string[6]; // stores the 6 parameters
+                    string line = input.ReadLine();
+                    fileContents = line.Split(',');
+
+                    // Write to the main file
+                    writer.Write("Enemy");
+                    writer.Write(openFile.FileName);
+
+                    for (int i = 0; i < 6; i++)
+                    {
+                        writer.Write(fileContents[i]);
+                    }
+
+                    //closes file
+                    MessageBox.Show("Enemy added successfully.");
+
+                } // end try
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error loading data: " + ex.Message);
+                }
+                finally
+                {
+                    if (input != null)
+                    {
+                        input.Close();
+                    }
+                    if (writer != null)
+                    {
+                        writer.Close();
+                    }
+                }
+            } // end file loading
+        } // end addEnemy_Click
 
         /// <summary>
-        /// opens a dialogue allowing the user to add weapons to the file
+        /// Opens a dialogue allowing the user to add weapons to the file.
         /// </summary>
         private void addWeapon_Click(object sender, EventArgs e)
         {
+            // WEAPON FILE FORMAT
+            // name,damage,durability,type (string,int,int,int)/
+            // note, all values are stored as strings in BinaryIO
 
+            // Creates a new OpenFileDialog & opens a .weapon file
+            OpenFileDialog openFile = new OpenFileDialog();
+            openFile.Title = "Open a weapon file";
+            openFile.Filter = "Weapon Files|*.weapon";
+            DialogResult result = openFile.ShowDialog();
+
+            // If the user presses OK, load the file
+            if (result == DialogResult.OK)
+            {
+                // Create the stream and the writer
+                FileStream inStream = null;
+                StreamReader input = null;
+
+                try
+                {
+                    // Initializes both stream and writer
+                    inStream = File.OpenRead(openFile.FileName);
+                    mainFile = new FileStream("../../../../Resources/master.rsrc", FileMode.Append, FileAccess.Write);
+                    input = new StreamReader(inStream);
+                    writer = new BinaryWriter(mainFile);
+
+                    // Read in the data and store it in a size 4 array
+                    string[] fileContents = new string[4];
+                    string line = input.ReadLine();
+                    fileContents = line.Split(',');
+
+                    // Write to the main file
+                    writer.Write("Weapon");
+                    writer.Write(openFile.FileName);
+
+                    for (int i = 0; i < 4; i++)
+                    {
+                        writer.Write(fileContents[i]);
+                    }
+
+                    //closes file
+                    MessageBox.Show("Weapon added successfully.");
+                } // end try
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error loading data: " + ex.Message);
+                }
+                finally
+                {
+                    if (input != null)
+                    {
+                        input.Close();
+                    }
+                    if (writer != null)
+                    {
+                        writer.Close();
+                    }
+                }
+            } // end file loading
         }
 
         /// <summary>
@@ -122,7 +237,7 @@ namespace ResourceManager
                             //checks if the path matches
                             if(data.FileName == reader.ReadString())
                             {
-                                MessageBox.Show("File Located");
+                                MessageBox.Show("File located.");
                                 type = 1;
                                 break;
                             }
@@ -133,8 +248,42 @@ namespace ResourceManager
                                 line++;
                             }
                             break;
+
+                        case "Enemy":
+                            //checks if the path matches
+                            if (data.FileName == reader.ReadString())
+                            {
+                                MessageBox.Show("File located.");
+                                type = 2;
+                                break;
+                            }
+                            //finishes passing through data 
+                            for (int i = 0; i < 6; i++)
+                            {
+                                reader.ReadString();
+                                line++;
+                            }
+                            break;
+
+                        case "Weapon":
+                            //checks if the path matches
+                            if (data.FileName == reader.ReadString())
+                            {
+                                MessageBox.Show("File located.");
+                                type = 3;
+                                break;
+                            }
+                            //finishes passing through data 
+                            for (int i = 0; i < 4; i++)
+                            {
+                                reader.ReadString();
+                                line++;
+                            }
+                            break;
+
                     }
-                    //breaks if a file was found
+
+                    // Breaks if a file was found
                     if (type != 0)
                         break;
                     line++;
@@ -142,6 +291,12 @@ namespace ResourceManager
             }
             reader.Close();
 
+            // If type = 0, file is not in the list -- EXIT
+            if (type == 0)
+            {
+                MessageBox.Show("File is not in the list.  Cancelling delete request.");
+                return;
+            }
 
             //rewrites the file, skipping the data to be deleted
 
@@ -170,12 +325,46 @@ namespace ResourceManager
                         //advances linecount
                         currentLine += 258;
                         break;
+
+                    case "Enemy":
+                        // Same code for writing as addEnemy
+
+                        // Write to the main file
+                        writer.Write("Enemy");
+                        writer.Write(data.FileName);
+
+                        for (int i = 0; i < 6; i++)
+                        {
+                            writer.Write(reader.ReadString());
+                        }
+
+                        // Advances line count
+                        currentLine += 8;
+                        break;
+
+                    case "Weapon":
+                        // Same code for writing as addWeapon
+
+                        // Write to the main file
+                        writer.Write("Weapon");
+                        writer.Write(data.FileName);
+
+                        for (int i = 0; i < 4; i++)
+                        {
+                            writer.Write(reader.ReadString());
+                        }
+
+                        // Advances line count
+                        currentLine += 6;
+                        break;
+
                 }
             }
 
             //skips deleted data based on type variable
             switch (type)
             {
+                // Map
                 case 1:
                     //skips 258 lines for maps
                     reader.ReadString();
@@ -185,6 +374,33 @@ namespace ResourceManager
                         reader.ReadInt32();
                     }
                     break;
+
+                // Enemy
+                case 2:
+                    // Skips "Enemy" and file name
+                    reader.ReadString();
+                    reader.ReadString();
+
+                    // Skips all 6 data points
+                    for (int i = 0; i < 6; i++)
+                    {
+                        reader.ReadString();
+                    }
+                    break;
+
+                // Weapon
+                case 3:
+                    // Skips "Weapon" and file name
+                    reader.ReadString();
+                    reader.ReadString();
+
+                    // Skips all 4 data points
+                    for (int i = 0; i < 4; i++)
+                    {
+                        reader.ReadString();
+                    }
+                    break;
+
             }
 
             //adds data after deleted data
@@ -202,6 +418,26 @@ namespace ResourceManager
                         for (int i = 0; i < 256; i++)
                         {
                             writer.Write(reader.ReadInt32());
+                        }
+                        break;
+
+                    case "Enemy":
+                        // Same writing code as addEnemy
+                        writer.Write("Enemy");
+                        writer.Write(reader.ReadString());
+                        for (int i = 0; i < 6; i++)
+                        {
+                            writer.Write(reader.ReadString());
+                        }
+                        break;
+
+                    case "Weapon":
+                        // Same writing code as addWeapon
+                        writer.Write("Weapon");
+                        writer.Write(reader.ReadString());
+                        for (int i = 0; i < 4; i++)
+                        {
+                            writer.Write(reader.ReadString());
                         }
                         break;
                 }
@@ -235,6 +471,26 @@ namespace ResourceManager
                         //passes through all data
                         for (int i = 0; i < 256; i++)
                             reader.ReadInt32();
+                        break;
+
+                    case "Enemy":
+                        items.Add(reader.ReadString());
+
+                        // Skips through the six data points
+                        for (int i = 0; i < 6; i++)
+                        {
+                            reader.ReadString();
+                        }
+                        break;
+
+                    case "Weapon":
+                        items.Add(reader.ReadString());
+
+                        // Skips through the four data points
+                        for (int i = 0; i < 4; i++)
+                        {
+                            reader.ReadString();
+                        }
                         break;
                 }
             }
