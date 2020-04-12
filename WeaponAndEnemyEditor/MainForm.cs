@@ -58,14 +58,23 @@ namespace WeaponAndEnemyEditor
                     weaponBox3.Text = fileContents[2];
 
                     int parseResult = -1;
-                    if(int.TryParse(fileContents[3], out parseResult) && parseResult == 0)
+                    if (int.TryParse(fileContents[3], out parseResult) && parseResult == 0)
                     {
-                        weaponRadioMelee.Checked = true;
+                        weaponRadioSpin.Checked = true;
+                        weaponRadioStab.Checked = false;
                         weaponRadioRanged.Checked = false;
                     }
                     else if (parseResult == 1)
                     {
+                        weaponRadioSpin.Checked = false;
+                        weaponRadioStab.Checked = true;
                         weaponRadioRanged.Checked = false;
+                    }
+                    else
+                    {
+                        weaponRadioSpin.Checked = false;
+                        weaponRadioStab.Checked = false;
+                        weaponRadioRanged.Checked = true;
                     }
 
                 } // end try
@@ -97,7 +106,7 @@ namespace WeaponAndEnemyEditor
             string name;
             int damage;
             int durability;
-            int weaponType; // 0 is a melee weapon, 1 is a ranged weapon
+            int weaponType; // 0 is a melee-spin, 1 is a melee-stab, 2 is a ranged weapon
 
             // ERROR CHECKING
             // Check for valid NON-NEGATIVE integer parameters damage / durability
@@ -115,10 +124,10 @@ namespace WeaponAndEnemyEditor
 
             // ERROR CHECKING
             // Make sure at least one radio box is checked
-            if (!weaponRadioMelee.Checked && !weaponRadioRanged.Checked)
+            if (!weaponRadioSpin.Checked && !weaponRadioStab.Checked && !weaponRadioRanged.Checked)
             {
                 MessageBox.Show(
-                    "Errors:\n- Please check at least one weapon type: melee / ranged ",
+                    "Errors:\n- Please check at least one weapon type: spin/stab/ranged ",
                     "Error building weapon",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
@@ -131,15 +140,20 @@ namespace WeaponAndEnemyEditor
             durability = int.Parse(weaponBox3.Text);
             
             // Set weaponType to the selected radio box
-            if(weaponRadioMelee.Checked)
+            if(weaponRadioSpin.Checked)
             {
-                // Melee Weapon
+                // Melee-Spin Weapon
                 weaponType = 0;
+            }
+            else if(weaponRadioStab.Checked)
+            {
+                // Melee-Stab Weapon
+                weaponType = 1;
             }
             else
             {
                 // Ranged Weapon
-                weaponType = 1;
+                weaponType = 2;
             }
 
             // Creates a new SaveFileDialog
