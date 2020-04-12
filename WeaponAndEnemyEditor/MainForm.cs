@@ -219,13 +219,13 @@ namespace WeaponAndEnemyEditor
             // If the user presses OK, load the file
             if (result == DialogResult.OK)
             {
-                // Create the stream and the writer
+                // Create the stream and the reader
                 FileStream inStream = null;
                 StreamReader input = null;
 
                 try
                 {
-                    // Initializes both stream and writer
+                    // Initializes both stream and reader
                     inStream = File.OpenRead(openFile.FileName);
                     input = new StreamReader(inStream);
 
