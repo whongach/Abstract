@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GroupGame
 {
-    abstract class Weapon : Collectible, ICollidable
+    abstract class Weapon : Collectible
     {
         //fields
         protected int damage;
@@ -21,9 +21,9 @@ namespace GroupGame
         }
 
         //constructor
-        public Weapon(Rectangle position, Texture2D sprite, bool circular, bool equipped) : base(position, sprite, circular, equipped)
+        public Weapon(Rectangle position, Texture2D sprite, bool equipped, int damage) : base(position, sprite, equipped)
         {
-
+            this.damage = damage;
         }
 
         //methods
@@ -32,10 +32,8 @@ namespace GroupGame
         //overrides position to draw the weapon by the player at the correct angle
         public virtual void Update(Rectangle position, double angle)
         {
-            this.position.X = position.X + position.Width / 2 + (int)(Math.Cos(angle) * position.Width / 2);
-            this.position.Y = position.Y + position.Height / 2 + (int)(Math.Sin(angle) * position.Height / 2);
-            this.position.X -= this.position.Width / 2;
-            this.position.Y -= this.position.Height / 2;
+            this.position.X = position.X + position.Width / 2 + (int)(Math.Cos(angle) * position.Width / 2) - this.position.Width/2;
+            this.position.Y = position.Y + position.Height / 2 + (int)(Math.Sin(angle) * position.Height / 2) - this.position.Height/2;
             this.angle = angle;
         }
 

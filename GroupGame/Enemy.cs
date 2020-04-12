@@ -22,7 +22,7 @@ namespace GroupGame
     /// <summary>
     /// Class for Enemy type Characters.
     /// </summary>
-    class Enemy : Character, ICollidable
+    class Enemy : Character
     {
         // Fields
         private EnemyType type; // Type of Enemy movement
@@ -58,7 +58,7 @@ namespace GroupGame
         /// <param name="bodyDamage">The damage the Enemy deals at close range.</param>
         /// <param name="player">The Player character.</param>
         /// <param name="circular">Whether or not the Enemy's shape is circular or rectangular.</param>
-        public Enemy(int health, Weapon weapon, Rectangle position, Texture2D sprite, EnemyType type, int speed, int attackInterval, int bodyDamage, Player player, bool circular) : base(health, weapon, position, sprite, circular)
+        public Enemy(int health, Weapon weapon, Rectangle position, Texture2D sprite, EnemyType type, int maxWidth, int maxHeight, int speed, int attackInterval, int bodyDamage, Player player) : base(health, weapon, position, sprite)
         {
             // Initializes fields
             this.type = type;
@@ -66,6 +66,8 @@ namespace GroupGame
             this.player = player;
             this.bodyDamage = bodyDamage;
             this.attackInterval = attackInterval;
+            this.maxWidth = maxWidth;
+            this.maxHeight = maxHeight;
             travelled = 0;
             rng = new Random();
 
@@ -73,23 +75,18 @@ namespace GroupGame
             if (type == EnemyType.LeftRight)
             {
                 direction = EnemyDirection.Right;
-                maxWidth = rng.Next(100, 600);
             }
             else if (type == EnemyType.Rectangle)
             {
                 direction = EnemyDirection.Right;
-                maxWidth = rng.Next(100, 600);
-                maxHeight = rng.Next(100, 400);
             }
             else if (type == EnemyType.UpDown)
             {
                 direction = EnemyDirection.Down;
-                maxHeight = rng.Next(100, 400);
             }
             else if(type == EnemyType.Random)
             {
                 numDirection = rng.Next(0, 8);
-                maxWidth = rng.Next(25, 100);
             }
         }
 
@@ -122,8 +119,11 @@ namespace GroupGame
             }
 
             // Attack every interval
-            if (rng.Next(attackInterval*200) == 0)
-                weapon.Attack();
+            if (weapon != null)
+            {
+                if (rng.Next(attackInterval * 200) == 0)
+                    weapon.Attack();
+            }
         }
 
         /// <summary>
@@ -140,10 +140,6 @@ namespace GroupGame
                 position.X += speed;
             else
                 position.X -= speed;
-
-            //
-            //CODE TO CHECK FOR WALL COLLISION WILL BE ADDED ONCE IMPLEMENTED
-            //
 
             // Checks if Enemy has traveled full distance of pattern direction
             if(travelled >= lineWidth)
@@ -218,10 +214,6 @@ namespace GroupGame
                     direction = EnemyDirection.Left;
                 }
             }
-
-            //
-            //CODE TO CHECK FOR WALL COLLISION WILL BE ADDED AS SOON AS
-            //
         }
 
         /// <summary>
@@ -242,10 +234,6 @@ namespace GroupGame
             {
                 position.Y -= speed;
             }
-
-            //
-            //CODE TO CHECK FOR WALL COLLISION WILL BE ADDED ONCE IMPLEMENTED
-            //
 
             // Change direction if distance has been traveled
             if (travelled >= lineHeight)
@@ -279,10 +267,6 @@ namespace GroupGame
                 position.Y += speed;
             else if (player.Position.Y < position.Y)
                 position.Y -= speed;
-
-            //
-            //CODE TO CHECK FOR WALL COLLISION WILL BE ADDED ONCE IMPLEMENTED
-            //
         }
 
         /// <summary>
@@ -332,10 +316,6 @@ namespace GroupGame
                 position.Y += speed;
             }
 
-            //
-            //CODE TO CHECK FOR WALL COLLISION WILL BE ADDED ONCE IMPLEMENTED
-            //
-
             // Changes direction if follows the traveled distance
             if (travelled >= lineLength)
             {
@@ -361,7 +341,8 @@ namespace GroupGame
             }
 
             // Update the Weapon
-            weapon.Update(position, weaponAngle);
+            if(weapon!=null)
+                weapon.Update(position, weaponAngle);
         }
 
         /// <summary>
@@ -371,7 +352,8 @@ namespace GroupGame
         public override void Draw(SpriteBatch sb)
         {
             base.Draw(sb);
-            weapon.Draw(sb);
+            if(weapon!=null)
+                weapon.Draw(sb);
         }
     }
 }

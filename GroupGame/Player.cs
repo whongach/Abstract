@@ -10,13 +10,14 @@ using System.Windows;
 
 namespace GroupGame
 {
-    class Player : Character, ICollidable
+    class Player : Character
     {
         // Fields
         private Weapon offHand;
         private Item currentItem;
         private double angle;
         private bool debug;
+        private double distTravelled; // stat tracking
 
         // Properties
         /// <summary>
@@ -34,13 +35,19 @@ namespace GroupGame
         /// </summary>
         public Weapon OffHand { get { return offHand; } set { offHand = value; } }
 
+        /// <summary>
+        /// Gets the distance travelled by the player.
+        /// </summary>
+        public double DistTravelled { get { return distTravelled; } }
+
         //constructor
-        public Player(int health, Weapon weapon, Rectangle position, Texture2D sprite, bool circular) : base(health, weapon, position, sprite, circular)
+        public Player(int health, Weapon weapon, Rectangle position, Texture2D sprite) : base(health, weapon, position, sprite)
         {
             offHand = null;
             currentItem = null;
             this.position = position;
             angle = 0;
+            distTravelled = 0;
         }
 
 
@@ -75,8 +82,10 @@ namespace GroupGame
                 weapon.Attack();
 
             //updates weapon
-            weapon.Update(position, angle);
-            offHand.Update(position, angle);
+            if(weapon!=null)
+                weapon.Update(position, angle);
+            if(offHand!=null)
+                offHand.Update(position, angle);
         }
 
         /// <summary>
@@ -88,18 +97,22 @@ namespace GroupGame
             if (keyboardState.IsKeyDown(Keys.A))
             {
                 this.position.X -= 3;
+                distTravelled += 3;
             }
             else if (keyboardState.IsKeyDown(Keys.D))
             {
                 this.position.X += 3;
+                distTravelled += 3;
             }
             if (keyboardState.IsKeyDown(Keys.W))
             {
                 this.position.Y -= 3;
+                distTravelled += 3;
             }
             else if (keyboardState.IsKeyDown(Keys.S))
             {
                 this.position.Y += 3;
+                distTravelled += 3;
             }
         }
 
@@ -110,7 +123,8 @@ namespace GroupGame
         public override void Draw(SpriteBatch sb)
         {
             base.Draw(sb);
-            weapon.Draw(sb);
+            if(weapon!=null)
+                weapon.Draw(sb);
             if (OffHand is RangedWeapon)
                 ((RangedWeapon)OffHand).DrawProjectiles(sb);
         }

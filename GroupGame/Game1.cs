@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
+using System.IO;
 
 /// <summary>
 /// The namespace for the Game.
@@ -30,6 +32,8 @@ namespace GroupGame
         private MouseState mouseState;
         private GameState gameState;
         private Player player;
+        private int tileSize;
+        private Point mapOrigin;
 
         //Object Fields
         MouseCursor cursor;
@@ -64,9 +68,19 @@ namespace GroupGame
 
         //Enemy Movement Test Fields
         Enemy enemyTest;
+        List<Enemy> enemies;
+
+        //map list
+        List<Map> maps;
+        Map currentMap;
+        Wall topBarrier;
+        Wall bottomBarrier;
 
         //Item test fields
         Item key;
+
+        //Random field
+        Random rng;
 
         // MonoGame Generated Constructors
         /// <summary>
@@ -108,6 +122,7 @@ namespace GroupGame
 
             //initializes the gameobjects list and event manager
             gameObjects = new List<GameObject>();
+            enemies = new List<Enemy>();
             eM = new EventManager();
 
             //allows window to resize
@@ -133,29 +148,17 @@ namespace GroupGame
             floorTest = Content.Load<Texture2D>("floorTest");
             wallTest = Content.Load<Texture2D>("wallTest");
 
-            //creates a player, weapon and a projectile for attacking purposes\
-            basicArrow = new Projectile(0, new Rectangle(new Point(-20, -20), new Point(20, 5)), 20, 2, arrowTest, false);
-            basicBow = new RangedWeapon(basicArrow, new Rectangle(175, 175, 40, 40), bowTest, 2, false, true);
-            basicSword = new MeleeWeapon(new Rectangle(0, 0, 40, 40), swordTest, false, true, 90, 5);
-            basicSpear = new MeleeWeapon(new Rectangle(0, 0, 40, 40), swordTest, false, true, 20);
-            player = new Player(10, basicSpear, new Rectangle(150, 150, 50, 50), playerTest, true);
-            player.OffHand = basicBow;
-
-            // Set to true if testing [DEBUG MODE]
-            player.Debug = true;
-
-            //Creates an enemy to test movement
-            basicSpell = new Projectile(0, new Rectangle(new Point(-20, -20), new Point(20, 20)), 12, 3, spellTest, false);
-            enemyWand = new RangedWeapon(basicSpell, new Rectangle(175, 175, 50, 50), wandTest, 0, false, true);
-            enemyTest = new Enemy(10, enemyWand, new Rectangle(300, 300, 50, 50), circleTest, EnemyType.Rectangle, 1, 5, 0, player, true);
-            gameObjects.Add(enemyTest);
-
-            //creates a test key
-            key = new Item(new Rectangle(500, 500, 50, 50), keyTest, true, false);
-            gameObjects.Add(key);
+            //initializes random variables
+            rng = new Random();
 
             //creates the mousecursor
             cursor = new MouseCursor(new Rectangle(0, 0, 50, 50), cursorTest);
+
+            //calls method to load resources
+            LoadResources();
+
+            // Set to true if testing [DEBUG MODE]
+            player.Debug = false;
         }
 
         /// <summary>
@@ -197,12 +200,12 @@ namespace GroupGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.DarkBlue);
+            GraphicsDevice.Clear(Color.TransparentBlack);
             spriteBatch.Begin();
 
+            FiniteStateMachineDraw();
             DrawGUI(spriteBatch);
             cursor.Draw(spriteBatch);
-            FiniteStateMachineDraw();
 
             spriteBatch.End();
             base.Draw(gameTime);
@@ -285,8 +288,14 @@ namespace GroupGame
                     sb.Draw(squareTest, new Rectangle(graphics.PreferredBackBufferWidth / 2 - 50, 630, 100, 60), Color.Gray);
 
                     //Draws text for stats menu
-                    sb.DrawString(heading, "STATS", new Vector2(graphics.PreferredBackBufferWidth/2 - 50, 50), Color.Black);
+                    sb.DrawString(heading, "STATS", new Vector2(graphics.PreferredBackBufferWidth/2 - 50, 50), Color.White);
                     sb.DrawString(buttons, "Back", new Vector2(graphics.PreferredBackBufferWidth/2 - 33, 640), Color.Black);
+
+                    // Draws text for tracked stats
+                    sb.DrawString(buttons, "Keys Collected: ", new Vector2(graphics.PreferredBackBufferWidth / 2 - 400, 150), Color.White);
+                    sb.DrawString(buttons, "Monsters Defeated: ", new Vector2(graphics.PreferredBackBufferWidth / 2 - 400, 200), Color.White);
+                    sb.DrawString(buttons, "Rooms Cleared: ", new Vector2(graphics.PreferredBackBufferWidth / 2 - 400, 250), Color.White);
+                    sb.DrawString(buttons, "Distance Travelled: " + player.DistTravelled, new Vector2(graphics.PreferredBackBufferWidth / 2 - 400, 300), Color.White);
                     break;
 
                 case GameState.Gameover:
@@ -314,7 +323,12 @@ namespace GroupGame
                     // If the user presses "Enter" in the menu, start the game
                     // ** Temporary until menu button locations are available for mouse clicks
                     if (SingleKeyPress(Keys.Enter))
+                    {
                         gameState = GameState.Game;
+                        //disallows window to resize
+                        Window.AllowUserResizing = false;
+                        NextLevel();
+                    }
 
                     // If the user presses "S" in the menu, show the player's statistics
                     // ** Temporary until menu button locations are available for mouse clicks
@@ -334,33 +348,60 @@ namespace GroupGame
 
                     // Handle Here:
                     // All Updates of game objects
+                    
 
-
+                    //updates of player, objects, and enemies
                     player.Update(mouseState, previousMouseState, keyboardState, previousKeyboardState);
                     for (int i = 0; i<gameObjects.Count; i++)
                     {
                         gameObjects[i].Update();
                     }
+                    for(int i = 0; i<enemies.Count; i++)
+                    {
+                        enemies[i].Update();
+                    }
+                    
 
                     //collisions
                     for (int i = 0; i < gameObjects.Count; i++)
                     {
                         eM.Collision(player, gameObjects[i]);
-                        if(gameObjects[i] is Enemy)
-                        {
-                            if (player.Weapon != null)
-                                eM.Collision(((Enemy)gameObjects[i]), player.Weapon);
-                            if (player.OffHand != null)
-                                eM.Collision(((Enemy)gameObjects[i]), player.OffHand);
-                            /*for (int j = 0; j < testMap.Walls.Count; j++)
-                                eM.Collision(((Enemy)gameObjects[i]), //insert reference to the walls list in the map here);*/
-                        }
+                    }
+                    for(int i = 0; i<enemies.Count; i++)
+                    {
+                        if (player.Weapon != null)
+                            eM.Collision(enemies[i], player.Weapon);
+                        if (player.OffHand != null)
+                            eM.Collision(enemies[i], player.OffHand);
+                        for (int j = 0; j < currentMap.Walls.Count; j++)
+                            eM.Collision(enemies[i], currentMap.Walls[j]);
+                    }
+                    for (int i = 0; i < currentMap.Walls.Count; i++)
+                    {
+                        eM.Collision((Character)player, currentMap.Walls[i]);
+                        if (player.Weapon != null)
+                            eM.Collision(currentMap.Walls[i], player.Weapon);
+                        if (player.OffHand != null)
+                            eM.Collision(currentMap.Walls[i], player.OffHand);
+                    }
+                    eM.Collision((Character)player, topBarrier);
+                    eM.Collision((Character)player, bottomBarrier);
+                    
+                    
+                    //removes dead enemies from the list
+                    for (int i = 0; i < enemies.Count; i++)
+                    {
+                        if (enemies[i].Health <= 0)
+                            enemies.RemoveAt(i);
                     }
 
-                    /*for (int i = 0; i < testMap.Walls.Count; i++)
-                        eM.Collision((Character)player, //insert reference to the walls list in the map here);*/
+
 
                     // Loading Next Level
+                    if (enemies.Count == 0 && player.CurrentItem == key && player.Position.Y <= 5)
+                    {
+                        NextLevel();
+                    }
                     // Game Over Scenarios
 
                     break;
@@ -420,18 +461,22 @@ namespace GroupGame
         {
             switch (gameState)
             {
-                case GameState.MainMenu:
-                    
+                case GameState.MainMenu:                    
 
                     break;
 
                 case GameState.Game:
 
-                    for(int i = 0; i<gameObjects.Count; i++)
+                    currentMap.Draw(spriteBatch);
+                    for (int i = 0; i<gameObjects.Count; i++)
                     {
-                        player.Draw(spriteBatch);
-                        player.Weapon.DrawHands(spriteBatch, player.Position, circleTest, Color.Black);
                         gameObjects[i].Draw(spriteBatch);
+                    }
+                    player.Draw(spriteBatch);
+                    player.Weapon.DrawHands(spriteBatch, player.Position, circleTest, Color.Black);
+                    for (int i = 0; i<enemies.Count; i++)
+                    {
+                        enemies[i].Draw(spriteBatch);
                     }
                     break;
 
@@ -465,6 +510,80 @@ namespace GroupGame
         public bool SingleKeyPress(Keys key)
         {
             return keyboardState.IsKeyDown(key) && !previousKeyboardState.IsKeyDown(key);
+        }
+
+        /// <summary>
+        /// loads all maps, weapons and enemies from the resource file
+        /// </summary>
+        public void LoadResources()
+        {
+            maps = new List<Map>();
+            FileStream resources = File.OpenRead("../../../../../Resources/master.rsrc");
+            BinaryReader reader = new BinaryReader(resources);
+            int[,] tiles = new int[16, 16];
+            int tileSize = 60;
+            while (reader.PeekChar() != -1)
+            {
+                switch (reader.ReadString())
+                {
+                    case "Map":
+                        reader.ReadString();
+                        for (int i = 0; i < 16; i++) 
+                        {
+                            for (int j = 0; j < 16; j++) 
+                            {
+                                tiles[i, j] = reader.ReadInt32();
+                            }
+                        }
+                        maps.Add(new Map(wallTest, floorTest, tileSize, tiles));
+                        break;
+                }
+            }
+            reader.Close();
+
+            basicArrow = new Projectile(new Point(20, 5), 20, arrowTest);
+            basicBow = new RangedWeapon(2, basicArrow, new Point(40, 40), bowTest);
+            basicSword = new MeleeWeapon(5, new Point(40, 40), swordTest, 90, 5);
+            basicSpear = new MeleeWeapon(8, new Point(80, 40), swordTest, 20);
+            player = new Player(10, basicSword, new Rectangle(150, 150, 50, 50), playerTest);
+            player.OffHand = basicBow;
+            basicSpell = new Projectile(new Point(20, 20), 12, spellTest);
+            enemyWand = new RangedWeapon(1, basicSpell, new Point(50, 50), wandTest);
+            key = new Item(new Rectangle(500, 500, 50, 50), keyTest, false);
+        }
+
+        /// <summary>
+        /// sets the map to a new map and adjusts size of the map to fit the screen
+        /// </summary>
+        public void NewMap()
+        {
+            currentMap = maps[rng.Next(maps.Count)];
+            if (Window.ClientBounds.Height <= Window.ClientBounds.Width)
+                tileSize = Window.ClientBounds.Height / 16;
+            else
+                tileSize = Window.ClientBounds.Width / 16;
+            mapOrigin = new Point((Window.ClientBounds.Width - tileSize * 16) / 2, 0);
+            currentMap.SetOrigin(mapOrigin, tileSize);
+            topBarrier = new Wall(new Rectangle(mapOrigin.X, mapOrigin.Y - tileSize, tileSize * 16, tileSize), wallTest);
+            bottomBarrier = new Wall(new Rectangle(mapOrigin.X, mapOrigin.Y + 16 * tileSize, tileSize * 16, tileSize), wallTest);
+        }
+
+        /// <summary>
+        /// Moves Game to the Next Level
+        /// </summary>
+        public void NextLevel()
+        {
+            gameObjects.Clear();
+            NewMap();
+            player.Position = new Rectangle(new Point((int)(mapOrigin.X + 8.5 * tileSize), mapOrigin.Y + 15 * tileSize), new Point(player.Position.Width, player.Position.Height));
+            gameObjects.Add(key);
+            do
+            {
+                key.Position = new Rectangle(rng.Next(16), rng.Next(16), key.Position.Width, key.Position.Height);
+            } while (currentMap.Layout[key.Position.X, key.Position.Y] is Wall);
+            player.CurrentItem = null;
+            key.PickedUp = false;
+            key.Position = new Rectangle(key.Position.X * tileSize + mapOrigin.X, key.Position.Y * tileSize + mapOrigin.Y, key.Position.Width, key.Position.Height);
         }
     }
 }

@@ -27,14 +27,24 @@ namespace GroupGame
             set { projectiles = value; }
         }
 
-        //constructor
-        public RangedWeapon(Projectile ammoType, Rectangle position, Texture2D sprite, int damage, bool circular, bool equipped) : base(position, sprite, circular, equipped)
+        //constructors
+
+        //constructor for weapon on the ground
+        public RangedWeapon(int damage, Projectile ammoType, Rectangle position, Texture2D sprite) : base(position, sprite, false, damage)
         {
-            this.damage = damage;
             ammoType.Damage = damage;
             this.ammoType = ammoType;
             projectiles = new List<Projectile>();
         }
+
+        //constructor for weapon in hand
+        public RangedWeapon(int damage, Projectile ammoType, Point size, Texture2D sprite) : base(new Rectangle(new Point(0,0), size), sprite, true, damage)
+        {
+            ammoType.Damage = damage;
+            this.ammoType = ammoType;
+            projectiles = new List<Projectile>();
+        }
+
 
         //methods
 
@@ -47,7 +57,7 @@ namespace GroupGame
         {
             int projX = position.X + position.Width / 2 - ammoType.Position.Width/ 2;
             int projY = position.Y + position.Height / 2 - ammoType.Position.Height / 2;
-            projectiles.Add(new Projectile(angle, new Rectangle(projX, projY, ammoType.Position.Width, ammoType.Position.Height), ammoType.Speed, damage, ammoType.Sprite, ammoType.CircleBox));
+            projectiles.Add(new Projectile(angle, new Rectangle(projX, projY, ammoType.Position.Width, ammoType.Position.Height), ammoType.Speed, damage, ammoType.Sprite));
         }
 
         /// <summary>
