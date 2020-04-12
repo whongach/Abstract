@@ -30,6 +30,7 @@ namespace GroupGame
         private KeyboardState keyboardState;
         private MouseState previousMouseState;
         private MouseState mouseState;
+        private GameState previousGameState;
         private GameState gameState;
         private Player player;
         private int tileSize;
@@ -320,27 +321,42 @@ namespace GroupGame
             switch(gameState)
             {
                 case GameState.MainMenu:
-                    // If the user presses "Enter" in the menu, start the game
-                    // ** Temporary until menu button locations are available for mouse clicks
-                    if (SingleKeyPress(Keys.Enter))
+                    // If the user presses "Enter" in the menu (or presses the button), start the game
+                    if (SingleKeyPress(Keys.Enter) ||
+                        SingleMousePress(new Rectangle(graphics.PreferredBackBufferWidth / 2 - 45, 290, 100, 60)))
                     {
                         gameState = GameState.Game;
-                        //disallows window to resize
+
+                        // Disallow window resizing
                         Window.AllowUserResizing = false;
+
+
                         NextLevel();
                     }
 
-                    // If the user presses "S" in the menu, show the player's statistics
-                    // ** Temporary until menu button locations are available for mouse clicks
-                    if (SingleKeyPress(Keys.S))
+                    // If the user presses "B" (or presses the button) in the menu, show the shop
+                    if (SingleKeyPress(Keys.B) ||
+                        SingleMousePress(new Rectangle(graphics.PreferredBackBufferWidth / 2 - 45, 370, 100, 60)))
+                    {
+                        previousGameState = gameState;
+                        gameState = GameState.Shop;
+                    }
+
+                    // If the user presses "S" (or presses the button) in the menu, show the statistics
+                    if (SingleKeyPress(Keys.S) ||
+                        SingleMousePress(new Rectangle(graphics.PreferredBackBufferWidth / 2 - 45, 450, 100, 60)))
+                    {
                         gameState = GameState.Stats;
+                    }
 
                     break;
 
                 case GameState.Game:
                     // If the user presses "Escape" in the game, pause it
                     if (SingleKeyPress(Keys.Escape))
+                    {
                         gameState = GameState.Pause;
+                    }
 
                     // If the Player health drops below zero, transition to Gameover GameState
                     if (player.Health <= 0)
@@ -407,48 +423,67 @@ namespace GroupGame
                     break;
 
                 case GameState.Pause:
-                    // If the user presses "Escape" in the pause menu, return to the game
-                    if (SingleKeyPress(Keys.Escape))
+                    // If the user presses "Escape" (or presses the button) in the pause menu, return to the game
+                    if (SingleKeyPress(Keys.Escape) ||
+                        SingleMousePress(new Rectangle(graphics.PreferredBackBufferWidth / 2 - 63, 290, 130, 60)))
+                    {
                         gameState = GameState.Game;
-                    
+                    }
 
-                    // If the user presses "S" in the pause menu, go to the shop
-                    // ** Temporary until pause button locations are available for mouse clicks
-                    if (SingleKeyPress(Keys.S))
+                    // If the user presses "B" (or presses the button) in the pause menu, go to the shop
+                    if (SingleKeyPress(Keys.B) ||
+                        SingleMousePress(new Rectangle(graphics.PreferredBackBufferWidth / 2 - 63, 370, 130, 60)))
+                    {
+                        previousGameState = gameState;
                         gameState = GameState.Shop;
-                    
+                    }
 
-                    // If the user presses "Q" in the pause menu, go to the game over screen
-                    // ** Temporary until pause button locations are available for mouse clicks
-                    if (SingleKeyPress(Keys.Q))
+                    // If the user presses "Q" (or presses the button) in the pause menu, go to the game over screen
+                    if (SingleKeyPress(Keys.Q) ||
+                        SingleMousePress(new Rectangle(graphics.PreferredBackBufferWidth / 2 - 63, 450, 130, 60)))
+                    {
                         gameState = GameState.Gameover;
+                    }
 
                     break;
 
                 case GameState.Shop:
-                    // If the user presses "Escape" in the shop menu, return to the pause menu
-                    // ** Temporary until shop button locations are available for mouse clicks
-                    if (SingleKeyPress(Keys.Escape))
-                        gameState = GameState.Pause;
-                    
+                    // If the user presses "Escape" (or presses the button) in the shop menu, return to the pause menu
+                    if (SingleKeyPress(Keys.Escape) ||
+                        SingleMousePress(new Rectangle(graphics.PreferredBackBufferWidth / 2 - 50, 630, 100, 60)))
+                    {
+                        gameState = previousGameState;
+                    }
+
                     // Handle Here:
                     // Player Updates
 
                     break;
 
                 case GameState.Stats:
-                    // If the user presses "Escape" in the stats menu, return to the menu
-                    // ** Temporary until stats button locations are available for mouse clicks
-                    if (SingleKeyPress(Keys.Escape))
+                    // If the user presses "Escape" (or presses the button) in the stats menu, return to the menu
+                    if (SingleKeyPress(Keys.Escape) ||
+                        SingleMousePress(new Rectangle(graphics.PreferredBackBufferWidth / 2 - 50, 630, 100, 60)))
+                    {
                         gameState = GameState.MainMenu;
+                    }
 
                     break;
 
                 case GameState.Gameover:
-                    // If the user presses "Enter" in the gameover scenario, return to the menu
-                    // ** Temporary until gameover button locations are available for mouse clicks
-                    if (SingleKeyPress(Keys.Enter))
+                    // If the user presses "Enter" (or presses the button) in the gameover scenario, return to the menu
+                    if (SingleKeyPress(Keys.Enter) ||
+                        SingleMousePress(new Rectangle(graphics.PreferredBackBufferWidth / 2 - 130, 420, 100, 60)))
+                    {
                         gameState = GameState.MainMenu;
+                    }
+
+                    // If the user presses "Escape" (or presses the button) in the gameover scenario, quit the game
+                    if (SingleKeyPress(Keys.Escape) ||
+                        SingleMousePress(new Rectangle(graphics.PreferredBackBufferWidth / 2, 420, 100, 60)))
+                    {
+                        Exit();
+                    }
 
                     break;
             }
@@ -511,6 +546,17 @@ namespace GroupGame
         {
             return keyboardState.IsKeyDown(key) && !previousKeyboardState.IsKeyDown(key);
         }
+
+        /// <summary>
+        /// Checks if the mouse is down in current state, but not in previous state, within a specified rectangle.
+        /// </summary>
+        /// <param name="rectangle">The area to check if the mouse is within.</param>
+        /// <returns>True if this is the first frame that the key was pressed and false otherwise.</returns>
+        public bool SingleMousePress(Rectangle rectangle)
+        {
+            return mouseState.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton == ButtonState.Released && rectangle.Contains(mouseState.Position);
+        }
+
 
         /// <summary>
         /// loads all maps, weapons and enemies from the resource file
