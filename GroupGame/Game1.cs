@@ -71,11 +71,15 @@ namespace GroupGame
         Enemy enemyTest;
         List<Enemy> enemies;
 
-        //map list
+        //ResourceManager Fields
         List<Map> maps;
         Map currentMap;
         Tile topBarrier;
         Tile bottomBarrier;
+        List<Weapon> resourceWeapons;
+        List<Enemy> resourceEnemies;
+
+        
 
         //Item test fields
         Item key;
@@ -559,21 +563,43 @@ namespace GroupGame
 
 
         /// <summary>
-        /// loads all maps, weapons and enemies from the resource file
+        /// Loads all maps, weapons and enemies from the resource file
         /// </summary>
         public void LoadResources()
         {
+            // Lists to hold resources
             maps = new List<Map>();
+            resourceEnemies = new List<Enemy>();
+            resourceWeapons = new List<Weapon>();
+
+            // Open stream & reader
             FileStream resources = File.OpenRead("../../../../../Resources/master.rsrc");
             BinaryReader reader = new BinaryReader(resources);
+
+            // Extra map fields
             int[,] tiles = new int[16, 16];
             int tileSize = 60;
+
+            // Extra enemy fields
+            string currentEnemyName;
+            int[] currentEnemyFields;
+
+            // Extra weapon fields
+            string[] currentWeaponFields;
+            int[] weaponFieldsParsed;
+
+            // While there is unread data, continue looping
             while (reader.PeekChar() != -1)
             {
+                // Read a string that says "Map" "Enemy" or "Weapon"
                 switch (reader.ReadString())
                 {
                     case "Map":
+                        
+                        // Skip file name
                         reader.ReadString();
+
+                        // Assign all tiles to list
                         for (int i = 0; i < 16; i++) 
                         {
                             for (int j = 0; j < 16; j++) 
@@ -581,12 +607,111 @@ namespace GroupGame
                                 tiles[i, j] = reader.ReadInt32();
                             }
                         }
+
+                        // Add map to list
                         maps.Add(new Map(wallTest, floorTest, tileSize, tiles));
                         break;
-                }
-            }
+
+                        
+                    case "Enemy":
+                        // Enemy File Format (6 parameters from .enemy file): health, damage, attackSpeed, speed, xCoord, yCoord
+                        //    -  All items are read in as strings but parsed to: (int, int, int, int, int, int)
+
+                        // Stores name of the enemy file
+                        currentEnemyName = reader.ReadString();
+
+                        // Read all values of the enemy
+                        currentEnemyFields = new int[6];
+
+                        // Read in 6 parameters
+                        for (int i = 0; i < 6; i++)
+                        {
+                            currentEnemyFields[i] = int.Parse(reader.ReadString());
+                        }
+
+                        // Add the enemy to the list of imported resource enemies
+                        resourceEnemies.Add(new Enemy(currentEnemyFields[0],  // health
+                                                      basicSpear, // weapon texture
+                                                      new Rectangle(currentEnemyFields[4], currentEnemyFields[5], 10, 10), // adjust width and height later
+                                                      squareTest, // enemy texture (square for now)
+                                                      EnemyType.Random, // movement pattern (enum)
+                                                      50, // max travelling width - needs a default value here, and then is adjusted when enemy is placed in a room
+                                                      50, // max travelling height - same as above
+                                                      currentEnemyFields[3], // travel speed
+                                                      currentEnemyFields[2], // attack speed
+                                                      currentEnemyFields[1], // body damage
+                                                      player, // player 
+                                                      currentEnemyName));
+                        // End enemy case
+                        break;
+
+                        //####### TO-DO: Integrate this list of enemies into the game.. some helpful info: ######################################################
+                        // - The enemies brought in do not have sizes, textures, set movement patterns, or max travelling dimensions
+                        // - Note that the current texture used is a square test texture
+                        // - I restate, in the .rsrc file, those ints are stored as strings.  They are strings since they come out of the Enemy external tool.
+                        //   They are then parsed to an array of ints here, and act as ints. No need to TryParse, the external tool only allows integers > 0 to be used.
+
+
+                        
+                    case "Weapon":
+                        // Weapon File Format (4 parameters from .weapon file): name, damage, durability, type
+                        //    -  All items are read in as strings, but the ints are parsed: (string, int, int, int)
+
+                        // Skips file name
+                        reader.ReadString();
+
+                        // Read all values of the weapon
+                        currentWeaponFields = new string[4]; // holds the original 4 parameters in string form
+                        weaponFieldsParsed = new int[3]; // takes parameters 2 through 4 and converts them to ints
+
+                        // Read in 4 parameters
+                        for (int i = 0; i < 4; i++)
+                        {
+                            currentWeaponFields[i] = reader.ReadString();
+                        }
+
+                        // Parse the last 3 parameters to integers, and store them in a separate array
+                        weaponFieldsParsed[0] = int.Parse(currentWeaponFields[1]);
+                        weaponFieldsParsed[1] = int.Parse(currentWeaponFields[2]);
+                        weaponFieldsParsed[2] = int.Parse(currentWeaponFields[3]);
+
+                        // Add the weapon to the list of imported resource weapons
+                        // based on its type: 0 - MeleeSpin, 1 - MeleeStab, 2 - Ranged
+
+                        // The weapon is a melee-spin
+                        if (weaponFieldsParsed[2] == 0)
+                        {
+                            resourceWeapons.Add(new MeleeWeapon(weaponFieldsParsed[0], new Point(40, 40), swordTest, 90, 5));
+                        }
+
+                        // The weapon is a melee-stab
+                        else if (weaponFieldsParsed[2] == 1)
+                        {
+                            resourceWeapons.Add(new MeleeWeapon(weaponFieldsParsed[0], new Point(80, 40), swordTest, 20));
+                        }
+
+                        // The weapon is ranged
+                        else
+                        {
+                            resourceWeapons.Add(new RangedWeapon(weaponFieldsParsed[0], basicArrow, new Point(40, 40), bowTest));
+                        }
+
+                        // End weapon case
+                        break;
+
+                        //####### TO-DO: Integrate this list of weapons into the game.. some helpful info: ######################################################
+                        // - The weapons brought in do not have textures, sizes, projectiles, spin speeds, or spin angles.
+                        // - The weapons brought in have durability and name fields that are not utilized by the constructors,
+                        //   but are there if you want to use them.
+
+
+                } // end switch
+            } // end while
+
+            // Close the binary reader.
             reader.Close();
 
+            // Test objects
             basicArrow = new Projectile(new Point(20, 5), 20, arrowTest);
             basicBow = new RangedWeapon(2, basicArrow, new Point(40, 40), bowTest);
             basicSword = new MeleeWeapon(5, new Point(40, 40), swordTest, 90, 5);
@@ -603,6 +728,9 @@ namespace GroupGame
         /// </summary>
         public void NewMap()
         {
+
+            // TO-DO ## Clean this method up
+
             currentMap = maps[rng.Next(maps.Count)];
             if (Window.ClientBounds.Height <= Window.ClientBounds.Width)
                 tileSize = Window.ClientBounds.Height / 16;
@@ -619,6 +747,9 @@ namespace GroupGame
         /// </summary>
         public void NextLevel()
         {
+
+            // TO-DO ## Enemy management between levels & clean this method up
+
             gameObjects.Clear();
             NewMap();
             player.Position = new Rectangle(new Point((int)(mapOrigin.X + 8.5 * tileSize), mapOrigin.Y + 15 * tileSize), new Point(player.Position.Width, player.Position.Height));

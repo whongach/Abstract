@@ -85,7 +85,7 @@ namespace GroupGame
         }
 
         /// <summary>
-        /// estroys the projectile on collision with a character
+        /// Destroys the projectile on collision with a character
         /// </summary>
         public void Destroy()
         {

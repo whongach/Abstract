@@ -27,6 +27,7 @@ namespace GroupGame
         // Fields
         private EnemyType type; // Type of Enemy movement
         private EnemyDirection direction;
+        private string name; // set through the ResourceManager
         private int numDirection; //This field is specifically for Random enemy types so that their direction can be generated easily
         private int speed;
         private int travelled;
@@ -44,6 +45,11 @@ namespace GroupGame
         /// </summary>
         public int BodyDamage { get { return bodyDamage; } }
 
+        /// <summary>
+        /// Gets the name of the Enemy
+        /// </summary>
+        public string Name { get { return name; } }
+
         // Constructors
         /// <summary>
         /// Constructs an Enemy Character object that is Collidable.
@@ -58,7 +64,7 @@ namespace GroupGame
         /// <param name="bodyDamage">The damage the Enemy deals at close range.</param>
         /// <param name="player">The Player character.</param>
         /// <param name="circular">Whether or not the Enemy's shape is circular or rectangular.</param>
-        public Enemy(int health, Weapon weapon, Rectangle position, Texture2D sprite, EnemyType type, int maxWidth, int maxHeight, int speed, int attackInterval, int bodyDamage, Player player) : base(health, weapon, position, sprite)
+        public Enemy(int health, Weapon weapon, Rectangle position, Texture2D sprite, EnemyType type, int maxWidth, int maxHeight, int speed, int attackInterval, int bodyDamage, Player player, string name) : base(health, weapon, position, sprite)
         {
             // Initializes fields
             this.type = type;
@@ -68,6 +74,7 @@ namespace GroupGame
             this.attackInterval = attackInterval;
             this.maxWidth = maxWidth;
             this.maxHeight = maxHeight;
+            this.name = name;
             travelled = 0;
             rng = new Random();
 
