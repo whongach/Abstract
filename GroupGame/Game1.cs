@@ -389,6 +389,7 @@ namespace GroupGame
                     }
                     for(int i = 0; i<enemies.Count; i++)
                     {
+                        eM.Collision(player, enemies[i]);
                         if (player.Weapon != null)
                             eM.Collision(enemies[i], player.Weapon);
                         if (player.OffHand != null)
@@ -567,6 +568,17 @@ namespace GroupGame
         /// </summary>
         public void LoadResources()
         {
+            // Test objects
+            basicArrow = new Projectile(new Point(20, 5), 20, arrowTest);
+            basicBow = new RangedWeapon(2, basicArrow, new Point(40, 40), bowTest);
+            basicSword = new MeleeWeapon(5, new Point(40, 40), swordTest, 90, 5);
+            basicSpear = new MeleeWeapon(8, new Point(80, 40), swordTest, 20);
+            player = new Player(10, basicSword, new Rectangle(150, 150, 50, 50), playerTest);
+            player.OffHand = basicBow;
+            basicSpell = new Projectile(new Point(20, 20), 12, spellTest);
+            enemyWand = new RangedWeapon(1, basicSpell, new Point(50, 50), wandTest);
+            key = new Item(new Rectangle(500, 500, 50, 50), keyTest, false);
+            
             // Lists to hold resources
             maps = new List<Map>();
             resourceEnemies = new List<Enemy>();
@@ -631,7 +643,7 @@ namespace GroupGame
 
                         // Add the enemy to the list of imported resource enemies
                         resourceEnemies.Add(new Enemy(currentEnemyFields[0],  // health
-                                                      basicSpear, // weapon texture
+                                                      null, // weapon
                                                       new Rectangle(currentEnemyFields[4], currentEnemyFields[5], 10, 10), // adjust width and height later
                                                       squareTest, // enemy texture (square for now)
                                                       EnemyType.Random, // movement pattern (enum)
@@ -711,16 +723,7 @@ namespace GroupGame
             // Close the binary reader.
             reader.Close();
 
-            // Test objects
-            basicArrow = new Projectile(new Point(20, 5), 20, arrowTest);
-            basicBow = new RangedWeapon(2, basicArrow, new Point(40, 40), bowTest);
-            basicSword = new MeleeWeapon(5, new Point(40, 40), swordTest, 90, 5);
-            basicSpear = new MeleeWeapon(8, new Point(80, 40), swordTest, 20);
-            player = new Player(10, basicSword, new Rectangle(150, 150, 50, 50), playerTest);
-            player.OffHand = basicBow;
-            basicSpell = new Projectile(new Point(20, 20), 12, spellTest);
-            enemyWand = new RangedWeapon(1, basicSpell, new Point(50, 50), wandTest);
-            key = new Item(new Rectangle(500, 500, 50, 50), keyTest, false);
+            
         }
 
         /// <summary>
@@ -748,19 +751,44 @@ namespace GroupGame
         public void NextLevel()
         {
 
-            // TO-DO ## Enemy management between levels & clean this method up
+            // TO-DO ## clean this method up
 
             gameObjects.Clear();
+            player.CurrentItem = null;
             NewMap();
             player.Position = new Rectangle(new Point((int)(mapOrigin.X + 8.5 * tileSize), mapOrigin.Y + 15 * tileSize), new Point(player.Position.Width, player.Position.Height));
             gameObjects.Add(key);
+            key.PickedUp = false;
+            key.Position = new Rectangle(GetEmptyTile(), new Point(key.Position.Width, key.Position.Height));
+
+            //random amount of enemies between 1 and 5
+            for(int i = 0; i<rng.Next(5)+1; i++)
+            {
+                enemies.Add(new Enemy(resourceEnemies[rng.Next(resourceEnemies.Count)]));
+                enemies[i].Position = new Rectangle(GetEmptyTile(), new Point(enemies[i].Position.Width, enemies[i].Position.Height));
+                
+                // TO-DO ## needs additional code to fully implement enemies
+            
+            }
+        }
+
+        /// <summary>
+        /// generates coordinates corresponding to an empty tile on the map 
+        /// </summary>
+        /// <returns>the top left corner of an empty tile on the map</returns>
+        public Point GetEmptyTile()
+        {
+            //creates point
+            Point empty;
+
+            //loops until the coordinates represent a tile that isnt a wall
             do
             {
-                key.Position = new Rectangle(rng.Next(16), rng.Next(16), key.Position.Width, key.Position.Height);
-            } while (currentMap.Layout[key.Position.X, key.Position.Y].IsWall);
-            player.CurrentItem = null;
-            key.PickedUp = false;
-            key.Position = new Rectangle(key.Position.X * tileSize + mapOrigin.X, key.Position.Y * tileSize + mapOrigin.Y, key.Position.Width, key.Position.Height);
+                empty = new Point(rng.Next(16), rng.Next(16));
+            } while (currentMap.Layout[empty.X, empty.Y].IsWall);
+
+            //shifts the point to accurately fit the map
+            return new Point(empty.X * tileSize + mapOrigin.X, empty.Y * tileSize + mapOrigin.Y);
         }
     }
 }

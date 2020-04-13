@@ -97,6 +97,40 @@ namespace GroupGame
             }
         }
 
+        //copy constructor
+        public Enemy(Enemy enemy): base(enemy.Health, enemy.Weapon, enemy.Position, enemy.Sprite)
+        {
+            // Initializes fields
+            this.type = enemy.type;
+            this.speed = enemy.speed;
+            this.player = enemy.player;
+            this.bodyDamage = enemy.bodyDamage;
+            this.attackInterval = enemy.attackInterval;
+            this.maxWidth = enemy.maxWidth;
+            this.maxHeight = enemy.maxHeight;
+            this.name = enemy.name;
+            travelled = 0;
+            rng = new Random();
+
+            // Sets start direction and length of movement
+            if (type == EnemyType.LeftRight)
+            {
+                direction = EnemyDirection.Right;
+            }
+            else if (type == EnemyType.Rectangle)
+            {
+                direction = EnemyDirection.Right;
+            }
+            else if (type == EnemyType.UpDown)
+            {
+                direction = EnemyDirection.Down;
+            }
+            else if (type == EnemyType.Random)
+            {
+                numDirection = rng.Next(0, 8);
+            }
+        }
+
         // Methods
         /// <summary>
         /// Moves the enemy based on it's movement pattern.
