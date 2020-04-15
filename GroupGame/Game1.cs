@@ -784,7 +784,7 @@ namespace GroupGame
             //loops until the coordinates represent a tile that isnt a wall
             do
             {
-                empty = new Point(rng.Next(16), rng.Next(16));
+                empty = new Point(rng.Next(16), rng.Next(14));
             } while (currentMap.Layout[empty.X, empty.Y].IsWall);
 
             //shifts the point to accurately fit the map
