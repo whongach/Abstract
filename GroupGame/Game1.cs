@@ -79,7 +79,8 @@ namespace GroupGame
         List<Weapon> resourceWeapons;
         List<Enemy> resourceEnemies;
 
-        
+        //Score tracking fields
+        public int score;
 
         //Item test fields
         Item key;
@@ -251,7 +252,7 @@ namespace GroupGame
 
                     //Draws text for in-game GUI
                     sb.DrawString(stats, $"HP: {player.Health}/300", new Vector2(2, 2), Color.Black);
-                    sb.DrawString(stats, "Score:", new Vector2(Window.ClientBounds.Width - 290, 2), Color.Black);
+                    sb.DrawString(stats, "Score: " + score, new Vector2(Window.ClientBounds.Width - 290, 2), Color.Black);
                     sb.DrawString(stats, "Currency:", new Vector2(Window.ClientBounds.Width - 290, 22), Color.Black);
                     sb.DrawString(stats, "Keys:", new Vector2(Window.ClientBounds.Width - 290, 42), Color.Black);
 
@@ -413,7 +414,10 @@ namespace GroupGame
                     for (int i = 0; i < enemies.Count; i++)
                     {
                         if (enemies[i].Health <= 0)
+                        {
                             enemies.RemoveAt(i);
+                            score += 100;
+                        }
                     }
 
 
@@ -760,6 +764,7 @@ namespace GroupGame
             gameObjects.Add(key);
             key.PickedUp = false;
             key.Position = new Rectangle(GetEmptyTile(), new Point(key.Position.Width, key.Position.Height));
+            score += 200;
 
             //random amount of enemies between 1 and 5
             for(int i = 0; i<rng.Next(5)+1; i++)
