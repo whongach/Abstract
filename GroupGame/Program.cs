@@ -1,5 +1,9 @@
-﻿using System;
+﻿// MonoGame Generated Namespace References
+using System;
 
+/// <summary>
+/// The namespace containing the game project.
+/// </summary>
 namespace GroupGame
 {
 #if WINDOWS || LINUX
@@ -14,10 +18,10 @@ namespace GroupGame
         [STAThread]
         static void Main()
         {
+            // MonoGame Generated Run Statement
             using (var game = new Game1())
                 game.Run();
         }
-
     }
 #endif
 }

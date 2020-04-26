@@ -1,18 +1,21 @@
-﻿using Microsoft.Xna.Framework;
+﻿// MonoGame Generated Namespace References
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+
+// Namespace References
 using System;
 using System.Collections.Generic;
 using System.IO;
 
 /// <summary>
-/// The namespace for the Game.
+/// The namespace containing the game project.
 /// </summary>
 namespace GroupGame
 {
     // Enumerations
     /// <summary>
-    /// Enumeration for various game states.
+    /// Enumerations for various game states.
     /// </summary>
     public enum GameState { MainMenu, Game, Pause, Shop, Stats, Gameover }
 
@@ -22,82 +25,72 @@ namespace GroupGame
     public class Game1 : Game
     {
         // MonoGame Generated Fields
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
+        private readonly GraphicsDeviceManager graphics;
+        private SpriteBatch spriteBatch;
 
-        // Fields
-        private KeyboardState previousKeyboardState;
-        private KeyboardState keyboardState;
-        private MouseState previousMouseState;
-        private MouseState mouseState;
-        private GameState previousGameState;
-        private GameState gameState;
-        private Player player;
+        // C# Fields
+        private int score;
         private int tileSize;
+        private Random random;
+
+        // MonoGame Fields
+        private KeyboardState keyboardState;
+        private KeyboardState previousKeyboardState;
+        private MouseState mouseState;
+        private MouseState previousMouseState;
         private Point mapOrigin;
+        private SpriteFont buttonFont;
+        private SpriteFont headingFont;
+        private SpriteFont statFont;
+        private SpriteFont titleFont;
+        private Texture2D arrowTexture;
+        private Texture2D bowTexture;
+        private Texture2D circleTexture;
+        private Texture2D cursorTexture;
+        private Texture2D floorTexture;
+        private Texture2D keyTexture;
+        private Texture2D playerTexture;
+        private Texture2D spellTexture;
+        private Texture2D squareTexture;
+        private Texture2D swordTexture;
+        private Texture2D wallTexture;
+        private Texture2D wandTexture;
 
-        //Object Fields
-        MouseCursor cursor;
-        List<GameObject> gameObjects;
-        EventManager eM;
+        // Enumeration Fields
+        private GameState gameState;
+        private GameState previousGameState;
 
-        //Graphic Fields
-        SpriteFont title;
-        SpriteFont buttons;
-        SpriteFont stats;
-        SpriteFont heading;
-        Texture2D squareTest;
-        Texture2D circleTest;
-        Texture2D cursorTest;
-        Texture2D bowTest;
-        Texture2D arrowTest;
-        Texture2D swordTest;
-        Texture2D spellTest;
-        Texture2D wandTest;
-        Texture2D keyTest;
-        Texture2D playerTest;
-        Texture2D wallTest;
-        Texture2D floorTest;
-
-        //AttackTesting Fields
-        Projectile basicArrow;
-        Projectile basicSpell;
-        RangedWeapon basicBow;
-        RangedWeapon enemyWand;
-        MeleeWeapon basicSword;
-        MeleeWeapon basicSpear;
-
-        //Enemy Movement Test Fields
-        Enemy enemyTest;
-        List<Enemy> enemies;
-
-        //ResourceManager Fields
-        List<Map> maps;
-        Map currentMap;
-        Tile topBarrier;
-        Tile bottomBarrier;
-        List<Weapon> resourceWeapons;
-        List<Enemy> resourceEnemies;
-
-        //Score tracking fields
-        public int score;
-
-        //Item test fields
-        Item key;
-
-        //Random field
-        Random rng;
+        // Class Fields
+        private EventManager eventManager;
+        private Item key;
+        private Map map;
+        private MeleeWeapon spear;
+        private MeleeWeapon sword;
+        private MouseCursor mouseCursor;
+        private Player player;
+        private Projectile arrow;
+        private Projectile spell;
+        private RangedWeapon bow;
+        private RangedWeapon wand;
+        private Tile topBarrier;
+        private Tile bottomBarrier;
+        private List<Enemy> enemies;
+        private List<Enemy> resourceEnemies;
+        private List<GameObject> gameObjects;
+        private List<Map> maps;
+        private List<Weapon> resourceWeapons;
 
         // MonoGame Generated Constructors
         /// <summary>
-        /// Constructs the Game class.
+        /// Constructs the Game1 class.
         /// </summary>
         public Game1()
         {
+            // MonoGame Generated Construction
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
-            //Adjusts console window
+            // Adjust Game Window
             graphics.PreferredBackBufferWidth = 1280;
             graphics.PreferredBackBufferHeight = 720;
         }
@@ -114,6 +107,7 @@ namespace GroupGame
             // Initialize Fields
             gameState = GameState.MainMenu;
 
+            // MonoGame Generated Initialization
             base.Initialize();
         }
 
@@ -123,47 +117,47 @@ namespace GroupGame
         /// </summary>
         protected override void LoadContent()
         {
+            // MonoGame Generated Content Loading
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            //initializes the gameobjects list and event manager
-            gameObjects = new List<GameObject>();
-            enemies = new List<Enemy>();
-            eM = new EventManager();
+            // Load SpriteFonts
+            buttonFont = Content.Load<SpriteFont>("Buttons");
+            headingFont = Content.Load<SpriteFont>("Heading");
+            statFont = Content.Load<SpriteFont>("Stats");
+            titleFont = Content.Load<SpriteFont>("Title");
 
-            //allows window to resize
+            // Load Textures
+            arrowTexture = Content.Load<Texture2D>("arrow");
+            bowTexture = Content.Load<Texture2D>("bow");
+            circleTexture = Content.Load<Texture2D>("circle");
+            cursorTexture = Content.Load<Texture2D>("mouseCursor");
+            floorTexture = Content.Load<Texture2D>("floor");
+            keyTexture = Content.Load<Texture2D>("key");
+            playerTexture = Content.Load<Texture2D>("player");
+            spellTexture = Content.Load<Texture2D>("spell");
+            squareTexture = Content.Load<Texture2D>("square");
+            swordTexture = Content.Load<Texture2D>("sword");
+            wallTexture = Content.Load<Texture2D>("wall");
+            wandTexture = Content.Load<Texture2D>("wand");
+
+            // Initialize C# Fields
+            random = new Random();
+
+            // Initilize Class Fields
+            mouseCursor = new MouseCursor(new Rectangle(0, 0, 50, 50), cursorTexture);
+            enemies = new List<Enemy>();
+            eventManager = new EventManager();
+            gameObjects = new List<GameObject>();
+
+            // Initialize Window Resizing
             Window.AllowUserResizing = true;
 
-            //Loads SpriteFonts
-            title = Content.Load<SpriteFont>("Title");
-            buttons = Content.Load<SpriteFont>("Buttons");
-            stats = Content.Load<SpriteFont>("Stats");
-            heading = Content.Load<SpriteFont>("Heading");
-
-            //Loads Textures
-            squareTest = Content.Load<Texture2D>("square");
-            circleTest = Content.Load<Texture2D>("circle");
-            cursorTest = Content.Load<Texture2D>("mouseCursor");
-            bowTest = Content.Load<Texture2D>("bow");
-            arrowTest = Content.Load<Texture2D>("arrow");
-            swordTest = Content.Load<Texture2D>("sword");
-            spellTest = Content.Load<Texture2D>("spell");
-            wandTest = Content.Load<Texture2D>("wand");
-            keyTest = Content.Load<Texture2D>("key");
-            playerTest = Content.Load<Texture2D>("playerTest");
-            floorTest = Content.Load<Texture2D>("floorTest");
-            wallTest = Content.Load<Texture2D>("wallTest");
-
-            //initializes random variables
-            rng = new Random();
-
-            //creates the mousecursor
-            cursor = new MouseCursor(new Rectangle(0, 0, 50, 50), cursorTest);
-
-            //calls method to load resources
+            // Load Resources
             LoadResources();
 
-            // Set to true if testing [DEBUG MODE]
+            // Initialize Player
+            player.OffHand = bow;
             player.Debug = false;
         }
 
@@ -173,6 +167,7 @@ namespace GroupGame
         /// </summary>
         protected override void UnloadContent()
         {
+            // MonoGame Generated Content Unloading
             // TODO: Unload any non ContentManager content here
         }
 
@@ -183,20 +178,21 @@ namespace GroupGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            // Get KeyboardState
+            // Initialize User Inputs
             keyboardState = Keyboard.GetState();
             mouseState = Mouse.GetState();
 
-            //updates cursor
-            cursor.Update(mouseState);
+            // Update Based On User Inputs
+            mouseCursor.Update(mouseState);
 
-            // Finite State Machine
+            // Game Transitional Finite State Machine
             FiniteStateMachineUpdate();
 
-            // Set previous KeyboardState to current state
+            // Initialize Previous User Inputs
             previousKeyboardState = keyboardState;
             previousMouseState = mouseState;
 
+            // MonoGame Generated Update
             base.Update(gameTime);
         }
 
@@ -206,115 +202,295 @@ namespace GroupGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.TransparentBlack);
+            // MonoGame Generated Drawing
+            GraphicsDevice.Clear(Color.CornflowerBlue);
+            // End MonoGame Generated Drawing
+
+            // Start the SpriteBatch
             spriteBatch.Begin();
 
+            // Draw the Game
             FiniteStateMachineDraw();
-            DrawGUI(spriteBatch);
-            cursor.Draw(spriteBatch);
 
+            // Draw the UI
+            DrawGUI(spriteBatch);
+
+            // Draw the cursor
+            mouseCursor.Draw(spriteBatch);
+
+            // Stop the SpriteBatch
             spriteBatch.End();
+
+            // MonoGame Generated Drawing
             base.Draw(gameTime);
         }
 
+        // Methods
         /// <summary>
-        /// Draws menu/GUI to the window based on the current game state.
+        /// Loads all maps, weapons and enemies from the resource file
         /// </summary>
-        public void DrawGUI(SpriteBatch sb)
+        public void LoadResources()
         {
-            switch(gameState)
+            // Temporary Fields
+            int tileSize;
+            string currentEnemyName;
+            int[] weaponFieldsParsed;
+            int[] currentEnemyFields;
+            string[] currentWeaponFields;
+            int[,] tiles;
+            BinaryReader reader;
+            FileStream resources;
+
+            // Initialize Temporary Fields
+            tiles = new int[16, 16];
+            tileSize = 60;
+
+            // Initialize Class Fields
+            key = new Item(new Rectangle(500, 500, 50, 50), keyTexture, false);
+            spear = new MeleeWeapon(new Point(80, 40), swordTexture, 8, 20);
+            sword = new MeleeWeapon(new Point(40, 40), swordTexture, 5, 90, 5);
+            player = new Player(new Rectangle(150, 150, 50, 50), playerTexture, 300, sword);
+            arrow = new Projectile(new Point(20, 5), arrowTexture, 20);
+            spell = new Projectile(new Point(20, 20), spellTexture, 12);
+            bow = new RangedWeapon(new Point(40, 40), bowTexture, 2, arrow);
+            wand = new RangedWeapon(new Point(50, 50), wandTexture, 1, spell);
+            maps = new List<Map>();
+            resourceEnemies = new List<Enemy>();
+            resourceWeapons = new List<Weapon>();
+
+            // Open FileStream and BinaryReader
+            resources = File.OpenRead("../../../../../Resources/master.rsrc");
+            reader = new BinaryReader(resources);
+
+            // While there is unread data, continue looping
+            while (reader.PeekChar() != -1)
             {
-                //All cases draw for their appropriate gamestate
-                case GameState.MainMenu:
-                    //Draws buttons for main menu
-                    sb.Draw(squareTest, new Rectangle(graphics.PreferredBackBufferWidth / 2 - 45, 290, 100, 60), Color.Gray);
-                    sb.Draw(squareTest, new Rectangle(graphics.PreferredBackBufferWidth / 2 - 45, 370, 100, 60), Color.Gray);
-                    sb.Draw(squareTest, new Rectangle(graphics.PreferredBackBufferWidth / 2 - 45, 450, 100, 60), Color.Gray);
+                // Read a string that says "Map," "Enemy," or "Weapon"
+                switch (reader.ReadString())
+                {
+                    case "Map":
+                        // Skip file name
+                        reader.ReadString();
 
-                    //Draws text for main menu
-                    sb.DrawString(title, "GAME TITLE", new Vector2(graphics.PreferredBackBufferWidth/2 - 220, 70), Color.Black);
-                    sb.DrawString(buttons, "Start", new Vector2(graphics.PreferredBackBufferWidth/2 - 30, 300), Color.Black);
-                    sb.DrawString(buttons, "Shop", new Vector2(graphics.PreferredBackBufferWidth/2 - 31, 380), Color.Black);
-                    sb.DrawString(buttons, "Stats", new Vector2(graphics.PreferredBackBufferWidth/2 - 31, 460), Color.Black);
-                    break;
+                        // Assign all tiles to list
+                        for (int i = 0; i < tiles.GetLength(0); i++)
+                        {
+                            for (int j = 0; j < tiles.GetLength(1); j++)
+                            {
+                                tiles[i, j] = reader.ReadInt32();
+                            }
+                        }
 
-                case GameState.Game:
-                    //Draws underlying boxes for GUI
-                    sb.Draw(squareTest, new Rectangle(0, 0, 300, 30), Color.LightGreen);
-                    sb.Draw(squareTest, new Rectangle(Window.ClientBounds.Width-300, 0, 300, 80), Color.Gray);
-                    sb.Draw(squareTest, new Rectangle(0, Window.ClientBounds.Height - 100, 100, 100), Color.Gray);
-                    sb.Draw(squareTest, new Rectangle(0, Window.ClientBounds.Height - 150, 50, 50), Color.Gray);
-                    sb.Draw(squareTest, new Rectangle(50, Window.ClientBounds.Height - 150, 50, 50), Color.Gray);
-                    sb.Draw(squareTest, new Rectangle(2, Window.ClientBounds.Height - 148, 46, 46), Color.Black);
-                    sb.Draw(squareTest, new Rectangle(52, Window.ClientBounds.Height - 148, 46, 46), Color.Black);
-                    sb.Draw(squareTest, new Rectangle(2, Window.ClientBounds.Height - 98, 96, 96), Color.Black);
+                        // Add the Map to the List
+                        maps.Add(new Map(tileSize, tiles, floorTexture, wallTexture));
+                        break;
 
+                    case "Enemy":
+                        // Enemy File Format (six parameters from .enemy file): health, damage, attackSpeed, speed, xCoord, yCoord
+                        //    -  All items are read in as strings but parsed to: (int, int, int, int, int, int)
 
-                    //Draws text for in-game GUI
-                    sb.DrawString(stats, $"HP: {player.Health}/300", new Vector2(2, 2), Color.Black);
-                    sb.DrawString(stats, "Score: " + score, new Vector2(Window.ClientBounds.Width - 290, 2), Color.Black);
-                    sb.DrawString(stats, "Currency:", new Vector2(Window.ClientBounds.Width - 290, 22), Color.Black);
-                    sb.DrawString(stats, "Keys:", new Vector2(Window.ClientBounds.Width - 290, 42), Color.Black);
+                        // Stores name of the Enemy file
+                        currentEnemyName = reader.ReadString();
 
-                    //draws icons for GUI
-                    if (player.CurrentItem != null)
-                        player.CurrentItem.Draw(sb, new Rectangle(5, Window.ClientBounds.Height-145, 40, 40));
-                    if (player.Weapon != null)
-                        player.Weapon.Draw(sb, new Rectangle(5, Window.ClientBounds.Height-95, 90, 90));
-                    if (player.OffHand != null)
-                        player.OffHand.Draw(sb, new Rectangle(55, Window.ClientBounds.Height - 145, 40, 40));
+                        // Initialize Enemy Fields
+                        currentEnemyFields = new int[6];
 
-                    break;
+                        // Read in parameters
+                        for (int i = 0; i < currentEnemyFields.Length; i++)
+                        {
+                            currentEnemyFields[i] = int.Parse(reader.ReadString());
+                        }
 
-                case GameState.Pause:
-                    //Draws buttons/boxes for pause menu
-                    sb.Draw(squareTest, new Rectangle(graphics.PreferredBackBufferWidth / 2 - 175, 150, 350, 400), Color.Gray);
-                    sb.Draw(squareTest, new Rectangle(graphics.PreferredBackBufferWidth / 2 - 63, 290, 130, 60), Color.DimGray);
-                    sb.Draw(squareTest, new Rectangle(graphics.PreferredBackBufferWidth / 2 - 63, 370, 130, 60), Color.DimGray);
-                    sb.Draw(squareTest, new Rectangle(graphics.PreferredBackBufferWidth / 2 - 63, 450, 130, 60), Color.DimGray);
+                        // Add the enemy to the list of imported resource enemies
+                        resourceEnemies.Add(new Enemy(new Rectangle(currentEnemyFields[4], currentEnemyFields[5], 10, 10), // Enemy Position
+                                                      squareTexture, // Enemy Texture
+                                                      currentEnemyFields[0], // Health
+                                                      null, // Weapon
+                                                      currentEnemyFields[2], // Attack Interval
+                                                      currentEnemyFields[1], // Body Damage
+                                                      50, // Default Max Travel Width
+                                                      50, // Default Max Travel Height
+                                                      currentEnemyFields[3], // Travel Speed
+                                                      currentEnemyName, // Enemy Name
+                                                      EnemyMovementType.Random, // Enemy Movement Type
+                                                      player, // The Player
+                                                      random)); // Random Number Generator
+                        break;
 
-                    //Draws text for pause menu
-                    sb.DrawString(heading, "PAUSED", new Vector2(graphics.PreferredBackBufferWidth/2 - 65, 200), Color.Black);
-                    sb.DrawString(buttons, "Resume", new Vector2(graphics.PreferredBackBufferWidth/2 - 50, 300), Color.Black);
-                    sb.DrawString(buttons, "Shop", new Vector2(graphics.PreferredBackBufferWidth/2 - 35, 380), Color.Black);
-                    sb.DrawString(buttons, "Quit", new Vector2(graphics.PreferredBackBufferWidth/2 - 30, 460), Color.Black);
-                    break;
+                    //####### TO-DO: Integrate this list of enemies into the game.. some helpful info: ######################################################
+                    // - The enemies brought in do not have sizes, textures, set movement patterns, or max travelling dimensions
+                    // - Note that the current texture used is a square test texture
+                    // - I restate, in the .rsrc file, those ints are stored as strings.  They are strings since they come out of the Enemy external tool.
+                    //   They are then parsed to an array of ints here, and act as ints. No need to TryParse, the external tool only allows integers > 0 to be used.
 
-                case GameState.Shop:
-                    //Draws buttons for shop menu
-                    sb.Draw(squareTest, new Rectangle(graphics.PreferredBackBufferWidth / 2 - 50, 630, 100, 60), Color.Gray);
+                    case "Weapon":
+                        // Weapon File Format (four parameters from .weapon file): name, damage, durability, type
+                        //    -  All items are read in as strings, but the ints are parsed: (string, int, int, int)
 
-                    //Draws text for shop menu
-                    sb.DrawString(heading, "SHOP", new Vector2(graphics.PreferredBackBufferWidth/2 - 45, 50), Color.Black);
-                    sb.DrawString(buttons, "Back", new Vector2(graphics.PreferredBackBufferWidth/2 - 33, 640), Color.Black);
-                    break;
+                        // Skips file name
+                        reader.ReadString();
 
-                case GameState.Stats:
-                    //Draws buttons for stats menu
-                    sb.Draw(squareTest, new Rectangle(graphics.PreferredBackBufferWidth / 2 - 50, 630, 100, 60), Color.Gray);
+                        // Intialize Fields
+                        currentWeaponFields = new string[4]; // holds the original four parameters in string form
+                        weaponFieldsParsed = new int[3]; // takes parameters 2 through 4 and converts them to ints
 
-                    //Draws text for stats menu
-                    sb.DrawString(heading, "STATS", new Vector2(graphics.PreferredBackBufferWidth/2 - 50, 50), Color.White);
-                    sb.DrawString(buttons, "Back", new Vector2(graphics.PreferredBackBufferWidth/2 - 33, 640), Color.Black);
+                        // Read in four parameters
+                        for (int i = 0; i < 4; i++)
+                        {
+                            currentWeaponFields[i] = reader.ReadString();
+                        }
 
-                    // Draws text for tracked stats
-                    sb.DrawString(buttons, "Keys Collected: ", new Vector2(graphics.PreferredBackBufferWidth / 2 - 400, 150), Color.White);
-                    sb.DrawString(buttons, "Monsters Defeated: ", new Vector2(graphics.PreferredBackBufferWidth / 2 - 400, 200), Color.White);
-                    sb.DrawString(buttons, "Rooms Cleared: ", new Vector2(graphics.PreferredBackBufferWidth / 2 - 400, 250), Color.White);
-                    sb.DrawString(buttons, "Distance Travelled: " + player.DistTravelled, new Vector2(graphics.PreferredBackBufferWidth / 2 - 400, 300), Color.White);
-                    break;
+                        // Parse the last three parameters to integers, and store them in a separate array
+                        weaponFieldsParsed[0] = int.Parse(currentWeaponFields[1]);
+                        weaponFieldsParsed[1] = int.Parse(currentWeaponFields[2]);
+                        weaponFieldsParsed[2] = int.Parse(currentWeaponFields[3]);
 
-                case GameState.Gameover:
-                    //Draws buttons for gameover screen
-                    sb.Draw(squareTest, new Rectangle(graphics.PreferredBackBufferWidth / 2 - 130, 420, 100, 60), Color.Gray);
-                    sb.Draw(squareTest, new Rectangle(graphics.PreferredBackBufferWidth / 2, 420, 100, 60), Color.Gray);
+                        // Add the weapon to the list of imported resource weapons
+                        // based on its type: 0 - MeleeSpin, 1 - MeleeStab, 2 - Ranged
 
-                    //Draws text for gameover screen
-                    sb.DrawString(title, "GAME OVER", new Vector2(graphics.PreferredBackBufferWidth/2 - 240, 200), Color.Black);
-                    sb.DrawString(heading, "You died lol", new Vector2(680, 300), Color.Black);
-                    sb.DrawString(buttons, "Menu", new Vector2(graphics.PreferredBackBufferWidth/2 - 120, 430), Color.Black);
-                    sb.DrawString(buttons, "Quit", new Vector2(graphics.PreferredBackBufferWidth/2 + 20, 430), Color.Black);
-                    break;
+                        // The weapon is a melee-spin
+                        if (weaponFieldsParsed[2] == 0)
+                        {
+                            resourceWeapons.Add(new MeleeWeapon(new Point(40, 40), swordTexture, weaponFieldsParsed[0], 90, 5));
+                        }
+
+                        // The weapon is a melee-stab
+                        else if (weaponFieldsParsed[2] == 1)
+                        {
+                            resourceWeapons.Add(new MeleeWeapon(new Point(80, 40), swordTexture, weaponFieldsParsed[0], 20));
+                        }
+
+                        // The weapon is ranged
+                        else
+                        {
+                            resourceWeapons.Add(new RangedWeapon(new Point(40, 40), bowTexture, weaponFieldsParsed[0], arrow));
+                        }
+
+                        // End weapon case
+                        break;
+
+                        //####### TO-DO: Integrate this list of weapons into the game.. some helpful info: ######################################################
+                        // - The weapons brought in do not have textures, sizes, projectiles, spin speeds, or spin angles.
+                        // - The weapons brought in have durability and name fields that are not utilized by the constructors,
+                        //   but are there if you want to use them.
+                }
+            }
+
+            // Close the binary reader.
+            reader.Close();
+        }
+
+        /// <summary>
+        /// Checks if the specified key is down in current state, but not in previous state.
+        /// </summary>
+        /// <param name="key">The key to check.</param>
+        /// <returns>True if this is the first frame that the key was pressed and false otherwise.</returns>
+        public bool SingleKeyPress(Keys key)
+        {
+            return keyboardState.IsKeyDown(key) && !previousKeyboardState.IsKeyDown(key);
+        }
+
+        /// <summary>
+        /// Checks if the mouse is down in current state, but not in previous state, within a specified rectangle.
+        /// </summary>
+        /// <param name="rectangle">The area to check if the mouse is within.</param>
+        /// <returns>True if this is the first frame that the key was pressed and false otherwise.</returns>
+        public bool SingleMousePress(Rectangle rectangle)
+        {
+            return mouseState.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton == ButtonState.Released && rectangle.Contains(mouseState.Position);
+        }
+
+        /// <summary>
+        /// sets the map to a new map and adjusts size of the map to fit the screen
+        /// </summary>
+        public void NewMap()
+        {
+            // Get a random Map from the List
+            map = maps[random.Next(maps.Count)];
+
+            // If the Window height is less than the Window width
+            if (Window.ClientBounds.Height <= Window.ClientBounds.Width)
+            {
+                // Calculate the tile size based on height
+                tileSize = Window.ClientBounds.Height / 16;
+            }
+            else
+            {
+                // Calculate the tile size based on width
+                tileSize = Window.ClientBounds.Width / 16;
+            }
+
+            // Calculate Map Origin
+            mapOrigin = new Point((Window.ClientBounds.Width - tileSize * 16) / 2, 0);
+
+            // Set the Map Origin
+            map.SetOrigin(mapOrigin, tileSize);
+
+            // Set the top and bottom barriers
+            topBarrier = new Tile(new Rectangle(mapOrigin.X, mapOrigin.Y - tileSize, tileSize * 16, tileSize), wallTexture, true);
+            bottomBarrier = new Tile(new Rectangle(mapOrigin.X, mapOrigin.Y + 16 * tileSize, tileSize * 16, tileSize), wallTexture, true);
+        }
+
+        /// <summary>
+        /// Gets an empty floor space on the Map.
+        /// </summary>
+        /// <returns>The top left corner of an empty Tile on the Map.</returns>
+        public Point GetEmptyTile()
+        {
+            // Temporary Fields
+            Point empty;
+
+            // Loop until the key is placed on a floor tile
+            do
+            {
+                // Randomly generate the position
+                empty = new Point(random.Next(16), random.Next(14));
+            } while (map.Layout[empty.X, empty.Y].Collidable);
+
+            // Shifts the point to accurately fit the Map and returns it
+            return new Point(empty.X * tileSize + mapOrigin.X, empty.Y * tileSize + mapOrigin.Y);
+        }
+
+        /// <summary>
+        /// Moves Game to the Next Level.
+        /// </summary>
+        public void NextLevel()
+        {
+            // TO-DO ## clean this method up
+            // Clear the List of GameObjects
+            gameObjects.Clear();
+
+            // Remove any Items from the Player's inventory
+            player.CurrentItem = null;
+
+            // Create a new Map
+            NewMap();
+
+            // Set the Player's position
+            player.Position = new Rectangle(new Point((int)(mapOrigin.X + 8.5 * tileSize), mapOrigin.Y + 15 * tileSize), new Point(player.Position.Width, player.Position.Height));
+
+            // Add the key to the List of GameObjects
+            gameObjects.Add(key);
+
+            // Set the key to be uncollected
+            key.Collected = false;
+
+            // Set the key's position
+            key.Position = new Rectangle(GetEmptyTile(), new Point(key.Position.Width, key.Position.Height));
+
+            // Update the Player's score
+            score += 200;
+
+            // Loop a random number of times up to five times
+            for (int i = 0; i < random.Next(5) + 1; i++)
+            {
+                // Add a new Enemy to the List of Enemies
+                enemies.Add(new Enemy(resourceEnemies[random.Next(resourceEnemies.Count)]));
+
+                // Set the Enemy's position
+                enemies[i].Position = new Rectangle(GetEmptyTile(), new Point(enemies[i].Position.Width, enemies[i].Position.Height));
+
+                // TO-DO ## needs additional code to fully implement enemies
             }
         }
 
@@ -323,7 +499,7 @@ namespace GroupGame
         /// </summary>
         private void FiniteStateMachineUpdate()
         {
-            switch(gameState)
+            switch (gameState)
             {
                 case GameState.MainMenu:
                     // If the user presses "Enter" in the menu (or presses the button), start the game
@@ -369,65 +545,104 @@ namespace GroupGame
 
                     // Handle Here:
                     // All Updates of game objects
-                    
 
-                    //updates of player, objects, and enemies
+                    // Update the Player
                     player.Update(mouseState, previousMouseState, keyboardState, previousKeyboardState);
-                    for (int i = 0; i<gameObjects.Count; i++)
-                    {
-                        gameObjects[i].Update();
-                    }
-                    for(int i = 0; i<enemies.Count; i++)
-                    {
-                        enemies[i].Update();
-                    }
-                    
 
-                    //collisions
+                    // Loop through GameObjects
                     for (int i = 0; i < gameObjects.Count; i++)
                     {
-                        eM.Collision(player, gameObjects[i]);
+                        // Update GameObjects
+                        gameObjects[i].Update();
                     }
-                    for(int i = 0; i<enemies.Count; i++)
-                    {
-                        eM.Collision(player, enemies[i]);
-                        if (player.Weapon != null)
-                            eM.Collision(enemies[i], player.Weapon);
-                        if (player.OffHand != null)
-                            eM.Collision(enemies[i], player.OffHand);
-                        for (int j = 0; j < currentMap.Walls.Count; j++)
-                            eM.Collision(enemies[i], currentMap.Walls[j]);
-                    }
-                    for (int i = 0; i < currentMap.Walls.Count; i++)
-                    {
-                        eM.Collision((Character)player, currentMap.Walls[i]);
-                        if (player.Weapon != null)
-                            eM.Collision(currentMap.Walls[i], player.Weapon);
-                        if (player.OffHand != null)
-                            eM.Collision(currentMap.Walls[i], player.OffHand);
-                    }
-                    eM.Collision((Character)player, topBarrier);
-                    eM.Collision((Character)player, bottomBarrier);
-                    
-                    
-                    //removes dead enemies from the list
+
+                    // Loop through Enemies
                     for (int i = 0; i < enemies.Count; i++)
                     {
+                        // Update Enemies
+                        enemies[i].Update();
+                    }
+
+
+                    // Check Collisions
+                    // Loop through GameObjects
+                    for (int i = 0; i < gameObjects.Count; i++)
+                    {
+                        // Check Collisions between the Player and GameObjects
+                        eventManager.Collision(player, gameObjects[i]);
+                    }
+
+                    // Loop through Enemies
+                    for (int i = 0; i < enemies.Count; i++)
+                    {
+                        // Check Collisions between the Player and the Enemy
+                        eventManager.Collision(player, enemies[i]);
+
+                        // If the Player has a Weapon
+                        if (player.Weapon != null)
+                        {
+                            // Check Collisions between the Enemies and the Player's Weapon
+                            eventManager.Collision(enemies[i], player.Weapon);
+                        }
+
+                        // If the Player has an offHand Weapon
+                        if (player.OffHand != null)
+                        {
+                            // Check Collisions between the Enemies and the Player's offHand Weapon
+                            eventManager.Collision(enemies[i], player.OffHand);
+                        }
+
+                        // Loop through the Maps walls
+                        for (int j = 0; j < map.Walls.Count; j++)
+                        {
+                            // Check Collisions between the Enemies and the Map's walls
+                            eventManager.Collision(enemies[i], map.Walls[j]);
+                        }
+                    }
+
+                    // Loop through the Map's walls
+                    for (int i = 0; i < map.Walls.Count; i++)
+                    {
+                        // Check Collisions between the Player and the Map's walls
+                        eventManager.Collision((Character)player, map.Walls[i]);
+
+                        // If the Player has a Weapon
+                        if (player.Weapon != null)
+                        {
+                            // Check Collisions between the Map's Walls and the Player's Weapon
+                            eventManager.Collision(map.Walls[i], player.Weapon);
+                        }
+
+                        // If the Player has an offHand Weapon
+                        if (player.OffHand != null)
+                        {
+                            // Check Collisions between the Map's Walls and the Player's offHand Weapon
+                            eventManager.Collision(map.Walls[i], player.OffHand);
+                        }
+                    }
+
+                    // Check Collisions between the Player and the barriers
+                    eventManager.Collision((Character)player, topBarrier);
+                    eventManager.Collision((Character)player, bottomBarrier);
+
+                    // Loop through the Enemies
+                    for (int i = 0; i < enemies.Count; i++)
+                    {
+                        // If the Enemy is dead
                         if (enemies[i].Health <= 0)
                         {
+                            // Remove the Enemy from the List of Enemies
                             enemies.RemoveAt(i);
                             score += 100;
                         }
                     }
 
-
-
-                    // Loading Next Level
+                    // If there are no Enemies, the Player has the key, and goes through the top of the level
                     if (enemies.Count == 0 && player.CurrentItem == key && player.Position.Y <= 5)
                     {
+                        // Go to the next level
                         NextLevel();
                     }
-                    // Game Over Scenarios
 
                     break;
 
@@ -499,301 +714,163 @@ namespace GroupGame
         }
 
         /// <summary>
-        /// Handles all drawing
+        /// Handles Finite State Machine Drawing.
         /// </summary>
         private void FiniteStateMachineDraw()
         {
             switch (gameState)
             {
-                case GameState.MainMenu:                    
+                case GameState.MainMenu:
 
                     break;
 
                 case GameState.Game:
+                    // Draw the Map
+                    map.Draw(spriteBatch);
 
-                    currentMap.Draw(spriteBatch);
-                    for (int i = 0; i<gameObjects.Count; i++)
+                    // Loop through the Game Objects
+                    for (int i = 0; i < gameObjects.Count; i++)
                     {
+                        // Draw the GameObject
                         gameObjects[i].Draw(spriteBatch);
                     }
+
+                    // Draw the Player
                     player.Draw(spriteBatch);
-                    player.Weapon.DrawHands(spriteBatch, player.Position, circleTest, Color.Black);
-                    for (int i = 0; i<enemies.Count; i++)
+
+                    // Draw the Player's Hands
+                    player.Weapon.DrawHands(spriteBatch, player.Position, circleTexture, Color.Black);
+
+                    // Loop through the Enemies
+                    for (int i = 0; i < enemies.Count; i++)
                     {
+                        // Draw the enemy
                         enemies[i].Draw(spriteBatch);
                     }
+
                     break;
 
                 case GameState.Pause:
-                    
+
 
                     break;
 
                 case GameState.Shop:
-                    
+
 
                     break;
 
                 case GameState.Stats:
-                    
+
 
                     break;
 
                 case GameState.Gameover:
-                    
+
 
                     break;
             }
         }
 
         /// <summary>
-        /// Checks if the specified key is down in current state, but not in previous state.
+        /// Draws the GUI to the window based on the current game state.
         /// </summary>
-        /// <param name="key">The key to check.</param>
-        /// <returns>True if this is the first frame that the key was pressed and false otherwise.</returns>
-        public bool SingleKeyPress(Keys key)
+        public void DrawGUI(SpriteBatch sb)
         {
-            return keyboardState.IsKeyDown(key) && !previousKeyboardState.IsKeyDown(key);
-        }
-
-        /// <summary>
-        /// Checks if the mouse is down in current state, but not in previous state, within a specified rectangle.
-        /// </summary>
-        /// <param name="rectangle">The area to check if the mouse is within.</param>
-        /// <returns>True if this is the first frame that the key was pressed and false otherwise.</returns>
-        public bool SingleMousePress(Rectangle rectangle)
-        {
-            return mouseState.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton == ButtonState.Released && rectangle.Contains(mouseState.Position);
-        }
-
-
-        /// <summary>
-        /// Loads all maps, weapons and enemies from the resource file
-        /// </summary>
-        public void LoadResources()
-        {
-            // Test objects
-            basicArrow = new Projectile(new Point(20, 5), 20, arrowTest);
-            basicBow = new RangedWeapon(2, basicArrow, new Point(40, 40), bowTest);
-            basicSword = new MeleeWeapon(5, new Point(40, 40), swordTest, 90, 5);
-            basicSpear = new MeleeWeapon(8, new Point(80, 40), swordTest, 20);
-            player = new Player(10, basicSword, new Rectangle(150, 150, 50, 50), playerTest);
-            player.OffHand = basicBow;
-            basicSpell = new Projectile(new Point(20, 20), 12, spellTest);
-            enemyWand = new RangedWeapon(1, basicSpell, new Point(50, 50), wandTest);
-            key = new Item(new Rectangle(500, 500, 50, 50), keyTest, false);
-            
-            // Lists to hold resources
-            maps = new List<Map>();
-            resourceEnemies = new List<Enemy>();
-            resourceWeapons = new List<Weapon>();
-
-            // Open stream & reader
-            FileStream resources = File.OpenRead("../../../../../Resources/master.rsrc");
-            BinaryReader reader = new BinaryReader(resources);
-
-            // Extra map fields
-            int[,] tiles = new int[16, 16];
-            int tileSize = 60;
-
-            // Extra enemy fields
-            string currentEnemyName;
-            int[] currentEnemyFields;
-
-            // Extra weapon fields
-            string[] currentWeaponFields;
-            int[] weaponFieldsParsed;
-
-            // While there is unread data, continue looping
-            while (reader.PeekChar() != -1)
+            switch (gameState)
             {
-                // Read a string that says "Map" "Enemy" or "Weapon"
-                switch (reader.ReadString())
-                {
-                    case "Map":
-                        
-                        // Skip file name
-                        reader.ReadString();
+                case GameState.MainMenu:
 
-                        // Assign all tiles to list
-                        for (int i = 0; i < 16; i++) 
-                        {
-                            for (int j = 0; j < 16; j++) 
-                            {
-                                tiles[i, j] = reader.ReadInt32();
-                            }
-                        }
+                    // Draw buttons for the main menu
+                    sb.Draw(squareTexture, new Rectangle(graphics.PreferredBackBufferWidth / 2 - 45, 290, 100, 60), Color.Gray);
+                    sb.Draw(squareTexture, new Rectangle(graphics.PreferredBackBufferWidth / 2 - 45, 370, 100, 60), Color.Gray);
+                    sb.Draw(squareTexture, new Rectangle(graphics.PreferredBackBufferWidth / 2 - 45, 450, 100, 60), Color.Gray);
 
-                        // Add map to list
-                        maps.Add(new Map(wallTest, floorTest, tileSize, tiles));
-                        break;
+                    // Draw text for the main menu
+                    sb.DrawString(titleFont, "GAME TITLE", new Vector2(graphics.PreferredBackBufferWidth / 2 - 220, 70), Color.Black);
+                    sb.DrawString(buttonFont, "Start", new Vector2(graphics.PreferredBackBufferWidth / 2 - 30, 300), Color.Black);
+                    sb.DrawString(buttonFont, "Shop", new Vector2(graphics.PreferredBackBufferWidth / 2 - 31, 380), Color.Black);
+                    sb.DrawString(buttonFont, "Stats", new Vector2(graphics.PreferredBackBufferWidth / 2 - 31, 460), Color.Black);
+                    break;
 
-                        
-                    case "Enemy":
-                        // Enemy File Format (6 parameters from .enemy file): health, damage, attackSpeed, speed, xCoord, yCoord
-                        //    -  All items are read in as strings but parsed to: (int, int, int, int, int, int)
-
-                        // Stores name of the enemy file
-                        currentEnemyName = reader.ReadString();
-
-                        // Read all values of the enemy
-                        currentEnemyFields = new int[6];
-
-                        // Read in 6 parameters
-                        for (int i = 0; i < 6; i++)
-                        {
-                            currentEnemyFields[i] = int.Parse(reader.ReadString());
-                        }
-
-                        // Add the enemy to the list of imported resource enemies
-                        resourceEnemies.Add(new Enemy(currentEnemyFields[0],  // health
-                                                      null, // weapon
-                                                      new Rectangle(currentEnemyFields[4], currentEnemyFields[5], 10, 10), // adjust width and height later
-                                                      squareTest, // enemy texture (square for now)
-                                                      EnemyType.Random, // movement pattern (enum)
-                                                      50, // max travelling width - needs a default value here, and then is adjusted when enemy is placed in a room
-                                                      50, // max travelling height - same as above
-                                                      currentEnemyFields[3], // travel speed
-                                                      currentEnemyFields[2], // attack speed
-                                                      currentEnemyFields[1], // body damage
-                                                      player, // player 
-                                                      currentEnemyName));
-                        // End enemy case
-                        break;
-
-                        //####### TO-DO: Integrate this list of enemies into the game.. some helpful info: ######################################################
-                        // - The enemies brought in do not have sizes, textures, set movement patterns, or max travelling dimensions
-                        // - Note that the current texture used is a square test texture
-                        // - I restate, in the .rsrc file, those ints are stored as strings.  They are strings since they come out of the Enemy external tool.
-                        //   They are then parsed to an array of ints here, and act as ints. No need to TryParse, the external tool only allows integers > 0 to be used.
+                case GameState.Game:
+                    // Draw the underlying boxes for GUI
+                    sb.Draw(squareTexture, new Rectangle(0, 0, 300, 30), Color.LightGreen);
+                    sb.Draw(squareTexture, new Rectangle(Window.ClientBounds.Width - 300, 0, 300, 80), Color.Gray);
+                    sb.Draw(squareTexture, new Rectangle(0, Window.ClientBounds.Height - 100, 100, 100), Color.Gray);
+                    sb.Draw(squareTexture, new Rectangle(0, Window.ClientBounds.Height - 150, 50, 50), Color.Gray);
+                    sb.Draw(squareTexture, new Rectangle(50, Window.ClientBounds.Height - 150, 50, 50), Color.Gray);
+                    sb.Draw(squareTexture, new Rectangle(2, Window.ClientBounds.Height - 148, 46, 46), Color.Black);
+                    sb.Draw(squareTexture, new Rectangle(52, Window.ClientBounds.Height - 148, 46, 46), Color.Black);
+                    sb.Draw(squareTexture, new Rectangle(2, Window.ClientBounds.Height - 98, 96, 96), Color.Black);
 
 
-                        
-                    case "Weapon":
-                        // Weapon File Format (4 parameters from .weapon file): name, damage, durability, type
-                        //    -  All items are read in as strings, but the ints are parsed: (string, int, int, int)
+                    // Draw the text for in-game GUI
+                    sb.DrawString(statFont, $"HP: {player.Health}/300", new Vector2(2, 2), Color.Black);
+                    sb.DrawString(statFont, $"Score: {score}", new Vector2(Window.ClientBounds.Width - 290, 2), Color.Black);
+                    sb.DrawString(statFont, "Currency:", new Vector2(Window.ClientBounds.Width - 290, 22), Color.Black);
+                    sb.DrawString(statFont, "Keys:", new Vector2(Window.ClientBounds.Width - 290, 42), Color.Black);
 
-                        // Skips file name
-                        reader.ReadString();
+                    // Draw the icons for GUI
+                    if (player.CurrentItem != null)
+                        player.CurrentItem.Draw(sb, new Rectangle(5, Window.ClientBounds.Height - 145, 40, 40));
+                    if (player.Weapon != null)
+                        player.Weapon.Draw(sb, new Rectangle(5, Window.ClientBounds.Height - 95, 90, 90));
+                    if (player.OffHand != null)
+                        player.OffHand.Draw(sb, new Rectangle(55, Window.ClientBounds.Height - 145, 40, 40));
 
-                        // Read all values of the weapon
-                        currentWeaponFields = new string[4]; // holds the original 4 parameters in string form
-                        weaponFieldsParsed = new int[3]; // takes parameters 2 through 4 and converts them to ints
+                    break;
 
-                        // Read in 4 parameters
-                        for (int i = 0; i < 4; i++)
-                        {
-                            currentWeaponFields[i] = reader.ReadString();
-                        }
+                case GameState.Pause:
+                    // Draw buttons the for pause menu
+                    sb.Draw(squareTexture, new Rectangle(graphics.PreferredBackBufferWidth / 2 - 175, 150, 350, 400), Color.Gray);
+                    sb.Draw(squareTexture, new Rectangle(graphics.PreferredBackBufferWidth / 2 - 63, 290, 130, 60), Color.DimGray);
+                    sb.Draw(squareTexture, new Rectangle(graphics.PreferredBackBufferWidth / 2 - 63, 370, 130, 60), Color.DimGray);
+                    sb.Draw(squareTexture, new Rectangle(graphics.PreferredBackBufferWidth / 2 - 63, 450, 130, 60), Color.DimGray);
 
-                        // Parse the last 3 parameters to integers, and store them in a separate array
-                        weaponFieldsParsed[0] = int.Parse(currentWeaponFields[1]);
-                        weaponFieldsParsed[1] = int.Parse(currentWeaponFields[2]);
-                        weaponFieldsParsed[2] = int.Parse(currentWeaponFields[3]);
+                    // Draw text for the pause menu
+                    sb.DrawString(headingFont, "PAUSED", new Vector2(graphics.PreferredBackBufferWidth / 2 - 65, 200), Color.Black);
+                    sb.DrawString(buttonFont, "Resume", new Vector2(graphics.PreferredBackBufferWidth / 2 - 50, 300), Color.Black);
+                    sb.DrawString(buttonFont, "Shop", new Vector2(graphics.PreferredBackBufferWidth / 2 - 35, 380), Color.Black);
+                    sb.DrawString(buttonFont, "Quit", new Vector2(graphics.PreferredBackBufferWidth / 2 - 30, 460), Color.Black);
+                    break;
 
-                        // Add the weapon to the list of imported resource weapons
-                        // based on its type: 0 - MeleeSpin, 1 - MeleeStab, 2 - Ranged
+                case GameState.Shop:
+                    // Draw buttons for the shop menu
+                    sb.Draw(squareTexture, new Rectangle(graphics.PreferredBackBufferWidth / 2 - 50, 630, 100, 60), Color.Gray);
 
-                        // The weapon is a melee-spin
-                        if (weaponFieldsParsed[2] == 0)
-                        {
-                            resourceWeapons.Add(new MeleeWeapon(weaponFieldsParsed[0], new Point(40, 40), swordTest, 90, 5));
-                        }
+                    // Draw text for the shop menu
+                    sb.DrawString(headingFont, "SHOP", new Vector2(graphics.PreferredBackBufferWidth / 2 - 45, 50), Color.Black);
+                    sb.DrawString(buttonFont, "Back", new Vector2(graphics.PreferredBackBufferWidth / 2 - 33, 640), Color.Black);
+                    break;
 
-                        // The weapon is a melee-stab
-                        else if (weaponFieldsParsed[2] == 1)
-                        {
-                            resourceWeapons.Add(new MeleeWeapon(weaponFieldsParsed[0], new Point(80, 40), swordTest, 20));
-                        }
+                case GameState.Stats:
+                    // Draw buttons for the stats menu
+                    sb.Draw(squareTexture, new Rectangle(graphics.PreferredBackBufferWidth / 2 - 50, 630, 100, 60), Color.Gray);
 
-                        // The weapon is ranged
-                        else
-                        {
-                            resourceWeapons.Add(new RangedWeapon(weaponFieldsParsed[0], basicArrow, new Point(40, 40), bowTest));
-                        }
+                    // Draw text for the stats menu
+                    sb.DrawString(headingFont, "STATS", new Vector2(graphics.PreferredBackBufferWidth / 2 - 50, 50), Color.White);
+                    sb.DrawString(buttonFont, "Back", new Vector2(graphics.PreferredBackBufferWidth / 2 - 33, 640), Color.Black);
 
-                        // End weapon case
-                        break;
+                    // Draw text for the tracked stats
+                    sb.DrawString(buttonFont, "Keys Collected: ", new Vector2(graphics.PreferredBackBufferWidth / 2 - 400, 150), Color.White);
+                    sb.DrawString(buttonFont, "Monsters Defeated: ", new Vector2(graphics.PreferredBackBufferWidth / 2 - 400, 200), Color.White);
+                    sb.DrawString(buttonFont, "Rooms Cleared: ", new Vector2(graphics.PreferredBackBufferWidth / 2 - 400, 250), Color.White);
+                    sb.DrawString(buttonFont, "Distance Travelled: " + player.TravelledDistance, new Vector2(graphics.PreferredBackBufferWidth / 2 - 400, 300), Color.White);
+                    break;
 
-                        //####### TO-DO: Integrate this list of weapons into the game.. some helpful info: ######################################################
-                        // - The weapons brought in do not have textures, sizes, projectiles, spin speeds, or spin angles.
-                        // - The weapons brought in have durability and name fields that are not utilized by the constructors,
-                        //   but are there if you want to use them.
+                case GameState.Gameover:
+                    // Draw buttons for the gameover screen
+                    sb.Draw(squareTexture, new Rectangle(graphics.PreferredBackBufferWidth / 2 - 130, 420, 100, 60), Color.Gray);
+                    sb.Draw(squareTexture, new Rectangle(graphics.PreferredBackBufferWidth / 2, 420, 100, 60), Color.Gray);
 
-
-                } // end switch
-            } // end while
-
-            // Close the binary reader.
-            reader.Close();
-
-            
-        }
-
-        /// <summary>
-        /// sets the map to a new map and adjusts size of the map to fit the screen
-        /// </summary>
-        public void NewMap()
-        {
-
-            // TO-DO ## Clean this method up
-
-            currentMap = maps[rng.Next(maps.Count)];
-            if (Window.ClientBounds.Height <= Window.ClientBounds.Width)
-                tileSize = Window.ClientBounds.Height / 16;
-            else
-                tileSize = Window.ClientBounds.Width / 16;
-            mapOrigin = new Point((Window.ClientBounds.Width - tileSize * 16) / 2, 0);
-            currentMap.SetOrigin(mapOrigin, tileSize);
-            topBarrier = new Tile(new Rectangle(mapOrigin.X, mapOrigin.Y - tileSize, tileSize * 16, tileSize), wallTest, true);
-            bottomBarrier = new Tile(new Rectangle(mapOrigin.X, mapOrigin.Y + 16 * tileSize, tileSize * 16, tileSize), wallTest, true);
-        }
-
-        /// <summary>
-        /// Moves Game to the Next Level
-        /// </summary>
-        public void NextLevel()
-        {
-
-            // TO-DO ## clean this method up
-
-            gameObjects.Clear();
-            player.CurrentItem = null;
-            NewMap();
-            player.Position = new Rectangle(new Point((int)(mapOrigin.X + 8.5 * tileSize), mapOrigin.Y + 15 * tileSize), new Point(player.Position.Width, player.Position.Height));
-            gameObjects.Add(key);
-            key.PickedUp = false;
-            key.Position = new Rectangle(GetEmptyTile(), new Point(key.Position.Width, key.Position.Height));
-            score += 200;
-
-            //random amount of enemies between 1 and 5
-            for(int i = 0; i<rng.Next(5)+1; i++)
-            {
-                enemies.Add(new Enemy(resourceEnemies[rng.Next(resourceEnemies.Count)]));
-                enemies[i].Position = new Rectangle(GetEmptyTile(), new Point(enemies[i].Position.Width, enemies[i].Position.Height));
-                
-                // TO-DO ## needs additional code to fully implement enemies
-            
+                    // Draw text for the gameover screen
+                    sb.DrawString(titleFont, "GAME OVER", new Vector2(graphics.PreferredBackBufferWidth / 2 - 240, 200), Color.Black);
+                    sb.DrawString(headingFont, "You died lol", new Vector2(680, 300), Color.Black);
+                    sb.DrawString(buttonFont, "Menu", new Vector2(graphics.PreferredBackBufferWidth / 2 - 120, 430), Color.Black);
+                    sb.DrawString(buttonFont, "Quit", new Vector2(graphics.PreferredBackBufferWidth / 2 + 20, 430), Color.Black);
+                    break;
             }
-        }
-
-        /// <summary>
-        /// generates coordinates corresponding to an empty tile on the map 
-        /// </summary>
-        /// <returns>the top left corner of an empty tile on the map</returns>
-        public Point GetEmptyTile()
-        {
-            //creates point
-            Point empty;
-
-            //loops until the coordinates represent a tile that isnt a wall
-            do
-            {
-                empty = new Point(rng.Next(16), rng.Next(14));
-            } while (currentMap.Layout[empty.X, empty.Y].IsWall);
-
-            //shifts the point to accurately fit the map
-            return new Point(empty.X * tileSize + mapOrigin.X, empty.Y * tileSize + mapOrigin.Y);
         }
     }
 }

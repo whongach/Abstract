@@ -1,91 +1,123 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
+﻿// Generated Namespace References
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
+// Namespace References
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+
+/// <summary>
+/// The namespace containing the game project.
+/// </summary>
 namespace GroupGame
 {
+    /// <summary>
+    /// Class for the game Map and Map drawing.
+    /// </summary>
     class Map
     {
-        //fields
-        Tile[,] layout;
-        List<Tile> walls;
-        Texture2D wallSprite;
-        Texture2D floorSprite;
-        int tileSize;
+        // Fields
+        private readonly Tile[,] layout;
+        private readonly List<Tile> walls;
 
-        //properties
-        public List<Tile> Walls
-        {
-            get { return walls; }
-        }
+        // Properties
+        /// <summary>
+        /// Gets the Tile layout of the Map.
+        /// </summary>
+        public Tile[,] Layout { get { return layout; } }
 
-        public Tile[,] Layout
-        {
-            get { return layout; }
-        }
+        /// <summary>
+        /// Gets the Walls in the Map.
+        /// </summary>
+        public List<Tile> Walls { get { return walls; } }
 
-        //constructor
-        public Map(Texture2D wallSprite, Texture2D floorSprite, int tileSize, int[,] layout)
+        // Constructors
+        /// <summary>
+        /// Constructs a Map object.
+        /// </summary>
+        /// <param name="tileSize">The size of each individual Tile.</param>
+        /// <param name="layout">The layout of the Map.</param>
+        /// <param name="floorTexture">The Texture2D representing the floor's texture.</param>
+        /// <param name="wallTexture">The Texture2D representing the wall's texture.</param>
+        public Map(int tileSize, int[,] layout, Texture2D floorTexture, Texture2D wallTexture)
         {
-            //initializes variables
-            this.wallSprite = wallSprite;
-            this.floorSprite = floorSprite;
-            this.tileSize = tileSize;
-            this.layout = new Tile[16,16];
-            walls = new List<Tile>();
-            Tile currentWall = null;
-            for (int i = 0; i < 16; i++) 
+            // Initialize Fields
+            this.layout = new Tile[16, 16];
+            this.walls = new List<Tile>();
+
+            // Fill the Map
+            // Temporary Fields
+            Tile currentWall;
+
+            // Iterate through Map size
+            for (int i = 0; i < this.layout.GetLength(0); i++)
             {
-                for (int j = 0; j < 16; j++) 
+                for (int j = 0; j < this.layout.GetLength(1); j++)
                 {
+                    // If the constructed layout at the location is a wall tile
                     if (layout[i, j] == 1)
                     {
-                        currentWall = new Tile(new Rectangle(i * tileSize, j * tileSize, tileSize, tileSize), wallSprite, true);
+                        // Build a new currentWall tile
+                        currentWall = new Tile(new Rectangle(i * tileSize,
+                                                             j * tileSize,
+                                                             tileSize,
+                                                             tileSize),
+                                                             wallTexture,
+                                                             true);
+
+                        // Set the Map layout to include the new wall tile
                         this.layout[i, j] = currentWall;
+
+                        // Add the wall tile to the List of wall tiles
                         walls.Add(currentWall);
                     }
                     else
-                        this.layout[i, j] = new Tile(new Rectangle(i * tileSize, j * tileSize, tileSize, tileSize), floorSprite, false);
+                    {
+                        // If it is not a Wall, build a floor tile
+                        this.layout[i, j] = new Tile(new Rectangle(i * tileSize,
+                                                     j * tileSize,
+                                                     tileSize,
+                                                     tileSize),
+                                                     floorTexture,
+                                                     false);
+                    }
                 }
             }
         }
 
-        //methods
-
+        // Methods
         /// <summary>
-        /// calls draw for each tile
+        /// Draws the Tiles.
         /// </summary>
-        /// <param name="sb">the spritebatch used to draw</param>
-        public void Draw(SpriteBatch sb)
+        /// <param name="spriteBatch">The SpriteBatch used to draw the Tiles.</param>
+        public void Draw(SpriteBatch spriteBatch)
         {
-            for(int i = 0; i<layout.GetLength(0); i++)
-            {
-                for(int j = 0; j<layout.GetLength(1); j++)
-                {
-                    layout[i, j].Draw(sb);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Shifts all tile in the map to adjust for the origin and tilesize
-        /// </summary>
-        /// <param name="origin">The top left corner of the map</param>
-        /// <param name="tileSize">the width and height of each tile</param>
-        public void SetOrigin(Point origin, int scaledSize)
-        {
+            // Iterate through the Tile layout
             for (int i = 0; i < layout.GetLength(0); i++)
             {
                 for (int j = 0; j < layout.GetLength(1); j++)
                 {
-                    layout[i, j].Position = new Rectangle(origin.X + i * scaledSize, origin.Y + j * scaledSize, scaledSize, scaledSize);
+                    // Draw the stored Tile
+                    layout[i, j].Draw(spriteBatch);
                 }
             }
         }
 
+        /// <summary>
+        /// Shifts the Tiles in the Map.
+        /// </summary>
+        /// <param name="origin">The Point that represents the top left corner of the Map.</param>
+        /// <param name="scaledSize">The width and height of a scaled Tile.</param>
+        public void SetOrigin(Point origin, int scaledSize)
+        {
+            // Iterate through the Tile layout
+            for (int i = 0; i < layout.GetLength(0); i++)
+            {
+                for (int j = 0; j < layout.GetLength(1); j++)
+                {
+                    // Shift the Tiles in the Map
+                    layout[i, j].Position = new Rectangle(origin.X + i * scaledSize, origin.Y + j * scaledSize, scaledSize, scaledSize);
+                }
+            }
+        }
     }
 }

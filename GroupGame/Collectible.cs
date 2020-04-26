@@ -1,50 +1,49 @@
-﻿using Microsoft.Xna.Framework;
+﻿// Namespace References
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 /// <summary>
-/// The namespace for the Game.
+/// The namespace containing the game project.
 /// </summary>
 namespace GroupGame
 {
     /// <summary>
-    /// Abstract class for Collectible items.
+    /// Abstract class for Collectible type GameObjects.
     /// </summary>
     abstract class Collectible : GameObject
     {
         // Fields
-        private bool pickedUp;
+        private bool collected;
 
         // Properties 
-
         /// <summary>
         /// Gets and sets whether the Collectible has been Picked Up or not.
-        /// </summary>
-        public bool PickedUp { get { return pickedUp; } set { pickedUp = value; } }
+        /// </summary>aaaaa
+        public bool Collected { get { return collected; } set { collected = value; } }
 
         // Constructors
         /// <summary>
-        /// Constructs a Collectible GameObject that is Collidable.
+        /// Constructs a Collectible GameObject.
         /// </summary>
-        /// <param name="position">The Collectible's position.</param>
-        /// <param name="sprite">The Collectible's sprite.</param>
-        /// <param name="circular">Whether or not the Collectible's shape is circular or rectangular.</param>
-        /// <param name="equipped">Where or not the Collectible is equipped.</param>
-        public Collectible(Rectangle position, Texture2D sprite, bool equipped) : base(position, sprite)
+        /// <param name="position">The Rectangle representing the Collectible's position and size.</param>
+        /// <param name="texture">The Texture2D representing the Collectible's texture.</param>
+        /// <param name="collected">Whether or not the Collectible is collected.</param>
+        public Collectible(Rectangle position, Texture2D texture, bool collected) : base(position, texture)
         {
             // Initialize fields
-            pickedUp = equipped;
+            this.collected = collected;
         }
 
         // Methods
         /// <summary>
-        /// Draw method for items in the inventory.
+        /// Draws the Collectible in the inventory.
         /// </summary>
-        /// <param name="sb">A SpriteBatch object.</param>
-        /// <param name="displayPos">The position to draw the inventory box.</param>
-        public virtual void Draw(SpriteBatch sb, Rectangle displayPos)
+        /// <param name="spriteBatch">The SpriteBatch used to draw the Collectible GameObject.</param>
+        /// <param name="displayPosition">The Rectangle representing the Collectible's display position and size</param>
+        public virtual void Draw(SpriteBatch spriteBatch, Rectangle displayPosition)
         {
-            // Draw the collectible
-            sb.Draw(sprite, displayPos, Color.White);
+            // Draw the Collectible
+            spriteBatch.Draw(texture, displayPosition, Color.White);
         }
     }
 }
