@@ -22,6 +22,7 @@ namespace GroupGame
         private double travelledDistance;
         private Item currentItem;
         private Weapon offHand;
+        private int speed;
 
         // Properties
         /// <summary>
@@ -44,6 +45,11 @@ namespace GroupGame
         /// </summary>
         public Weapon OffHand { get { return offHand; } set { offHand = value; } }
 
+        /// <summary>
+        /// Gets and sets the speed of the player
+        /// <summary>
+        public int Speed { get { return speed; } set { speed = value; } } 
+
         // Constructors
         /// <summary>
         /// Constructs a Player Character.
@@ -60,6 +66,7 @@ namespace GroupGame
             this.travelledDistance = 0;
             this.currentItem = null;
             this.offHand = null;
+            this.speed = 4;
         }
 
         // Methods
@@ -73,34 +80,34 @@ namespace GroupGame
             if (keyboardState.IsKeyDown(Keys.W))
             {
                 // Move upward
-                this.position.Y -= 6;
+                this.position.Y -= speed;
 
                 // Increment the Player's travelled distance
-                travelledDistance += 6;
+                travelledDistance += speed;
             }
             if (keyboardState.IsKeyDown(Keys.A))
             {
                 // Move to the left
-                this.position.X -= 6;
+                this.position.X -= speed;
 
                 // Increment the Player's travelled distance
-                travelledDistance += 6;
+                travelledDistance += speed;
             }
             if (keyboardState.IsKeyDown(Keys.S))
             {
                 // Move downward
-                this.position.Y += 6;
+                this.position.Y += speed;
 
                 // Increment the Player's travelled distance
-                travelledDistance += 6;
+                travelledDistance += speed;
             }
             if (keyboardState.IsKeyDown(Keys.D))
             {
                 // Move to the right
-                this.position.X += 6;
+                this.position.X += speed;
 
                 // Increment the Player's travelled distance
-                travelledDistance += 6;
+                travelledDistance += speed;
             }
         }
 

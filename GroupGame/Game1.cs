@@ -91,8 +91,9 @@ namespace GroupGame
             Content.RootDirectory = "Content";
 
             // Adjust Game Window
-            graphics.PreferredBackBufferWidth = 1280;
-            graphics.PreferredBackBufferHeight = 720;
+            graphics.PreferredBackBufferWidth = 1920;
+            graphics.PreferredBackBufferHeight = 1080;
+            graphics.IsFullScreen = true;
         }
 
         // MonoGame Generated Methods
@@ -243,13 +244,13 @@ namespace GroupGame
 
             // Initialize Temporary Fields
             tiles = new int[16, 16];
-            tileSize = 60;
+            tileSize = 68;
 
             // Initialize Class Fields
             key = new Item(new Rectangle(500, 500, 50, 50), keyTexture, false);
             spear = new MeleeWeapon(new Point(80, 40), swordTexture, 8, 20);
             sword = new MeleeWeapon(new Point(40, 40), swordTexture, 5, 90, 5);
-            player = new Player(new Rectangle(150, 150, 50, 50), playerTexture, 300, sword);
+            player = new Player(new Rectangle(0, 0, 50, 50), playerTexture, 300, sword);
             arrow = new Projectile(new Point(20, 5), arrowTexture, 20);
             spell = new Projectile(new Point(20, 20), spellTexture, 12);
             bow = new RangedWeapon(new Point(40, 40), bowTexture, 2, arrow);
@@ -408,17 +409,7 @@ namespace GroupGame
             // Get a random Map from the List
             map = maps[random.Next(maps.Count)];
 
-            // If the Window height is less than the Window width
-            if (Window.ClientBounds.Height <= Window.ClientBounds.Width)
-            {
-                // Calculate the tile size based on height
-                tileSize = Window.ClientBounds.Height / 16;
-            }
-            else
-            {
-                // Calculate the tile size based on width
-                tileSize = Window.ClientBounds.Width / 16;
-            }
+            tileSize = 68;
 
             // Calculate Map Origin
             mapOrigin = new Point((Window.ClientBounds.Width - tileSize * 16) / 2, 0);
@@ -572,6 +563,12 @@ namespace GroupGame
                     // Update the Player
                     player.Update(mouseState, previousMouseState, keyboardState, previousKeyboardState);
 
+                    // Give the player a speed boost if all enemies are dead
+                    if (enemies.Count != 0)
+                        player.Speed = 4;
+                    else
+                        player.Speed = 6;
+
                     // Loop through GameObjects
                     for (int i = 0; i < gameObjects.Count; i++)
                     {
@@ -621,6 +618,10 @@ namespace GroupGame
                             // Check Collisions between the Enemies and the Map's walls
                             eventManager.Collision(enemies[i], map.Walls[j]);
                         }
+
+                        // Check collisions with barriers
+                        eventManager.Collision(enemies[i], topBarrier);
+                        eventManager.Collision(enemies[i], bottomBarrier);
                     }
 
                     // Loop through the Map's walls
@@ -647,6 +648,7 @@ namespace GroupGame
                     // Check Collisions between the Player and the barriers
                     eventManager.Collision((Character)player, topBarrier);
                     eventManager.Collision((Character)player, bottomBarrier);
+                    
 
                     // Loop through the Enemies
                     for (int i = 0; i < enemies.Count; i++)
