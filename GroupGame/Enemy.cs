@@ -28,6 +28,7 @@ namespace GroupGame
     {
         // Fields
         private double weaponAngle;
+        private int currentFrame;
         private readonly int attackInterval;
         private readonly int bodyDamage;
         private readonly int maxHeight;
@@ -119,6 +120,7 @@ namespace GroupGame
             this.enemyMovementType = enemy.enemyMovementType;
             this.player = enemy.player;
             this.random = enemy.random;
+            currentFrame = 0;
 
             // Initialize start direction dependent on the EnemyMovementType
             if (enemyMovementType == EnemyMovementType.LeftRight)
@@ -167,11 +169,13 @@ namespace GroupGame
                 RandomWalk(maxWidth);
             }
 
+            currentFrame++;
+
             // If the Enemy has a Weapon
             if (weapon != null)
             {
                 // Attack every attackInterval
-                if (random.Next(attackInterval * 200) == 0)
+                if (currentFrame%(100*attackInterval) == 0)
                 {
                     weapon.Attack();
                 }

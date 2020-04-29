@@ -73,34 +73,34 @@ namespace GroupGame
             if (keyboardState.IsKeyDown(Keys.W))
             {
                 // Move upward
-                this.position.Y -= 3;
+                this.position.Y -= 6;
 
                 // Increment the Player's travelled distance
-                travelledDistance += 3;
+                travelledDistance += 6;
             }
             if (keyboardState.IsKeyDown(Keys.A))
             {
                 // Move to the left
-                this.position.X -= 3;
+                this.position.X -= 6;
 
                 // Increment the Player's travelled distance
-                travelledDistance += 3;
+                travelledDistance += 6;
             }
             if (keyboardState.IsKeyDown(Keys.S))
             {
                 // Move downward
-                this.position.Y += 3;
+                this.position.Y += 6;
 
                 // Increment the Player's travelled distance
-                travelledDistance += 3;
+                travelledDistance += 6;
             }
             if (keyboardState.IsKeyDown(Keys.D))
             {
                 // Move to the right
-                this.position.X += 3;
+                this.position.X += 6;
 
                 // Increment the Player's travelled distance
-                travelledDistance += 3;
+                travelledDistance += 6;
             }
         }
 
