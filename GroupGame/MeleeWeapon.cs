@@ -1,144 +1,234 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿// Generated Namespace References
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
+// Namespace References
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+
+/// <summary>
+/// The namespace containing the game project.
+/// </summary>
 namespace GroupGame
 {
+    /// <summary>
+    /// Class for MeleeWeapon type Weapons.
+    /// </summary>
     class MeleeWeapon : Weapon
     {
-        //fields
-        int rotationDegrees;
-        int rotationSpeed;
-        bool attacking;
-        int attackFrame;
-        int totalFrames;
+        // Fields
+        private bool attacking;
+        private int attackFrame;
+        private readonly int rotationDegrees;
+        private readonly int rotationSpeed;
+        private readonly int totalFrames;
 
-        //properties
-        public bool Attacking
+        // Properties
+        /// <summary>
+        /// Gets or sets whether the MeleeWeapon is in the process of attacking.
+        /// </summary>
+        public bool Attacking { get { return attacking; } set { attacking = value; } }
+
+        // Constructors
+        /// <summary>
+        /// Constructs a spinning MeleeWeapon Weapon in the Character's hand.
+        /// </summary>
+        /// <param name="size">The Point representing the size of the MeleeWeapon.</param>
+        /// <param name="texture">The Texture2D representing the MeleeWeapon's texture.</param>
+        /// <param name="damage">The damage that the MeleeWeapon deals.</param>
+        /// <param name="rotationDegrees">The number of degrees that the MeleeWeapon should rotate.</param>
+        /// <param name="rotationSpeed">The speed that the MeleeWeapon should rotate.</param>
+        public MeleeWeapon(Point size, Texture2D texture, int damage, int rotationDegrees, int rotationSpeed) : base(new Rectangle(Point.Zero, size), texture, true, damage)
         {
-            get { return attacking; }
-            set { attacking = value; }
-        }
-
-        //constructors
-
-        //constructor for spinning weapon in hand
-        public MeleeWeapon(int damage, Point size, Texture2D sprite, int rotationDegrees, int rotationSpeed) : base(new Rectangle(new Point(0, 0), size), sprite, true, damage)
-        {
+            // Initialize Fields
+            this.attacking = false;
+            this.attackFrame = 0;
             this.rotationDegrees = rotationDegrees;
             this.rotationSpeed = rotationSpeed;
-            totalFrames = rotationDegrees / rotationSpeed;
-            this.attacking = false;
-            this.attackFrame = 0;
+            this.totalFrames = rotationDegrees / rotationSpeed;
         }
-
-        //constructor for static weapon in hand
-        public MeleeWeapon(int damage, Point size, Texture2D sprite, int duration) : base(new Rectangle(new Point(0,0),size), sprite, true, damage)
-        {
-            rotationDegrees = 0;
-            rotationSpeed = 0;
-            totalFrames = duration;
-            this.attacking = false;
-            this.attackFrame = 0;
-        }
-
-        //constructor for spinning weapon pickup
-        public MeleeWeapon(int damage, Rectangle position, Texture2D sprite, int rotationDegrees, int rotationSpeed) : base(position, sprite, false, damage)
-        {
-            this.rotationDegrees = rotationDegrees;
-            this.rotationSpeed = rotationSpeed;
-            totalFrames = rotationDegrees / rotationSpeed;
-            this.attacking = false;
-            this.attackFrame = 0;
-        }
-
-        //constructor for static weapon pickup
-        public MeleeWeapon(int damage, Rectangle position, Texture2D sprite, int duration) : base(position, sprite, false, damage)
-        {
-            rotationDegrees = 0;
-            rotationSpeed = 0;
-            totalFrames = duration;
-            this.attacking = false;
-            this.attackFrame = 0;
-        }
-
-        //methods
 
         /// <summary>
-        /// sets attacking to true if it is false and the attackframe is 0
+        /// Constructs a MeleeWeapon Weapon in the Character's hand.
+        /// </summary>
+        /// <param name="size">The Point representing the size of the MeleeWeapon.</param>
+        /// <param name="texture">The Texture2D representing the MeleeWeapon's texture.</param>
+        /// <param name="damage">The damage that the MeleeWeapon deals.</param>
+        /// <param name="totalFrames">The number of frames that it takes for the MeleeWeapon to attack.</param>
+        public MeleeWeapon(Point size, Texture2D texture, int damage, int totalFrames) : base(new Rectangle(Point.Zero, size), texture, true, damage)
+        {
+            // Initialize Fields
+            this.attacking = false;
+            this.attackFrame = 0;
+            this.rotationDegrees = 0;
+            this.rotationSpeed = 0;
+            this.totalFrames = totalFrames;
+        }
+
+        /// <summary>
+        /// Constructs an uncollected spinning MeleeWeapon Weapon on the ground.
+        /// </summary>
+        /// <param name="position">The Rectangle representing the MeleeWeapon's position and size.</param>
+        /// <param name="texture">The Texture2D representing the MeleeWeapon's texture.</param>
+        /// <param name="damage">The damage that the MeleeWeapon deals.</param>
+        /// <param name="rotationDegrees">The number of degrees that the MeleeWeapon should rotate.</param>
+        /// <param name="rotationSpeed">The speed that the MeleeWeapon should rotate.</param>
+        public MeleeWeapon(Rectangle position, Texture2D texture, int damage, int rotationDegrees, int rotationSpeed) : base(position, texture, false, damage)
+        {
+            // Initialize Fields
+            this.attacking = false;
+            this.attackFrame = 0;
+            this.rotationDegrees = rotationDegrees;
+            this.rotationSpeed = rotationSpeed;
+            this.totalFrames = rotationDegrees / rotationSpeed;
+        }
+
+        /// <summary>
+        /// Constructs an uncollected MeleeWeapon Weapon on the ground.
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="texture">The Texture2D representing the MeleeWeapon's texture.</param>
+        /// <param name="damage">The damage that the MeleeWeapon deals.</param>
+        /// <param name="totalFrames">The number of frames that it takes for the MeleeWeapon to attack.</param>
+        public MeleeWeapon(Rectangle position, Texture2D texture, int damage, int totalFrames) : base(position, texture, false, damage)
+        {
+            // Initialize Fields
+            this.attacking = false;
+            this.attackFrame = 0;
+            this.rotationDegrees = 0;
+            this.rotationSpeed = 0;
+            this.totalFrames = totalFrames;
+        }
+
+        // Methods
+        /// <summary>
+        /// Sets the MeleeWeapon to attack.
         /// </summary>
         public override void Attack()
         {
+            // If the MeleeWeapon is not attacking and is at the original frame
             if (!attacking && attackFrame == 0)
+            {
+                // Attack
                 attacking = true;
+            }
         }
 
         /// <summary>
-        /// sets the position and angle of the weapon and adjusts if the weapon is attacking
+        /// Updates the position and the angle of the MeleeWeapon.
         /// </summary>
+        /// <param name="position">The Rectangle representing the Player's position and size.</param>
+        /// <param name="angle">The angle from the Player to the MouseCursor.</param>
         public override void Update(Rectangle position, double angle)
         {
-            //base
+            // Set the MeleeWeapon angle to the passed in angle
             this.angle = angle;
 
-            //ends attack
+            // If the attack goes through it's totalFrames
             if (attackFrame >= totalFrames)
             {
+                // Stop attacking
                 attacking = false;
+
+                // Reset the attackFrame
                 attackFrame = 0;
             }
 
-            //updates for attack
+            // If the MeleeWeapon is attacking or is in attack frame
             if (attacking || attackFrame != 0)
             {
+                // Update the angle and attackFrame
                 this.angle = angle;
                 attackFrame++;
+
+                // If there is a set speed
                 if (rotationSpeed != 0)
                 {
-                    //adjusts angle for swing
+                    // Update the angle of the MeleeWeapon based on the rotationSpeed
                     this.angle += (double)rotationDegrees / 180 * Math.PI / 2;
                     this.angle -= attackFrame * (double)rotationSpeed / 180 * Math.PI;
                 }
-                //extends weapon if attacking
+
+                // Extends the MeleeWeapon's reach if attacking
                 this.position.X = position.X + position.Width / 2 + (int)(Math.Cos(this.angle) * position.Width) - this.position.Width / 2;
                 this.position.Y = position.Y + position.Height / 2 + (int)(Math.Sin(this.angle) * position.Height) - this.position.Height / 2;
-                
-
             }
             else
             {
-                //pulls back the weapon if not attacking
+                // Reset the MeleeWeapon's reach and angle if they are not attacking
                 this.position.X = position.X + position.Width / 2 + (int)(Math.Cos(angle) * position.Width / 2) - this.position.Width / 2;
                 this.position.Y = position.Y + position.Height / 2 + (int)(Math.Sin(angle) * position.Height / 2) - this.position.Height / 2;
                 this.angle = angle;
             }
         }
 
-        public override void DrawHands(SpriteBatch sb, Rectangle playerPosition, Texture2D handSprite, Color handColor)
+        /// <summary>
+        /// Draws hands associated with holding the MeleeWeapon.
+        /// </summary>
+        /// <param name="spriteBatch">The SpriteBatch used to draw the MeleeWeapon.</param>
+        /// <param name="playerPosition">The Rectangle representing the Player's position and size.</param>
+        /// <param name="handTexture">The Texture2D representing the MeleeWeapon's hand texture.</param>
+        /// <param name="handColor">The Color of the hands holding the Weapon.</param>
+        public override void DrawHands(SpriteBatch spriteBatch, Rectangle playerPosition, Texture2D handTexture, Color handColor)
         {
             if (!attacking)
             {
-                sb.Draw(handSprite, new Rectangle(playerPosition.X + playerPosition.Width * 7 / 16 + (int)(playerPosition.Width / 5 * Math.Cos(angle)),
-                playerPosition.Y + playerPosition.Height * 7 / 16 + (int)(playerPosition.Height / 5 * Math.Sin(angle)),
-                playerPosition.Width / 8, playerPosition.Height / 8), handColor);
+                // Draw the hand attached the the MeleeWeapon
+                spriteBatch.Draw(handTexture, new Rectangle(
+                                 playerPosition.X + playerPosition.Width * 7 / 16 + (int)(playerPosition.Width / 5 * Math.Cos(angle)),
+                                 playerPosition.Y + playerPosition.Height * 7 / 16 + (int)(playerPosition.Height / 5 * Math.Sin(angle)),
+                                 playerPosition.Width / 8,
+                                 playerPosition.Height / 8),
+                                 handColor);
+
+                // Draw the off hand
                 if (angle < Math.PI / 2 && angle > 0 - Math.PI / 2)
-                    sb.Draw(handSprite, new Rectangle(playerPosition.X + playerPosition.Width / 5, playerPosition.Y + playerPosition.Height / 2, playerPosition.Width / 8, playerPosition.Height / 8), handColor);
+                {
+                    spriteBatch.Draw(handTexture, new Rectangle(
+                                     playerPosition.X + playerPosition.Width / 5,
+                                     playerPosition.Y + playerPosition.Height / 2,
+                                     playerPosition.Width / 8,
+                                     playerPosition.Height / 8),
+                                     handColor);
+                }
                 else
-                    sb.Draw(handSprite, new Rectangle(playerPosition.X + playerPosition.Width * 28 / 40, playerPosition.Y + playerPosition.Height / 2, playerPosition.Width / 8, playerPosition.Height / 8), handColor);
+                {
+                    spriteBatch.Draw(handTexture, new Rectangle(
+                                     playerPosition.X + playerPosition.Width * 28 / 40,
+                                     playerPosition.Y + playerPosition.Height / 2,
+                                     playerPosition.Width / 8,
+                                     playerPosition.Height / 8),
+                                     handColor);
+                }
             }
             else
             {
-                sb.Draw(handSprite, new Rectangle(playerPosition.X + playerPosition.Width * 7 / 16 + (int)(playerPosition.Width * 3 / 5 * Math.Cos(angle)),
-                playerPosition.Y + playerPosition.Height * 7 / 16 + (int)(playerPosition.Height * 3 / 5 * Math.Sin(angle)),
-                playerPosition.Width / 8, playerPosition.Height / 8), handColor);
+                // Draw the hand attached the the MeleeWeapon
+                spriteBatch.Draw(handTexture, new Rectangle(
+                                 playerPosition.X + playerPosition.Width * 7 / 16 + (int)(playerPosition.Width * 3 / 5 * Math.Cos(angle)),
+                                 playerPosition.Y + playerPosition.Height * 7 / 16 + (int)(playerPosition.Height * 3 / 5 * Math.Sin(angle)),
+                                 playerPosition.Width / 8,
+                                 playerPosition.Height / 8),
+                                 handColor);
+
+                // Draw the off hand
                 if (angle < Math.PI / 2 && angle > 0 - Math.PI / 2)
-                    sb.Draw(handSprite, new Rectangle(playerPosition.X + playerPosition.Width / 5, playerPosition.Y + playerPosition.Height / 2, playerPosition.Width / 8, playerPosition.Height / 8), handColor);
+                {
+                    spriteBatch.Draw(handTexture, new Rectangle(
+                                     playerPosition.X + playerPosition.Width / 5,
+                                     playerPosition.Y + playerPosition.Height / 2,
+                                     playerPosition.Width / 8,
+                                     playerPosition.Height / 8),
+                                     handColor);
+                }
                 else
-                    sb.Draw(handSprite, new Rectangle(playerPosition.X + playerPosition.Width * 28 / 40, playerPosition.Y + playerPosition.Height / 2, playerPosition.Width / 8, playerPosition.Height / 8), handColor);
+                {
+                    spriteBatch.Draw(handTexture, new Rectangle(
+                                     playerPosition.X + playerPosition.Width * 28 / 40,
+                                     playerPosition.Y + playerPosition.Height / 2,
+                                     playerPosition.Width / 8,
+                                     playerPosition.Height / 8),
+                                     handColor);
+                }
             }
         }
     }

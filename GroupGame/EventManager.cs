@@ -1,8 +1,11 @@
-﻿using Microsoft.Xna.Framework;
+﻿// Generated Namespace References
 using System;
 
+// Namespace References
+using Microsoft.Xna.Framework;
+
 /// <summary>
-/// The namespace for the Game.
+/// The namespace containing the game project.
 /// </summary>
 namespace GroupGame
 {
@@ -11,232 +14,309 @@ namespace GroupGame
     /// </summary>
     class EventManager
     {
+        // Methods
         /// <summary>
-        /// Checks if two shapes collide.
+        /// Checks if two Rectangles collide.
         /// </summary>
-        /// <param name="hit1">Object one rectangle.</param>
-        /// <param name="hit2">Object two rectangle.</param>
-        /// <returns>True if the shapes collide, false otherwise.</returns>
-        public bool CollisionCheck(Rectangle hit1, Rectangle hit2)
+        /// <param name="rectangle1">A Rectangle object.</param>
+        /// <param name="rectangle2">A different Rectangle object.</param>
+        /// <returns>True if the Rectangles collide, false otherwise.</returns>
+        public bool CollisionCheck(Rectangle rectangle1, Rectangle rectangle2)
         {
-            return hit1.Intersects(hit2);
+            // Return whether or not the two Rectangles collide
+            return rectangle1.Intersects(rectangle2);
         }
-        
+
 
         /// <summary>
-        /// Deals body damage to the player if it collides with an Enemy and checks the Player against the Enemy's Weapon
+        /// Damages the Player if they collide with an Enemy.
         /// </summary>
-        /// <param name="obj1">The Player.</param>
-        /// <param name="obj2">The Enemy to be checked.</param>
-        public void Collision(Player obj1, Enemy obj2)
+        /// <param name="player">The Player.</param>
+        /// <param name="enemy">An Enemy to check the Player against.</param>
+        public void Collision(Player player, Enemy enemy)
         {
-            if(CollisionCheck(obj1.Position, obj2.Position))
+            // If the Player and the Enemy collide
+            if (CollisionCheck(player.Position, enemy.Position))
             {
-                // Check if the Player is in debug mode
-                if (!obj1.Debug)
-                    obj1.Health -= obj2.BodyDamage;
-                Collision((Character)obj1, (Tile)new Tile(new Rectangle(obj2.Position.X - 15, obj2.Position.Y - 15, obj2.Position.Width + 30, obj2.Position.Height + 30), obj2.Sprite, true));
+                // If the Player is not in debug mode
+                if (!player.Debug)
+                {
+                    // Deal damage to the Player
+                    player.Health -= enemy.BodyDamage;
+                }
+
+                // Call the Collision between the Player and Tile to produce a knock back
+                Collision((Character)player, new Tile(new Rectangle(enemy.Position.X - 15, enemy.Position.Y - 15, enemy.Position.Width + 30, enemy.Position.Height + 30), enemy.Texture, true));
             }
 
-            if (obj2.Weapon != null)
-                Collision((Character)obj1, obj2.Weapon);
+            // If the Enemy has a Weapon
+            if (enemy.Weapon != null)
+            {
+                // Call the Collision between the Player and the Enemy's Weapon
+                Collision((Character)player, enemy.Weapon);
+            }
         }
 
         /// <summary>
-        /// allows the user to pick up a weapon if their inventory is empty and checks all attacks against any character
+        /// Adds a Weapon to the Player's inventory if it's empty and checks attacks against Characters.
         /// </summary>
-        /// <param name="obj1">the character to be checked for attacks or pick up the weapon</param>
-        /// <param name="obj2">the weapon in question</param>
-        public void Collision(Character obj1, Weapon obj2)
+        /// <param name="character">A Character.</param>
+        /// <param name="weapon">A Weapon to check the Character against.</param>
+        public void Collision(Character character, Weapon weapon)
         {
-            if (CollisionCheck(obj1.Position, obj2.Position))
+            // If the Character and the Weapon collide
+            if (CollisionCheck(character.Position, weapon.Position))
             {
-                if(obj1 is Player)
+                // If the Character is a Player
+                if (character is Player)
                 {
-                    if (!obj2.PickedUp && ((Player)obj1).OffHand == null)
+                    // If the Weapon is not collected and the Player doesn't have a Weapon in their offHand
+                    if (!weapon.Collected && ((Player)character).OffHand == null)
                     {
-                        ((Player)obj1).OffHand = obj2;
-                        obj2.PickedUp = true;
+                        // Equip the Weapon to the Player's offHand
+                        ((Player)character).OffHand = weapon;
+
+                        // Set the Weapon's collection status to true
+                        weapon.Collected = true;
                     }
                 }
+            }
+
+            // If the Weapon is a MeleeWeapon
+            if (weapon is MeleeWeapon)
+            {
+                // Call the Collision between the Character and the MeleeWeapon
+                Collision(character, (MeleeWeapon)weapon);
+            }
+
+            // If the Weapon is a RangedWeapon
+            if (weapon is RangedWeapon)
+            {
+                // Call the Collision between the Character and the RangedWeapon
+                Collision(character, (RangedWeapon)weapon);
+            }
+        }
+
+        /// <summary>
+        /// Adds an Item to the Player's inventory if it's empty.
+        /// </summary>
+        /// <param name="player">The Player.</param>
+        /// <param name="item">An Item to check the Player against.</param>
+        public void Collision(Player player, Item item)
+        {
+            // If the Player and the Item collide
+            if (CollisionCheck(player.Position, item.Position))
+            {
+                // If the Player doesn't have an Item and the Item is not collected
+                if (player.CurrentItem == null && !item.Collected)
+                {
+                    // Add the Item to the Player's inventory
+                    player.CurrentItem = item;
+
+                    // Set the Item state to collected
+                    item.Collected = true;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Damages the Character if they collide with a MeleeWeapon.
+        /// </summary>
+        /// <param name="character">A Character.</param>
+        /// <param name="meleeWeapon">A MeleeWeapon to check the Character against.</param>
+        public void Collision(Character character, MeleeWeapon meleeWeapon)
+        {
+            // If the Character and the MeleeWeapon collide
+            if (CollisionCheck(character.Position, meleeWeapon.Position))
+            {
+                // If the MeleeWeapon is in the attack state
+                if (meleeWeapon.Attacking)
+                {
+                    // Reduce the Character's health
+                    character.Health -= meleeWeapon.Damage;
+
+                    // Stop the attack
+                    meleeWeapon.Attacking = false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Damages the Character if they collide with a RangedWeapon's Projectile.
+        /// </summary>
+        /// <param name="character">A Character.</param>
+        /// <param name="rangedWeapon">A RangedWeapon to check the Character against.</param>
+        public void Collision(Character character, RangedWeapon rangedWeapon)
+        {
+            // Loop through the RangedWeapon's Projectiles
+            for (int i = 0; i < rangedWeapon.Projectiles.Count; i++)
+            {
+                // Call the Collision between the Character and the Projectile
+                Collision(character, rangedWeapon.Projectiles[i]);
+            }
+        }
+
+        /// <summary>
+        /// Damages the Character if they collide with a Projectile and destroys the Projectile.
+        /// </summary>
+        /// <param name="character">A Character.</param>
+        /// <param name="projectile">A Projectile to check the Character against.</param>
+        public void Collision(Character character, Projectile projectile)
+        {
+            // If the Character and the Projectile collide
+            if (CollisionCheck(character.Position, projectile.Position))
+            {
+                // Deal damage to the Character
+                character.Health -= projectile.Damage;
+
+                // Destroy the Projectile
+                projectile.Destroy();
+            }
+        }
+
+        /// <summary>
+        /// Destroys RangedWeapon's Projectiles if they collide with a wall.
+        /// </summary>
+        /// <param name="tile">A wall.</param>
+        /// <param name="weapon">The Weapon to check the wall against.</param>
+        public void Collision(Tile tile, Weapon weapon)
+        {
+            // If the Weapon is a RangedWeapon
+            if (weapon is RangedWeapon)
+            {
+                // Loop through the RangedWeapon's Projectiles
+                for (int i = 0; i < ((RangedWeapon)weapon).Projectiles.Count; i++)
+                {
+                    // Call the Collision between the Tile and the Projectile
+                    Collision(tile, ((RangedWeapon)weapon).Projectiles[i]);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Destroys the Projectile if it collides with the wall.
+        /// </summary>
+        /// <param name="tile">A wall.</param>
+        /// <param name="projectile">The Projectile to check the wall against.</param>
+        public void Collision(Tile tile, Projectile projectile)
+        {
+            // If the Tile and the Projectile collide
+            if (CollisionCheck(tile.Position, projectile.Position))
+            {
+                // Destroy the Projectile
+                projectile.Destroy();
+            }
+        }
+
+        /// <summary>
+        /// Keeps Characters from going through wall Tiles.
+        /// </summary>
+        /// <param name="character">A Character.</param>
+        /// <param name="tile">The wall Tile to check the Character against.</param>
+        public void Collision(Character character, Tile tile)
+        {
+            // If the Character and the Tile collide
+            if (CollisionCheck(character.Position, tile.Position))
+            {
+                // Temporary Fields
+                int xOverlap;
+                int yOverlap;
+                Rectangle adjustedLocation;
+
+                // Initialize Fields
+                adjustedLocation = character.Position;
+
+                // Find the x overlap between the Character and Tile
+                if (character.Position.X >= tile.Position.X && character.Position.X <= tile.Position.X + tile.Position.Width)
+                {
+                    xOverlap = Math.Min(character.Position.Width, tile.Position.X + tile.Position.Width - character.Position.X);
+                }
+                else if (character.Position.X + character.Position.Width >= tile.Position.X)
+                {
+                    xOverlap = Math.Min(tile.Position.Width, character.Position.X + character.Position.Width - tile.Position.X);
+                }
                 else
                 {
-                }
-                
-            }
-
-
-            if (obj2 is MeleeWeapon)
-                Collision(obj1, (MeleeWeapon)obj2);
-
-            if (obj2 is RangedWeapon)
-                Collision(obj1, (RangedWeapon)obj2);
-        }
-
-        /// <summary>
-        /// picks up the item if the player's inventory is empty
-        /// </summary>
-        /// <param name="obj1"></param>
-        /// <param name="obj2"></param>
-        public void Collision(Player obj1, Item obj2)
-        {
-            if (CollisionCheck(obj1.Position, obj2.Position))
-            {
-                if (obj1.CurrentItem == null && !obj2.PickedUp)
-                {
-                    obj1.CurrentItem = obj2;
-                    obj2.PickedUp = true;
-                }
-
-            }
-        }
-
-        /// <summary>
-        /// deals damage to the character if the meleeweapon is attacking and stops the attack
-        /// </summary>
-        /// <param name="obj1">the character to be checked</param>
-        /// <param name="obj2">the melee weapon to be checked</param>
-        public void Collision(Character obj1, MeleeWeapon obj2)
-        {
-            if (CollisionCheck(obj1.Position, obj2.Position))
-            {
-                if (obj2.Attacking)
-                {
-                    obj1.Health -= obj2.Damage;
-                    obj2.Attacking = false;
-                }
-            }
-        }
-
-        /// <summary>
-        /// calls the collision for each of the projectiles from this weapon against the character
-        /// </summary>
-        /// <param name="obj1">the character to be attacked</param>
-        /// <param name="obj2">the weapon to be checked</param>
-        public void Collision(Character obj1, RangedWeapon obj2)
-        {
-            for (int i = 0; i < (obj2).Projectiles.Count; i++)
-            {
-                Collision((Character)obj1, (obj2).Projectiles[i]);
-            }
-        }
-
-        /// <summary>
-        /// deals damage and destroys the projectile 
-        /// </summary>
-        /// <param name="obj1">the character to be checked</param>
-        /// <param name="obj2">the projectile to be checked</param>
-        public void Collision(Character obj1, Projectile obj2)
-        {
-            if (CollisionCheck(obj1.Position, obj2.Position))
-            {
-                obj1.Health -= obj2.Damage;
-                obj2.Destroy();
-            }
-        }
-
-        /// <summary>
-        /// calls the collision for a ranged weapon against the walls if the weapon is ranged
-        /// </summary>
-        /// <param name="obj1">the wall to be checked</param>
-        /// <param name="obj2">the weapon to be checked</param>
-        public void Collision(Tile obj1, Weapon obj2)
-        {
-            if (obj2 is RangedWeapon)
-            {
-                for (int i = 0; i < ((RangedWeapon)obj2).Projectiles.Count; i++)
-                {
-                    Collision(obj1, ((RangedWeapon)obj2).Projectiles[i]);
-                }
-            }
-        }
-
-        /// <summary>
-        /// destroys the projectile 
-        /// </summary>
-        /// <param name="obj1">the wall to be checked</param>
-        /// <param name="obj2">the projectile to be checked</param>
-        public void Collision(Tile obj1, Projectile obj2)
-        {
-            if (CollisionCheck(obj1.Position, obj2.Position))
-            {
-                obj2.Destroy();
-            }
-        }
-
-        /// <summary>
-        /// pushes the character in question out of the wall
-        /// </summary>
-        /// <param name="obj1">character to be checked</param>
-        /// <param name="obj2">wall to be checked</param>
-        public void Collision(Character obj1, Tile obj2)
-        {
-            if (CollisionCheck(obj1.Position, obj2.Position))
-            {
-                //finds the overlap between the two shapes
-                int xOverlap = 0;
-                int yOverlap = 0;
-                int xPos = 0;
-                int yPos = 0;
-                if (obj1.Position.X >= obj2.Position.X && obj1.Position.X <= obj2.Position.X + obj2.Position.Width)
-                {
-                    xOverlap = Math.Min(obj1.Position.Width, obj2.Position.X + obj2.Position.Width - obj1.Position.X);
-                    xPos = obj1.Position.X;
-                }
-                else if (obj1.Position.X + obj1.Position.Width >= obj2.Position.X)
-                {
-                    xOverlap = Math.Min(obj2.Position.Width, obj1.Position.X + obj1.Position.Width - obj2.Position.X);
-                    xPos = obj2.Position.Y;
-                }
-                else
                     return;
-                if (obj1.Position.Y >= obj2.Position.Y && obj1.Position.Y <= obj2.Position.Y + obj2.Position.Height)
-                {
-                    yOverlap = Math.Min(obj1.Position.Height, obj2.Position.Y + obj2.Position.Height - obj1.Position.Y);
-                    yPos = obj1.Position.Y;
                 }
-                else if (obj1.Position.Y + obj1.Position.Height >= obj2.Position.Y)
+
+                // Find the y overlap between the Character and Tile
+                if (character.Position.Y >= tile.Position.Y && character.Position.Y <= tile.Position.Y + tile.Position.Height)
                 {
-                    yOverlap = Math.Min(obj2.Position.Height, obj1.Position.Y + obj1.Position.Height - obj2.Position.Y);
-                    yPos = obj2.Position.Y;
+                    yOverlap = Math.Min(character.Position.Height, tile.Position.Y + tile.Position.Height - character.Position.Y);
+                }
+                else if (character.Position.Y + character.Position.Height >= tile.Position.Y)
+                {
+                    yOverlap = Math.Min(tile.Position.Height, character.Position.Y + character.Position.Height - tile.Position.Y);
                 }
                 else
+                {
                     return;
+                }
 
-                //adjusts new location and sets the characters location to it
-                Rectangle newLocation = obj1.Position;
+                // If the Character overlaps less in x direction
                 if (xOverlap < yOverlap)
                 {
-                    if (obj1.Position.X < obj2.Position.X)
-                        newLocation.X -= xOverlap;
+                    // If the Character was to the left of the Tile
+                    if (character.Position.X < tile.Position.X)
+                    {
+                        // Adjust the location to the left
+                        adjustedLocation.X -= xOverlap;
+                    }
                     else
-                        newLocation.X += xOverlap;
+                    {
+                        // Adjust the location to the right
+                        adjustedLocation.X += xOverlap;
+                    }
                 }
-                else if(xOverlap > yOverlap)
+                else if (xOverlap > yOverlap)
                 {
-                    if (obj1.Position.Y < obj2.Position.Y)
-                        newLocation.Y -= yOverlap;
+                    // If the Character was above of the Tile
+                    if (character.Position.Y < tile.Position.Y)
+                    {
+                        // Adjust the location upward
+                        adjustedLocation.Y -= yOverlap;
+                    }
                     else
-                        newLocation.Y += yOverlap;
+                    {
+                        // Adjust the location downward
+                        adjustedLocation.Y += yOverlap;
+                    }
                 }
-                
-                obj1.Position = newLocation;
+
+                // Adjust the Character's location
+                character.Position = adjustedLocation;
             }
         }
 
         /// <summary>
-        /// if a game object is inputted, calls the appropriate collision and returns
+        /// Checks a GameObject to a Player depending on the type of GameObject.
         /// </summary>
-        /// <param name="player"></param>
-        /// <param name="gameObject"></param>
+        /// <param name="player">The Player.</param>
+        /// <param name="gameObject">The GameObject to check the Player against.</param>
         public void Collision(Player player, GameObject gameObject)
         {
+            // If the GameObject is an Enemy
             if (gameObject is Enemy)
+            {
+                // Call the Collision between a Player and an Enemy
                 Collision(player, (Enemy)gameObject);
+            }
+
+            // If the GameObject is a Weapon
             if (gameObject is Weapon)
+            {
+                // Call the collision between a Player and a Weapon
                 Collision((Character)player, (Weapon)gameObject);
+            }
+
+            // If the GameObject is an Item
             if (gameObject is Item)
+            {
+                // Call the collision between a Player and an Item
                 Collision(player, (Item)gameObject);
+            }
+
             return;
         }
     }

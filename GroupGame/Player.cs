@@ -1,23 +1,27 @@
-﻿using Microsoft.Xna.Framework;
+﻿// Generated Namespace References
+using System;
+
+// Namespace References
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 
+/// <summary>
+/// The namespace containing the game project.
+/// </summary>
 namespace GroupGame
 {
+    /// <summary>
+    /// Class for Player type Characters.
+    /// </summary>
     class Player : Character
     {
         // Fields
-        private Weapon offHand;
-        private Item currentItem;
-        private double angle;
         private bool debug;
-        private double distTravelled; // stat tracking
+        private double angle;
+        private double travelledDistance;
+        private Item currentItem;
+        private Weapon offHand;
 
         // Properties
         /// <summary>
@@ -26,107 +30,168 @@ namespace GroupGame
         public bool Debug { get { return debug; } set { debug = value; } }
 
         /// <summary>
-        /// Gets and sets the Current Item that the player has.
+        /// Gets the distance travelled by the Player.
+        /// </summary>
+        public double TravelledDistance { get { return travelledDistance; } }
+
+        /// <summary>
+        /// Gets and sets the currentItem that the Player has.
         /// </summary>
         public Item CurrentItem { get { return currentItem; } set { currentItem = value; } }
 
         /// <summary>
-        /// Gets and sets the Weapon that the player has in the Off Hand.
+        /// Gets and sets the Weapon that the player has in the offHand.
         /// </summary>
         public Weapon OffHand { get { return offHand; } set { offHand = value; } }
 
+        // Constructors
         /// <summary>
-        /// Gets the distance travelled by the player.
+        /// Constructs a Player Character.
         /// </summary>
-        public double DistTravelled { get { return distTravelled; } }
-
-        //constructor
-        public Player(int health, Weapon weapon, Rectangle position, Texture2D sprite) : base(health, weapon, position, sprite)
+        /// <param name="position">The Rectangle representing the Player's position and size.</param>
+        /// <param name="texture">The Texture2D representing the Player's texture.</param>
+        /// <param name="health">The Player's health.</param>
+        /// <param name="weapon">The Player's weapon.</param>
+        public Player(Rectangle position, Texture2D texture, int health, Weapon weapon) : base(position, texture, health, weapon)
         {
-            offHand = null;
-            currentItem = null;
-            this.position = position;
-            angle = 0;
-            distTravelled = 0;
+            // Initialize Fields
+            this.debug = false;
+            this.angle = 0;
+            this.travelledDistance = 0;
+            this.currentItem = null;
+            this.offHand = null;
         }
 
-
-        //methods
-
+        // Methods
         /// <summary>
-        /// necessary updates made for player
+        /// Moves the Player's position and tracks the travelled distance.
         /// </summary>
-        public void Update(MouseState mouseState, MouseState previousMouseState, KeyboardState keyState, KeyboardState previousKeyState)
-        {
-            //movement
-            Move(keyState);
-
-            //calculates angle
-            if ((double)mouseState.X - (double)(position.X + position.Width / 2) == 0)
-                angle = Math.Atan(((double)mouseState.Y - (double)(position.Y+position.Height/2)) / ((double)mouseState.X - (double)(position.X+position.Width/2) - .00000001));
-            else
-                angle = Math.Atan(((double)mouseState.Y - (double)(position.Y + position.Height / 2)) / ((double)mouseState.X - (double)(position.X + position.Width / 2)));
-            if (mouseState.X <= position.X+position.Width/2)
-                angle -= Math.PI;
-
-            //checks for weapon switch
-            if (keyState.IsKeyDown(Keys.Q) && !previousKeyState.IsKeyDown(Keys.Q))
-            {
-                Weapon placeholder = weapon;
-                weapon = offHand;
-                offHand = placeholder;
-            }
-
-            //checks for attack
-            if (mouseState.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton == ButtonState.Released)
-                weapon.Attack();
-
-            //updates weapon
-            if(weapon!=null)
-                weapon.Update(position, angle);
-            if(offHand!=null)
-                offHand.Update(position, angle);
-        }
-
-        /// <summary>
-        /// moves the player
-        /// </summary>
-        /// <param name="keyboardState">the keyboard state checking if the player input keys are pressed</param>
+        /// <param name="keyboardState">The current KeyboardState to get user input.</param>
         public void Move(KeyboardState keyboardState)
         {
-            if (keyboardState.IsKeyDown(Keys.A))
-            {
-                this.position.X -= 6;
-                distTravelled += 6;
-            }
-            else if (keyboardState.IsKeyDown(Keys.D))
-            {
-                this.position.X += 6;
-                distTravelled += 6;
-            }
+            // Check if the user is telling the Player to move
             if (keyboardState.IsKeyDown(Keys.W))
             {
-                this.position.Y -= 6;
-                distTravelled += 6;
+                // Move upward
+                this.position.Y -= 3;
+
+                // Increment the Player's travelled distance
+                travelledDistance += 3;
             }
-            else if (keyboardState.IsKeyDown(Keys.S))
+            if (keyboardState.IsKeyDown(Keys.A))
             {
-                this.position.Y += 6;
-                distTravelled += 6;
+                // Move to the left
+                this.position.X -= 3;
+
+                // Increment the Player's travelled distance
+                travelledDistance += 3;
+            }
+            if (keyboardState.IsKeyDown(Keys.S))
+            {
+                // Move downward
+                this.position.Y += 3;
+
+                // Increment the Player's travelled distance
+                travelledDistance += 3;
+            }
+            if (keyboardState.IsKeyDown(Keys.D))
+            {
+                // Move to the right
+                this.position.X += 3;
+
+                // Increment the Player's travelled distance
+                travelledDistance += 3;
             }
         }
 
         /// <summary>
-        /// necessary draws made for player
+        /// Updates the Player.
         /// </summary>
-        /// <param name="sb"></param>
-        public override void Draw(SpriteBatch sb)
+        /// <param name="mouseState">The MouseState of the user's mouse.</param>
+        /// <param name="previousMouseState">The previous MouseState of the user's mouse.</param>
+        /// <param name="keyboardState">The KeyboardState of the user's keyboard.</param>
+        /// <param name="previousKeyboardState">The previous KeyboardState of the user's keyboard.</param>
+        public void Update(MouseState mouseState, MouseState previousMouseState, KeyboardState keyboardState, KeyboardState previousKeyboardState)
         {
-            base.Draw(sb);
-            if(weapon!=null)
-                weapon.Draw(sb);
+            // Move the Player
+            Move(keyboardState);
+
+            // Calculate the angles from the Player to the MouseCursor
+            if ((double)mouseState.X - (double)(position.X + position.Width / 2) == 0)
+            {
+                angle = Math.Atan(((double)mouseState.Y - (double)(position.Y + position.Height / 2)) / ((double)mouseState.X - (double)(position.X + position.Width / 2) - .00000001));
+            }
+            else
+            {
+                angle = Math.Atan(((double)mouseState.Y - (double)(position.Y + position.Height / 2)) / ((double)mouseState.X - (double)(position.X + position.Width / 2)));
+            }
+
+            // Flips the angle if it's on the right side of the Player
+            if (mouseState.X <= position.X + position.Width / 2)
+            {
+                angle -= Math.PI;
+            }
+
+            // If the user switches Weapons by pressing Q
+            if (keyboardState.IsKeyDown(Keys.Q) && !previousKeyboardState.IsKeyDown(Keys.Q))
+            {
+                // Temporary Fields
+                Weapon previousWeapon;
+
+                // Initialize Temporary Fields
+                previousWeapon = weapon;
+
+                // Change equipped Weapon to the offHand Weapon
+                weapon = offHand;
+
+                // Store the previously equipped Weapon in the offHand
+                offHand = previousWeapon;
+            }
+
+            // If the user clicks
+            if (mouseState.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton == ButtonState.Released)
+            {
+                // Attack with the equipped Weapon
+                weapon.Attack();
+            }
+
+            // If there is an equipped Weapon
+            if (weapon != null)
+            {
+                // Update the Weapon
+                weapon.Update(position, angle);
+            }
+
+            // If there is an offHand Weapon
+            if (offHand != null)
+            {
+                // Update the Weapon
+                offHand.Update(position, angle);
+            }
+        }
+
+        /// <summary>
+        /// Draw the Player and the associated Weapons.
+        /// </summary>
+        /// <param name="spriteBatch">The SpriteBatch used to draw the Player and Weapon.</param>
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            // Draw the Player
+            base.Draw(spriteBatch);
+
+            // If the Player has a Weapon
+            if (weapon != null)
+            {
+                // Draw the Weapon
+                weapon.Draw(spriteBatch);
+            }
+
+            // If the Player's OffHand is a RangedWeapon
             if (OffHand is RangedWeapon)
-                ((RangedWeapon)OffHand).DrawProjectiles(sb);
+            {
+                // Draw the Projectiles
+                ((RangedWeapon)OffHand).DrawProjectiles(spriteBatch);
+            }
         }
     }
 }

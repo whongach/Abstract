@@ -1,54 +1,59 @@
-﻿using Microsoft.Xna.Framework;
+﻿// Namespace References
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
+/// <summary>
+/// The namespace containing the game project.
+/// </summary>
 namespace GroupGame
 {
+    /// <summary>
+    /// Abstract class for objects in the game.
+    /// </summary>
     abstract class GameObject
     {
-        //fields
+        // Fields
         protected Rectangle position;
-        protected Texture2D sprite;
+        protected Texture2D texture;
 
-        //properties
-        public Rectangle Position
-        {
-            get { return position; }
-            set { position = value; }
-        }
-
-        public Texture2D Sprite
-        {
-            get { return sprite; }
-            set { sprite = value; }
-        }
-
-        //constructor
-        public GameObject(Rectangle position, Texture2D sprite)
-        {
-            this.position = position;
-            this.sprite = sprite;
-        }
-
-        //methods
-
-        public virtual void Update()
-        {
-
-        }
+        // Properties
+        /// <summary>
+        /// Gets or sets the Rectangle position of the GameObject.
+        /// </summary>
+        public Rectangle Position { get { return position; } set { position = value; } }
 
         /// <summary>
-        /// default draw method using a sprite and rectangle
+        /// Gets or sets the Texture2D texture of the GameObject.
         /// </summary>
-        /// <param name="sb">the spritebatch used to draw the sprite</param>
-        public virtual void Draw(SpriteBatch sb)
+        public Texture2D Texture { get { return texture; } set { texture = value; } }
+
+        // Constructors
+        /// <summary>
+        /// Constructs a GameObject.
+        /// </summary>
+        /// <param name="position">The Rectangle representing the GameObject's position and size.</param>
+        /// <param name="texture">The Texture2D representing the GameObject's texture.</param>
+        public GameObject(Rectangle position, Texture2D texture)
         {
-            sb.Draw(sprite, position, Color.White);
+            // Initialize Fields
+            this.position = position;
+            this.texture = texture;
+        }
+
+        // Methods
+        /// <summary>
+        /// The method for each GameObject to Update.
+        /// </summary>
+        public virtual void Update() { }
+
+        /// <summary>
+        /// The default method for drawing a GameObject.
+        /// </summary>
+        /// <param name="spriteBatch">The SpriteBatch used to draw the GameObject.</param>
+        public virtual void Draw(SpriteBatch spriteBatch)
+        {
+            // Draw the GameObject using it's texture and position
+            spriteBatch.Draw(texture, position, Color.White);
         }
     }
 }

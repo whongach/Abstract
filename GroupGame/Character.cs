@@ -1,13 +1,14 @@
-﻿using Microsoft.Xna.Framework;
+﻿// Namespace References
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 /// <summary>
-/// The namespace for the Game.
+/// The namespace containing the game project.
 /// </summary>
 namespace GroupGame
 {
     /// <summary>
-    /// Parent class for Character type GameObjects.
+    /// Abstract parent class for Character type GameObjects.
     /// </summary>
     abstract class Character : GameObject
     {
@@ -17,26 +18,26 @@ namespace GroupGame
 
         // Properties
         /// <summary>
-        /// Gets the Weapon that the Character is using.
-        /// </summary>
-        public Weapon Weapon { get { return weapon; } }
-
-        /// <summary>
         /// Gets and sets the Character's Health.
         /// </summary>
         public int Health { get { return health; } set { health = value; } }
 
+        /// <summary>
+        /// Gets the Weapon that the Character is using.
+        /// </summary>
+        public Weapon Weapon { get { return weapon; } }
+
         // Constructors
         /// <summary>
-        /// Constructs a Character GameObject that is Collidable.
+        /// Constructs a Character GameObject.
         /// </summary>
-        /// <param name="health">The Character's Health.</param>
-        /// <param name="weapon">The Character's Weapon.</param>
-        /// <param name="position">The Character's position.</param>
-        /// <param name="sprite">The Character's texture.</param>
-        /// <param name="circular">Whether or not the Character's shape is circular or rectangular.</param>
-        public Character(int health, Weapon weapon, Rectangle position, Texture2D sprite) : base(position, sprite)
+        /// <param name="position">The Rectangle representing the Character's position and size.</param>
+        /// <param name="texture">The Texture2D representing the Character's texture.</param>
+        /// <param name="health">The Character's health.</param>
+        /// <param name="weapon">The Character's weapon.</param>
+        public Character(Rectangle position, Texture2D texture, int health, Weapon weapon) : base(position, texture)
         {
+            // Initialize Fields
             this.health = health;
             this.weapon = weapon;
         }
