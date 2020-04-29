@@ -61,6 +61,18 @@ namespace GroupGame
             projectiles = new List<Projectile>();
         }
 
+        /// <summary>
+        /// Constructs a copy of a Ranged Weapon.
+        /// </summary>
+        /// <param name="ranged">The Weapon to copy.</param>
+        public RangedWeapon(RangedWeapon ranged) : base(ranged)
+        {
+            // Initialize Fields
+            this.projectileType = ranged.projectileType;
+            this.projectileType.Damage = ranged.damage;
+            projectiles = new List<Projectile>();
+        }
+
         // Methods
         /// <summary>
         /// Creates a Projectile at the Player's position.

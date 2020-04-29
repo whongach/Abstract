@@ -41,6 +41,16 @@ namespace GroupGame
             this.textureOrigin = new Vector2(texture.Width / 2, texture.Height / 2);
         }
 
+        /// <summary>
+        /// Constructs a copy of a Weapon.
+        /// </summary>
+        /// <param name="weapon">The Weapon to copy.</param>
+        public Weapon(Weapon weapon) : base(weapon.Position, weapon.Texture, weapon.Collected)
+        {
+            this.damage = weapon.Damage;
+            this.textureOrigin = weapon.textureOrigin;
+        }
+
         // Methods
         /// <summary>
         /// The required method for each Weapon to Attack.

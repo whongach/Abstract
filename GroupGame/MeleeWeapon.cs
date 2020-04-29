@@ -99,6 +99,19 @@ namespace GroupGame
             this.totalFrames = totalFrames;
         }
 
+        /// <summary>
+        /// Constructs a copy of a Melee Weapon.
+        /// </summary>
+        /// <param name="melee">The Weapon to copy.</param>
+        public MeleeWeapon(MeleeWeapon melee) : base(melee)
+        {
+            this.attacking = false;
+            this.attackFrame = 0;
+            this.rotationDegrees = melee.rotationDegrees;
+            this.rotationSpeed = melee.rotationSpeed;
+            this.totalFrames = melee.totalFrames;
+        }
+
         // Methods
         /// <summary>
         /// Sets the MeleeWeapon to attack.

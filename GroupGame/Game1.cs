@@ -460,26 +460,49 @@ namespace GroupGame
             // Clear the List of GameObjects
             gameObjects.Clear();
 
-            // Remove any Items from the Player's inventory
+            // Removes any Items from the Player's inventory
             player.CurrentItem = null;
 
-            // Create a new Map
+            // Creates a new Map
             NewMap();
 
-            // Set the Player's position
+            // Sets the Player's position
             player.Position = new Rectangle(new Point((int)(mapOrigin.X + 8.5 * tileSize), mapOrigin.Y + 15 * tileSize), new Point(player.Position.Width, player.Position.Height));
 
-            // Add the key to the List of GameObjects
+            // Adds the key to the List of GameObjects
             gameObjects.Add(key);
 
-            // Set the key to be uncollected
+            // Sets the key to be uncollected
             key.Collected = false;
 
-            // Set the key's position
+            // Sets the key's position
             key.Position = new Rectangle(GetEmptyTile(), new Point(key.Position.Width, key.Position.Height));
 
-            // Update the Player's score
+            // Updates the Player's score
             score += 200;
+
+            //adds a weapon on the ground
+
+            //picks a random weapon
+            int weaponIndex = random.Next(resourceWeapons.Count);
+
+            //adds the appropriate weapon type
+            if(resourceWeapons[weaponIndex] is RangedWeapon)
+            {
+                gameObjects.Add(new RangedWeapon((RangedWeapon)(resourceWeapons[weaponIndex])));
+            }
+            if(resourceWeapons[weaponIndex] is MeleeWeapon)
+            {
+                gameObjects.Add(new MeleeWeapon((MeleeWeapon)(resourceWeapons[weaponIndex])));
+            }
+
+            //fixes variables in the weapon
+
+            // Sets the weapon to be uncollected
+            ((Weapon)gameObjects[1]).Collected = false;
+
+            // Sets the weapons's position
+            gameObjects[1].Position = new Rectangle(GetEmptyTile(), new Point(gameObjects[1].Position.Width, gameObjects[1].Position.Height));
 
             // Loop a random number of times up to five times
             for (int i = 0; i < random.Next(5) + 1; i++)
