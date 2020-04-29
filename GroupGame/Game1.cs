@@ -590,7 +590,7 @@ namespace GroupGame
 
             // Extra map fields
             int[,] tiles = new int[16, 16];
-            int tileSize = 60;
+            int tileSize = 64;
 
             // Extra enemy fields
             string currentEnemyName;
@@ -644,7 +644,7 @@ namespace GroupGame
                         // Add the enemy to the list of imported resource enemies
                         resourceEnemies.Add(new Enemy(currentEnemyFields[0],  // health
                                                       null, // weapon
-                                                      new Rectangle(currentEnemyFields[4], currentEnemyFields[5], 10, 10), // adjust width and height later
+                                                      new Rectangle(0, 0, currentEnemyFields[4], currentEnemyFields[5]), // adjust width and height later
                                                       squareTest, // enemy texture (square for now)
                                                       EnemyType.Random, // movement pattern (enum)
                                                       50, // max travelling width - needs a default value here, and then is adjusted when enemy is placed in a room

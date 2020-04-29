@@ -96,23 +96,23 @@ namespace GroupGame
         {
             if (keyboardState.IsKeyDown(Keys.A))
             {
-                this.position.X -= 3;
-                distTravelled += 3;
+                this.position.X -= 6;
+                distTravelled += 6;
             }
             else if (keyboardState.IsKeyDown(Keys.D))
             {
-                this.position.X += 3;
-                distTravelled += 3;
+                this.position.X += 6;
+                distTravelled += 6;
             }
             if (keyboardState.IsKeyDown(Keys.W))
             {
-                this.position.Y -= 3;
-                distTravelled += 3;
+                this.position.Y -= 6;
+                distTravelled += 6;
             }
             else if (keyboardState.IsKeyDown(Keys.S))
             {
-                this.position.Y += 3;
-                distTravelled += 3;
+                this.position.Y += 6;
+                distTravelled += 6;
             }
         }
 
