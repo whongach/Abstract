@@ -249,7 +249,7 @@ namespace GroupGame
             key = new Item(new Rectangle(500, 500, 50, 50), keyTexture, false);
             spear = new MeleeWeapon(new Point(80, 40), swordTexture, 8, 20);
             sword = new MeleeWeapon(new Point(40, 40), swordTexture, 5, 90, 5);
-            player = new Player(new Rectangle(0, 0, 50, 50), playerTexture, 300, sword);
+            player = new Player(new Rectangle(0, 0, 50, 50), playerTexture, 10, sword);
             arrow = new Projectile(new Point(20, 5), arrowTexture, 20);
             spell = new Projectile(new Point(20, 20), spellTexture, 12);
             bow = new RangedWeapon(new Point(40, 40), bowTexture, 2, arrow);
@@ -440,11 +440,22 @@ namespace GroupGame
         }
 
         /// <summary>
+        /// Resets the game to it's default states.
+        /// </summary>
+        private void Reset()
+        {
+            // Reset the Player's Health
+            player.Health = 10;
+
+            // Reset collected statistics
+            score = -200;
+        }
+
+        /// <summary>
         /// Moves Game to the Next Level.
         /// </summary>
         public void NextLevel()
         {
-            // TO-DO ## clean this method up
             // Clear the List of GameObjects
             gameObjects.Clear();
 
@@ -522,7 +533,7 @@ namespace GroupGame
                         // Disallow window resizing
                         Window.AllowUserResizing = false;
 
-
+                        Reset();
                         NextLevel();
                     }
 
@@ -824,7 +835,6 @@ namespace GroupGame
                     sb.Draw(squareTexture, new Rectangle(2, Window.ClientBounds.Height - 148, 46, 46), Color.Black);
                     sb.Draw(squareTexture, new Rectangle(52, Window.ClientBounds.Height - 148, 46, 46), Color.Black);
                     sb.Draw(squareTexture, new Rectangle(2, Window.ClientBounds.Height - 98, 96, 96), Color.Black);
-
 
                     // Draw the text for in-game GUI
                     sb.DrawString(statFont, $"HP: {player.Health}/300", new Vector2(2, 2), Color.Black);
