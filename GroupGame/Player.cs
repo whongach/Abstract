@@ -20,9 +20,9 @@ namespace GroupGame
         private bool debug;
         private double angle;
         private double travelledDistance;
+        private int speed;
         private Item currentItem;
         private Weapon offHand;
-        private int speed;
 
         // Properties
         /// <summary>
@@ -36,6 +36,11 @@ namespace GroupGame
         public double TravelledDistance { get { return travelledDistance; } }
 
         /// <summary>
+        /// Gets and sets the speed of the Player.
+        /// <summary>
+        public int Speed { get { return speed; } set { speed = value; } }
+
+        /// <summary>
         /// Gets and sets the currentItem that the Player has.
         /// </summary>
         public Item CurrentItem { get { return currentItem; } set { currentItem = value; } }
@@ -44,11 +49,6 @@ namespace GroupGame
         /// Gets and sets the Weapon that the player has in the offHand.
         /// </summary>
         public Weapon OffHand { get { return offHand; } set { offHand = value; } }
-
-        /// <summary>
-        /// Gets and sets the speed of the player
-        /// <summary>
-        public int Speed { get { return speed; } set { speed = value; } } 
 
         // Constructors
         /// <summary>
@@ -63,10 +63,10 @@ namespace GroupGame
             // Initialize Fields
             this.debug = false;
             this.angle = 0;
+            this.speed = 4;
             this.travelledDistance = 0;
             this.currentItem = null;
             this.offHand = null;
-            this.speed = 4;
         }
 
         // Methods

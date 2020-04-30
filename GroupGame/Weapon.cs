@@ -47,6 +47,7 @@ namespace GroupGame
         /// <param name="weapon">The Weapon to copy.</param>
         public Weapon(Weapon weapon) : base(weapon.Position, weapon.Texture, weapon.Collected)
         {
+            // Initialize Fields
             this.damage = weapon.Damage;
             this.textureOrigin = weapon.textureOrigin;
         }

@@ -102,9 +102,10 @@ namespace GroupGame
         /// <summary>
         /// Constructs a copy of a Melee Weapon.
         /// </summary>
-        /// <param name="melee">The Weapon to copy.</param>
+        /// <param name="melee">The MeleeWeapon to copy.</param>
         public MeleeWeapon(MeleeWeapon melee) : base(melee)
         {
+            // Initialize Fields
             this.attacking = false;
             this.attackFrame = 0;
             this.rotationDegrees = melee.rotationDegrees;

@@ -28,9 +28,9 @@ namespace GroupGame
     {
         // Fields
         private double weaponAngle;
-        private int currentFrame;
         private readonly int attackInterval;
         private readonly int bodyDamage;
+        private int currentFrame;
         private readonly int maxHeight;
         private readonly int maxWidth;
         private int randomDirectionNumber;
@@ -75,6 +75,7 @@ namespace GroupGame
             // Initialize Fields
             this.attackInterval = attackInterval;
             this.bodyDamage = bodyDamage;
+            this.currentFrame = 0;
             this.maxHeight = maxHeight;
             this.maxWidth = maxWidth;
             this.speed = speed;
@@ -112,6 +113,7 @@ namespace GroupGame
             // Initialize Fields
             this.attackInterval = enemy.attackInterval;
             this.bodyDamage = enemy.bodyDamage;
+            this.currentFrame = 0;
             this.maxHeight = enemy.maxHeight;
             this.maxWidth = enemy.maxWidth;
             this.speed = enemy.speed;
@@ -120,7 +122,6 @@ namespace GroupGame
             this.enemyMovementType = enemy.enemyMovementType;
             this.player = enemy.player;
             this.random = enemy.random;
-            currentFrame = 0;
 
             // Initialize start direction dependent on the EnemyMovementType
             if (enemyMovementType == EnemyMovementType.LeftRight)
@@ -169,6 +170,7 @@ namespace GroupGame
                 RandomWalk(maxWidth);
             }
 
+            // Increment the frame that the Enemy is on
             currentFrame++;
 
             // If the Enemy has a Weapon

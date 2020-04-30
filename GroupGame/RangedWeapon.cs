@@ -64,7 +64,7 @@ namespace GroupGame
         /// <summary>
         /// Constructs a copy of a Ranged Weapon.
         /// </summary>
-        /// <param name="ranged">The Weapon to copy.</param>
+        /// <param name="ranged">The RangedWeapon to copy.</param>
         public RangedWeapon(RangedWeapon ranged) : base(ranged)
         {
             // Initialize Fields

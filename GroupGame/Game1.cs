@@ -233,7 +233,6 @@ namespace GroupGame
         public void LoadResources()
         {
             // Temporary Fields
-            int tileSize;
             string currentEnemyName;
             int[] weaponFieldsParsed;
             int[] currentEnemyFields;
@@ -244,9 +243,9 @@ namespace GroupGame
 
             // Initialize Temporary Fields
             tiles = new int[16, 16];
-            tileSize = 68;
 
             // Initialize Class Fields
+            tileSize = 68;
             key = new Item(new Rectangle(500, 500, 50, 50), keyTexture, false);
             spear = new MeleeWeapon(new Point(80, 40), swordTexture, 8, 20);
             sword = new MeleeWeapon(new Point(40, 40), swordTexture, 5, 90, 5);
@@ -409,8 +408,6 @@ namespace GroupGame
             // Get a random Map from the List
             map = maps[random.Next(maps.Count)];
 
-            tileSize = 68;
-
             // Calculate Map Origin
             mapOrigin = new Point((Window.ClientBounds.Width - tileSize * 16) / 2, 0);
 
@@ -472,12 +469,12 @@ namespace GroupGame
             // Updates the Player's score
             score += 200;
 
-            //adds a weapon on the ground
+            // Adds a Weapon on the ground
 
-            //picks a random weapon
+            // Picks a random Weapon
             int weaponIndex = random.Next(resourceWeapons.Count);
 
-            //adds the appropriate weapon type
+            // Adds the appropriate Weapon type
             if(resourceWeapons[weaponIndex] is RangedWeapon)
             {
                 gameObjects.Add(new RangedWeapon((RangedWeapon)(resourceWeapons[weaponIndex])));
@@ -487,12 +484,12 @@ namespace GroupGame
                 gameObjects.Add(new MeleeWeapon((MeleeWeapon)(resourceWeapons[weaponIndex])));
             }
 
-            //fixes variables in the weapon
+            // Fixes variables in the Weapon
 
-            // Sets the weapon to be uncollected
+            // Sets the Weapon to be uncollected
             ((Weapon)gameObjects[1]).Collected = false;
 
-            // Sets the weapons's position
+            // Sets the Weapon's position
             gameObjects[1].Position = new Rectangle(GetEmptyTile(), new Point(gameObjects[1].Position.Width, gameObjects[1].Position.Height));
 
             // Loop a random number of times up to five times
@@ -563,7 +560,7 @@ namespace GroupGame
                     // Update the Player
                     player.Update(mouseState, previousMouseState, keyboardState, previousKeyboardState);
 
-                    // Give the player a speed boost if all enemies are dead
+                    // Give the Player a speed boost if all Wnemies are dead
                     if (enemies.Count != 0)
                         player.Speed = 4;
                     else
@@ -648,7 +645,6 @@ namespace GroupGame
                     // Check Collisions between the Player and the barriers
                     eventManager.Collision((Character)player, topBarrier);
                     eventManager.Collision((Character)player, bottomBarrier);
-                    
 
                     // Loop through the Enemies
                     for (int i = 0; i < enemies.Count; i++)
