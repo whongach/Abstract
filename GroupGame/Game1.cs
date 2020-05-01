@@ -245,6 +245,7 @@ namespace GroupGame
             tiles = new int[16, 16];
 
             // Initialize Class Fields
+            tileSize = 68;
             key = new Item(new Rectangle(500, 500, (int)(.75*tileSize), (int)(.75*tileSize)), keyTexture, false);
             spear = new MeleeWeapon(new Point((int)(1.2*tileSize), (int)(.6*tileSize)), swordTexture, 8, 20);
             sword = new MeleeWeapon(new Point((int)(.6*tileSize), (int)(.6*tileSize)), swordTexture, 5, 90, 5);
