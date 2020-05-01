@@ -247,14 +247,14 @@ namespace GroupGame
             tileSize = 68;
 
             // Initialize Class Fields
-            key = new Item(new Rectangle(500, 500, 50, 50), keyTexture, false);
-            spear = new MeleeWeapon(new Point(80, 40), swordTexture, 8, 20);
-            sword = new MeleeWeapon(new Point(40, 40), swordTexture, 5, 90, 5);
-            player = new Player(new Rectangle(0, 0, 50, 50), playerTexture, 300, sword);
-            arrow = new Projectile(new Point(20, 5), arrowTexture, 20);
-            spell = new Projectile(new Point(20, 20), spellTexture, 12);
-            bow = new RangedWeapon(new Point(40, 40), bowTexture, 2, arrow);
-            wand = new RangedWeapon(new Point(50, 50), wandTexture, 1, spell);
+            key = new Item(new Rectangle(500, 500, (int)(.75*tileSize), (int)(.75*tileSize)), keyTexture, false);
+            spear = new MeleeWeapon(new Point((int)(1.2*tileSize), (int)(.6*tileSize)), swordTexture, 8, 20);
+            sword = new MeleeWeapon(new Point((int)(.6*tileSize), (int)(.6*tileSize)), swordTexture, 5, 90, 5);
+            player = new Player(new Rectangle(0, 0, (int)(.75*tileSize), (int)(.75*tileSize)), playerTexture, 300, sword);
+            arrow = new Projectile(new Point((int)(.3*tileSize), (int)(.08*tileSize)), arrowTexture, 20);
+            spell = new Projectile(new Point((int)(.3*tileSize), (int)(.3*tileSize)), spellTexture, 12);
+            bow = new RangedWeapon(new Point((int)(.6*tileSize), (int)(.6*tileSize)), bowTexture, 2, arrow);
+            wand = new RangedWeapon(new Point((int)(.75*tileSize), (int)(.75*tileSize)), wandTexture, 1, spell);
             maps = new List<Map>();
             resourceEnemies = new List<Enemy>();
             resourceWeapons = new List<Weapon>();
@@ -303,7 +303,7 @@ namespace GroupGame
                         }
 
                         // Add the enemy to the list of imported resource enemies
-                        resourceEnemies.Add(new Enemy(new Rectangle(currentEnemyFields[4], currentEnemyFields[5], 10, 10), // Enemy Position
+                        resourceEnemies.Add(new Enemy(new Rectangle(0, 0, (int)(currentEnemyFields[4]*tileSize), (int)(currentEnemyFields[5]*tileSize)), // Enemy Position
                                                       squareTexture, // Enemy Texture
                                                       currentEnemyFields[0], // Health
                                                       null, // Weapon
