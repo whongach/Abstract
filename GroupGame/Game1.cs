@@ -571,7 +571,7 @@ namespace GroupGame
                     // Update the Player
                     player.Update(mouseState, previousMouseState, keyboardState, previousKeyboardState);
 
-                    // Give the Player a speed boost if all Wnemies are dead
+                    // Give the Player a speed boost if all Enemies are dead
                     if (enemies.Count != 0)
                         player.Speed = 4;
                     else
@@ -598,6 +598,18 @@ namespace GroupGame
                     {
                         // Check Collisions between the Player and GameObjects
                         eventManager.Collision(player, gameObjects[i]);
+
+                        // Checks if player is trying to swap weapons
+                        if(eventManager.CollisionCheck(player.Position, gameObjects[i].Position) && gameObjects[i] is Weapon)
+                        {
+                            if(keyboardState.IsKeyDown(Keys.E) && !previousKeyboardState.IsKeyDown(Keys.E))
+                            {
+                                //Temp variable to swap weapons
+                                Weapon temp = player.Weapon;
+                                player.Weapon = (Weapon)gameObjects[i];
+                                gameObjects[i] = temp;
+                            }
+                        }
                     }
 
                     // Loop through Enemies
@@ -740,7 +752,7 @@ namespace GroupGame
                     {
                         Exit();
                     }
-
+                    
                     break;
             }
         }
@@ -841,9 +853,22 @@ namespace GroupGame
                     sb.DrawString(statFont, $"Score: {score}", new Vector2(Window.ClientBounds.Width - 290, 2), Color.Black);
                     sb.DrawString(statFont, "Currency:", new Vector2(Window.ClientBounds.Width - 290, 22), Color.Black);
                     sb.DrawString(statFont, "Keys:", new Vector2(Window.ClientBounds.Width - 290, 42), Color.Black);
+                    sb.DrawString(statFont, $"Current Damage: {player.Weapon.Damage}", new Vector2(Window.ClientBounds.Width - 290, 82), Color.Black);
 
-                    // Draw the icons for GUI
-                    if (player.CurrentItem != null)
+                    // Loop through GameObjects
+                    for (int i = 0; i < gameObjects.Count; i++)
+                    {
+                        // Check Collisions between the Player and Ground Weapons
+                        if(eventManager.CollisionCheck(player.Position, gameObjects[i].Position) == true && gameObjects[i] is Weapon)
+                        {
+                            //Displays damage of ground weapon
+                            sb.DrawString(statFont, $"New damage: {((Weapon)gameObjects[i]).Damage}", new Vector2(Window.ClientBounds.Width - 290, 102), Color.Black);
+                        }
+                    }
+
+
+                        // Draw the icons for GUI
+                        if (player.CurrentItem != null)
                         player.CurrentItem.Draw(sb, new Rectangle(5, Window.ClientBounds.Height - 145, 40, 40));
                     if (player.Weapon != null)
                         player.Weapon.Draw(sb, new Rectangle(5, Window.ClientBounds.Height - 95, 90, 90));

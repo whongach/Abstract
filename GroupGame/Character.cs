@@ -25,7 +25,7 @@ namespace GroupGame
         /// <summary>
         /// Gets the Weapon that the Character is using.
         /// </summary>
-        public Weapon Weapon { get { return weapon; } }
+        public Weapon Weapon { get { return weapon; } set { weapon = value; } }
 
         // Constructors
         /// <summary>
