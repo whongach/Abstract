@@ -233,7 +233,6 @@ namespace GroupGame
         public void LoadResources()
         {
             // Temporary Fields
-            int tileSize;
             string currentEnemyName;
             int[] weaponFieldsParsed;
             int[] currentEnemyFields;
@@ -244,7 +243,6 @@ namespace GroupGame
 
             // Initialize Temporary Fields
             tiles = new int[16, 16];
-            tileSize = 68;
 
             // Initialize Class Fields
             key = new Item(new Rectangle(500, 500, (int)(.75*tileSize), (int)(.75*tileSize)), keyTexture, false);
@@ -409,8 +407,6 @@ namespace GroupGame
             // Get a random Map from the List
             map = maps[random.Next(maps.Count)];
 
-            tileSize = 68;
-
             // Calculate Map Origin
             mapOrigin = new Point((Window.ClientBounds.Width - tileSize * 16) / 2, 0);
 
@@ -443,11 +439,22 @@ namespace GroupGame
         }
 
         /// <summary>
+        /// Resets the game to it's default states.
+        /// </summary>
+        private void Reset()
+        {
+            // Reset the Player's Health
+            player.Health = 10;
+
+            // Reset collected statistics
+            score = -200;
+        }
+
+        /// <summary>
         /// Moves Game to the Next Level.
         /// </summary>
         public void NextLevel()
         {
-            // TO-DO ## clean this method up
             // Clear the List of GameObjects
             gameObjects.Clear();
 
@@ -472,12 +479,12 @@ namespace GroupGame
             // Updates the Player's score
             score += 200;
 
-            //adds a weapon on the ground
+            // Adds a Weapon on the ground
 
-            //picks a random weapon
+            // Picks a random Weapon
             int weaponIndex = random.Next(resourceWeapons.Count);
 
-            //adds the appropriate weapon type
+            // Adds the appropriate Weapon type
             if(resourceWeapons[weaponIndex] is RangedWeapon)
             {
                 gameObjects.Add(new RangedWeapon((RangedWeapon)(resourceWeapons[weaponIndex])));
@@ -487,12 +494,12 @@ namespace GroupGame
                 gameObjects.Add(new MeleeWeapon((MeleeWeapon)(resourceWeapons[weaponIndex])));
             }
 
-            //fixes variables in the weapon
+            // Fixes variables in the Weapon
 
-            // Sets the weapon to be uncollected
+            // Sets the Weapon to be uncollected
             ((Weapon)gameObjects[1]).Collected = false;
 
-            // Sets the weapons's position
+            // Sets the Weapon's position
             gameObjects[1].Position = new Rectangle(GetEmptyTile(), new Point(gameObjects[1].Position.Width, gameObjects[1].Position.Height));
 
             // Loop a random number of times up to five times
@@ -525,7 +532,7 @@ namespace GroupGame
                         // Disallow window resizing
                         Window.AllowUserResizing = false;
 
-
+                        Reset();
                         NextLevel();
                     }
 
@@ -563,7 +570,7 @@ namespace GroupGame
                     // Update the Player
                     player.Update(mouseState, previousMouseState, keyboardState, previousKeyboardState);
 
-                    // Give the player a speed boost if all enemies are dead
+                    // Give the Player a speed boost if all Wnemies are dead
                     if (enemies.Count != 0)
                         player.Speed = 4;
                     else
@@ -648,7 +655,6 @@ namespace GroupGame
                     // Check Collisions between the Player and the barriers
                     eventManager.Collision((Character)player, topBarrier);
                     eventManager.Collision((Character)player, bottomBarrier);
-                    
 
                     // Loop through the Enemies
                     for (int i = 0; i < enemies.Count; i++)
@@ -828,7 +834,6 @@ namespace GroupGame
                     sb.Draw(squareTexture, new Rectangle(2, Window.ClientBounds.Height - 148, 46, 46), Color.Black);
                     sb.Draw(squareTexture, new Rectangle(52, Window.ClientBounds.Height - 148, 46, 46), Color.Black);
                     sb.Draw(squareTexture, new Rectangle(2, Window.ClientBounds.Height - 98, 96, 96), Color.Black);
-
 
                     // Draw the text for in-game GUI
                     sb.DrawString(statFont, $"HP: {player.Health}/300", new Vector2(2, 2), Color.Black);
