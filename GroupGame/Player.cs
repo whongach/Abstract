@@ -155,7 +155,6 @@ namespace GroupGame
                 offHand = previousWeapon;
             }
 
-
             // If the user clicks
             if (mouseState.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton == ButtonState.Released)
             {

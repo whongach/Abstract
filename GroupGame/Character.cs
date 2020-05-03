@@ -23,7 +23,7 @@ namespace GroupGame
         public int Health { get { return health; } set { health = value; } }
 
         /// <summary>
-        /// Gets the Weapon that the Character is using.
+        /// Gets and sets the Weapon that the Character is using.
         /// </summary>
         public Weapon Weapon { get { return weapon; } set { weapon = value; } }
 

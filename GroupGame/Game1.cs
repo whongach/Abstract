@@ -602,9 +602,9 @@ namespace GroupGame
                         // Checks if player is trying to swap weapons
                         if(eventManager.CollisionCheck(player.Position, gameObjects[i].Position) && gameObjects[i] is Weapon)
                         {
-                            if(keyboardState.IsKeyDown(Keys.E) && !previousKeyboardState.IsKeyDown(Keys.E))
+                            if(SingleKeyPress(Keys.E))
                             {
-                                //Temp variable to swap weapons
+                                // Temporary variable to swap Weapons
                                 Weapon temp = player.Weapon;
                                 player.Weapon = (Weapon)gameObjects[i];
                                 gameObjects[i] = temp;
@@ -840,7 +840,7 @@ namespace GroupGame
                 case GameState.Game:
                     // Draw the underlying boxes for GUI
                     sb.Draw(squareTexture, new Rectangle(0, 0, 300, 30), Color.LightGreen);
-                    sb.Draw(squareTexture, new Rectangle(Window.ClientBounds.Width - 300, 0, 300, 80), Color.Gray);
+                    sb.Draw(squareTexture, new Rectangle(Window.ClientBounds.Width - 300, 0, 300, 130), Color.Gray);
                     sb.Draw(squareTexture, new Rectangle(0, Window.ClientBounds.Height - 100, 100, 100), Color.Gray);
                     sb.Draw(squareTexture, new Rectangle(0, Window.ClientBounds.Height - 150, 50, 50), Color.Gray);
                     sb.Draw(squareTexture, new Rectangle(50, Window.ClientBounds.Height - 150, 50, 50), Color.Gray);
@@ -861,14 +861,13 @@ namespace GroupGame
                         // Check Collisions between the Player and Ground Weapons
                         if(eventManager.CollisionCheck(player.Position, gameObjects[i].Position) == true && gameObjects[i] is Weapon)
                         {
-                            //Displays damage of ground weapon
-                            sb.DrawString(statFont, $"New damage: {((Weapon)gameObjects[i]).Damage}", new Vector2(Window.ClientBounds.Width - 290, 102), Color.Black);
+                            // Displays damage of ground Weapon
+                            sb.DrawString(statFont, $"New Damage: {((Weapon)gameObjects[i]).Damage}", new Vector2(Window.ClientBounds.Width - 290, 102), Color.Black);
                         }
                     }
 
-
-                        // Draw the icons for GUI
-                        if (player.CurrentItem != null)
+                    // Draw the icons for GUI
+                    if (player.CurrentItem != null)
                         player.CurrentItem.Draw(sb, new Rectangle(5, Window.ClientBounds.Height - 145, 40, 40));
                     if (player.Weapon != null)
                         player.Weapon.Draw(sb, new Rectangle(5, Window.ClientBounds.Height - 95, 90, 90));
