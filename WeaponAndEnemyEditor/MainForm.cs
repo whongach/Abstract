@@ -26,7 +26,7 @@ namespace WeaponAndEnemyEditor
         private void weaponLoadButton_Click(object sender, EventArgs e)
         {
             // WEAPON FILE FORMAT
-            // name,damage,durability,type (string,int,int,int)
+            // name,damage,size,type (string,int,int,int)
 
             // Creates a new OpenFileDialog & opens a .weapon file
             OpenFileDialog openFile = new OpenFileDialog();
@@ -60,21 +60,31 @@ namespace WeaponAndEnemyEditor
                     int parseResult = -1;
                     if (int.TryParse(fileContents[3], out parseResult) && parseResult == 0)
                     {
-                        weaponRadioSpin.Checked = true;
-                        weaponRadioStab.Checked = false;
-                        weaponRadioRanged.Checked = false;
+                        weaponRadioSword.Checked = true;
+                        weaponRadioSpear.Checked = false;
+                        weaponRadioWand.Checked = false;
+                        weaponRadioBow.Checked = false;
                     }
                     else if (parseResult == 1)
                     {
-                        weaponRadioSpin.Checked = false;
-                        weaponRadioStab.Checked = true;
-                        weaponRadioRanged.Checked = false;
+                        weaponRadioSword.Checked = false;
+                        weaponRadioSpear.Checked = true;
+                        weaponRadioWand.Checked = false;
+                        weaponRadioBow.Checked = false;
+                    }
+                    else if (parseResult == 2)
+                    {
+                        weaponRadioSword.Checked = false;
+                        weaponRadioSpear.Checked = false;
+                        weaponRadioWand.Checked = true;
+                        weaponRadioBow.Checked = false;
                     }
                     else
                     {
-                        weaponRadioSpin.Checked = false;
-                        weaponRadioStab.Checked = false;
-                        weaponRadioRanged.Checked = true;
+                        weaponRadioSword.Checked = false;
+                        weaponRadioSpear.Checked = false;
+                        weaponRadioWand.Checked = false;
+                        weaponRadioBow.Checked = true;
                     }
 
                 } // end try
@@ -105,17 +115,17 @@ namespace WeaponAndEnemyEditor
             // Creates variables to hold text box inputs
             string name;
             int damage;
-            int durability;
-            int weaponType; // 0 is a melee-spin, 1 is a melee-stab, 2 is a ranged weapon
+            int size;
+            int weaponType; // 0 sword, 1 spear, 2 wand, 3 bow
 
             // ERROR CHECKING
             // Check for valid NON-NEGATIVE integer parameters damage / durability
             if (!int.TryParse(weaponBox2.Text, out damage) ||
-                !int.TryParse(weaponBox3.Text, out durability) ||
-                damage < 0 || durability < 0)
+                !int.TryParse(weaponBox3.Text, out size) ||
+                damage < 0 || size < 0)
             {
                 MessageBox.Show(
-                    "Errors:\n- Please enter valid NON-NEGATIVE integer parameters for the weapon damage and durability",
+                    "Errors:\n- Please enter valid NON-NEGATIVE integer parameters for the weapon damage and size",
                     "Error building weapon",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
@@ -124,10 +134,10 @@ namespace WeaponAndEnemyEditor
 
             // ERROR CHECKING
             // Make sure at least one radio box is checked
-            if (!weaponRadioSpin.Checked && !weaponRadioStab.Checked && !weaponRadioRanged.Checked)
+            if (!weaponRadioSword.Checked && !weaponRadioSpear.Checked && !weaponRadioWand.Checked && !weaponRadioBow.Checked)
             {
                 MessageBox.Show(
-                    "Errors:\n- Please check at least one weapon type: spin/stab/ranged ",
+                    "Errors:\n- Please check at least one weapon type: sword/spear/wand/bow ",
                     "Error building weapon",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
@@ -137,23 +147,24 @@ namespace WeaponAndEnemyEditor
             // Parse inputs after the check
             name = weaponBox1.Text;
             damage = int.Parse(weaponBox2.Text);
-            durability = int.Parse(weaponBox3.Text);
+            size = int.Parse(weaponBox3.Text);
             
             // Set weaponType to the selected radio box
-            if(weaponRadioSpin.Checked)
+            if(weaponRadioSword.Checked)
             {
-                // Melee-Spin Weapon
                 weaponType = 0;
             }
-            else if(weaponRadioStab.Checked)
+            else if(weaponRadioSpear.Checked)
             {
-                // Melee-Stab Weapon
                 weaponType = 1;
+            }
+            else if(weaponRadioWand.Checked)
+            {
+                weaponType = 2;
             }
             else
             {
-                // Ranged Weapon
-                weaponType = 2;
+                weaponType = 3;
             }
 
             // Creates a new SaveFileDialog
@@ -176,7 +187,7 @@ namespace WeaponAndEnemyEditor
                     output = new StreamWriter(outStream);
 
                     // Write the parameters, in order, separated by commas
-                    output.WriteLine(name + "," + damage + "," + durability + "," + weaponType);
+                    output.WriteLine(name + "," + damage + "," + size + "," + weaponType);
 
                     // Display a success message box
                     MessageBox.Show(
@@ -208,7 +219,7 @@ namespace WeaponAndEnemyEditor
         private void enemyLoadButton_Click(object sender, EventArgs e)
         {
             // ENEMY FILE FORMAT
-            // health,damage,attackSpeed,speed,xCoord,yCoord (int,int,int,int,int,int)
+            // health,damage,attackSpeed,speed,xSize,ySize,Movement,Weapon (int,int,int,int,int,int,int,int)
 
             // Creates a new OpenFileDialog & opens a .weapon file
             OpenFileDialog openFile = new OpenFileDialog();
@@ -229,8 +240,8 @@ namespace WeaponAndEnemyEditor
                     inStream = File.OpenRead(openFile.FileName);
                     input = new StreamReader(inStream);
 
-                    // Read in the data and store it in a size 6 array
-                    string[] fileContents = new string[6]; // stores the 6 parameters
+                    // Read in the data and store it in a size 8 array
+                    string[] fileContents = new string[8]; // stores the 8 parameters
                     string line = input.ReadLine();
                     fileContents = line.Split(',');
 
@@ -241,6 +252,8 @@ namespace WeaponAndEnemyEditor
                     enemyBox4.Text = fileContents[3];
                     enemyBox5.Text = fileContents[4];
                     enemyBox6.Text = fileContents[5];
+                    enemyBox7.Text = fileContents[6];
+                    enemyBox8.Text = fileContents[7];
 
                 } // end try
                 catch (Exception ex)
@@ -272,8 +285,10 @@ namespace WeaponAndEnemyEditor
             int damage;
             int attackSpeed;
             int speed;
-            int xCoord;
-            int yCoord;
+            int xSize;
+            int ySize;
+            int movementType;
+            int weaponType;
 
             // ERROR CHECKING
             // Check for valid NON-NEGATIVE integer parameters
@@ -281,10 +296,13 @@ namespace WeaponAndEnemyEditor
                 !int.TryParse(enemyBox2.Text, out damage) ||
                 !int.TryParse(enemyBox3.Text, out attackSpeed) ||
                 !int.TryParse(enemyBox4.Text, out speed) ||
-                !int.TryParse(enemyBox5.Text, out xCoord) ||
-                !int.TryParse(enemyBox6.Text, out yCoord) ||
+                !int.TryParse(enemyBox5.Text, out xSize) ||
+                !int.TryParse(enemyBox6.Text, out ySize) ||
+                !int.TryParse(enemyBox7.Text, out movementType) ||
+                !int.TryParse(enemyBox8.Text, out weaponType) ||
                 health < 0 || damage < 0 || attackSpeed < 0 ||
-                speed < 0 || xCoord < 0 || yCoord < 0)
+                speed < 0 || xSize < 0 || ySize < 0 || movementType < 0
+                || weaponType < 0)
             {
                 MessageBox.Show(
                     "Errors:\n- Please enter valid NON-NEGATIVE integer parameters for all enemy parameters",
@@ -299,8 +317,10 @@ namespace WeaponAndEnemyEditor
             damage = int.Parse(enemyBox2.Text);
             attackSpeed = int.Parse(enemyBox3.Text);
             speed = int.Parse(enemyBox4.Text);
-            xCoord = int.Parse(enemyBox5.Text);
-            yCoord = int.Parse(enemyBox6.Text);
+            xSize = int.Parse(enemyBox5.Text);
+            ySize = int.Parse(enemyBox6.Text);
+            movementType = int.Parse(enemyBox7.Text);
+            weaponType = int.Parse(enemyBox8.Text);
 
             // Creates a new SaveFileDialog
             SaveFileDialog saveFile = new SaveFileDialog();
@@ -323,7 +343,7 @@ namespace WeaponAndEnemyEditor
 
                     // Write the parameters, in order, separated by commas
                     output.WriteLine(health + "," + damage + "," + attackSpeed + "," + speed
-                                    + "," + xCoord + "," + yCoord);
+                                    + "," + xSize + "," + ySize + "," + movementType + "," + weaponType);
 
                     // Display a success message box
                     MessageBox.Show(
@@ -345,5 +365,6 @@ namespace WeaponAndEnemyEditor
                 }
             }
         } // end enemyBuildButton_Click
+
     }
 }

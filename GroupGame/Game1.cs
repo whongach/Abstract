@@ -286,14 +286,14 @@ namespace GroupGame
                         break;
 
                     case "Enemy":
-                        // Enemy File Format (six parameters from .enemy file): health, damage, attackSpeed, speed, xCoord, yCoord
-                        //    -  All items are read in as strings but parsed to: (int, int, int, int, int, int)
+                        // Enemy File Format (8 parameters from .enemy file): health, damage, attackSpeed, speed, xSize, ySize, movementType, weaponType
+                        //    -  All items are read in as strings but parsed to: (int, int, int, int, int, int, int, int)
 
                         // Stores name of the Enemy file
                         currentEnemyName = reader.ReadString();
 
                         // Initialize Enemy Fields
-                        currentEnemyFields = new int[6];
+                        currentEnemyFields = new int[8];
 
                         // Read in parameters
                         for (int i = 0; i < currentEnemyFields.Length; i++)
@@ -301,8 +301,21 @@ namespace GroupGame
                             currentEnemyFields[i] = int.Parse(reader.ReadString());
                         }
 
+                        // Sets the appropriate movement type based on the integer from the file
+                        EnemyMovementType movementType = EnemyMovementType.Chase; // default type
+                        if (currentEnemyFields[7] == 0)
+                            movementType = EnemyMovementType.Chase;
+                        else if (currentEnemyFields[7] == 1)
+                            movementType = EnemyMovementType.LeftRight;
+                        else if (currentEnemyFields[7] == 2)
+                            movementType = EnemyMovementType.Random;
+                        else if (currentEnemyFields[7] == 3)
+                            movementType = EnemyMovementType.Rectangle;
+                        else if (currentEnemyFields[7] == 4)
+                            movementType = EnemyMovementType.UpDown;
+
                         // Add the enemy to the list of imported resource enemies
-                        resourceEnemies.Add(new Enemy(new Rectangle(0, 0, (int)(currentEnemyFields[4]*tileSize), (int)(currentEnemyFields[5]*tileSize)), // Enemy Position
+                        resourceEnemies.Add(new Enemy(new Rectangle(0, 0, currentEnemyFields[4], currentEnemyFields[5]), // Enemy Size (position should be overridden in NextLevel()
                                                       squareTexture, // Enemy Texture
                                                       currentEnemyFields[0], // Health
                                                       null, // Weapon
@@ -312,7 +325,7 @@ namespace GroupGame
                                                       50, // Default Max Travel Height
                                                       currentEnemyFields[3], // Travel Speed
                                                       currentEnemyName, // Enemy Name
-                                                      EnemyMovementType.Random, // Enemy Movement Type
+                                                      movementType, // Enemy Movement Type
                                                       player, // The Player
                                                       random)); // Random Number Generator
                         break;
@@ -346,21 +359,27 @@ namespace GroupGame
                         weaponFieldsParsed[2] = int.Parse(currentWeaponFields[3]);
 
                         // Add the weapon to the list of imported resource weapons
-                        // based on its type: 0 - MeleeSpin, 1 - MeleeStab, 2 - Ranged
+                        // based on its type: 0 - Sword, 1 - Spear, 2 - Wand, 3 - Bow
 
-                        // The weapon is a melee-spin
+                        // The weapon is a sword
                         if (weaponFieldsParsed[2] == 0)
                         {
                             resourceWeapons.Add(new MeleeWeapon(new Point(40, 40), swordTexture, weaponFieldsParsed[0], 90, 5));
                         }
 
-                        // The weapon is a melee-stab
+                        // The weapon is a spear
                         else if (weaponFieldsParsed[2] == 1)
                         {
                             resourceWeapons.Add(new MeleeWeapon(new Point(80, 40), swordTexture, weaponFieldsParsed[0], 20));
                         }
 
-                        // The weapon is ranged
+                        // The weapon is a wand
+                        else if (weaponFieldsParsed[2] == 2)
+                        {
+                            resourceWeapons.Add(new RangedWeapon(new Point(40, 40), wandTexture, weaponFieldsParsed[0], spell));
+                        }
+
+                        // The weapon is a bow
                         else
                         {
                             resourceWeapons.Add(new RangedWeapon(new Point(40, 40), bowTexture, weaponFieldsParsed[0], arrow));
@@ -480,6 +499,7 @@ namespace GroupGame
             // Updates the Player's score
             score += 200;
 
+            /*
             // Adds a Weapon on the ground
 
             // Picks a random Weapon
@@ -494,6 +514,7 @@ namespace GroupGame
             {
                 gameObjects.Add(new MeleeWeapon((MeleeWeapon)(resourceWeapons[weaponIndex])));
             }
+            
 
             // Fixes variables in the Weapon
 
@@ -502,6 +523,7 @@ namespace GroupGame
 
             // Sets the Weapon's position
             gameObjects[1].Position = new Rectangle(GetEmptyTile(), new Point(gameObjects[1].Position.Width, gameObjects[1].Position.Height));
+            */
 
             // Loop a random number of times up to five times
             for (int i = 0; i < random.Next(5) + 1; i++)
@@ -510,7 +532,7 @@ namespace GroupGame
                 enemies.Add(new Enemy(resourceEnemies[random.Next(resourceEnemies.Count)]));
 
                 // Set the Enemy's position
-                enemies[i].Position = new Rectangle(GetEmptyTile(), new Point(enemies[i].Position.Width, enemies[i].Position.Height));
+                enemies[i].Position = new Rectangle(GetEmptyTile(), new Point(enemies[i].Position.Width*40, enemies[i].Position.Height*40));
 
                 // TO-DO ## needs additional code to fully implement enemies
             }

@@ -73,7 +73,7 @@ namespace ResourceManager
         private void addEnemy_Click(object sender, EventArgs e)
         {
             // ENEMY FILE FORMAT
-            // health,damage,attackSpeed,speed,xCoord,yCoord (int,int,int,int,int,int)
+            // health,damage,attackSpeed,speed,xSize,ySize,movementType,weaponType (int,int,int,int,int,int,int,int)
             // note, all values are stored as strings in BinaryIO
 
             // Creates a new OpenFileDialog & opens a .weapon file
@@ -97,8 +97,8 @@ namespace ResourceManager
                     input = new StreamReader(inStream);
                     writer = new BinaryWriter(mainFile);
 
-                    // Read in the data and store it in a size 6 array
-                    string[] fileContents = new string[6]; // stores the 6 parameters
+                    // Read in the data and store it in a size 8 array
+                    string[] fileContents = new string[8]; // stores the 8 parameters
                     string line = input.ReadLine();
                     fileContents = line.Split(',');
 
@@ -106,7 +106,7 @@ namespace ResourceManager
                     writer.Write("Enemy");
                     writer.Write(openFile.FileName);
 
-                    for (int i = 0; i < 6; i++)
+                    for (int i = 0; i < 8; i++)
                     {
                         writer.Write(fileContents[i]);
                     }
@@ -258,7 +258,7 @@ namespace ResourceManager
                                 break;
                             }
                             //finishes passing through data 
-                            for (int i = 0; i < 6; i++)
+                            for (int i = 0; i < 8; i++)
                             {
                                 reader.ReadString();
                                 line++;
@@ -333,13 +333,13 @@ namespace ResourceManager
                         writer.Write("Enemy");
                         writer.Write(data.FileName);
 
-                        for (int i = 0; i < 6; i++)
+                        for (int i = 0; i < 8; i++)
                         {
                             writer.Write(reader.ReadString());
                         }
 
                         // Advances line count
-                        currentLine += 8;
+                        currentLine += 10;
                         break;
 
                     case "Weapon":
@@ -382,7 +382,7 @@ namespace ResourceManager
                     reader.ReadString();
 
                     // Skips all 6 data points
-                    for (int i = 0; i < 6; i++)
+                    for (int i = 0; i < 8; i++)
                     {
                         reader.ReadString();
                     }
@@ -477,7 +477,7 @@ namespace ResourceManager
                         items.Add(reader.ReadString());
 
                         // Skips through the six data points
-                        for (int i = 0; i < 6; i++)
+                        for (int i = 0; i < 8; i++)
                         {
                             reader.ReadString();
                         }
