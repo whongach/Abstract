@@ -326,7 +326,7 @@ namespace GroupGame
                         resourceEnemies.Add(new Enemy(new Rectangle(0, 0, currentEnemyFields[4], currentEnemyFields[5]), // Enemy Size (position should be overridden in NextLevel()
                                                       squareTexture, // Enemy Texture
                                                       currentEnemyFields[0], // Health
-                                                      new Weapon(enemyWeapons[currentEnemyFields[7]]), // Weapon
+                                                      null, // Weapon
                                                       currentEnemyFields[2], // Attack Interval
                                                       currentEnemyFields[1], // Body Damage
                                                       50, // Default Max Travel Width
@@ -336,6 +336,12 @@ namespace GroupGame
                                                       movementType, // Enemy Movement Type
                                                       player, // The Player
                                                       random)); // Random Number Generator
+
+                        //Adds the weapon to the enemy
+                        if(enemyWeapons[currentEnemyFields[7]] is MeleeWeapon)
+                            resourceEnemies[resourceEnemies.Count-1].Weapon = new MeleeWeapon(enemyWeapons[currentEnemyFields[7]]);
+                        else if (enemyWeapons[currentEnemyFields[7]] is RangedWeapon)
+                            resourceEnemies[resourceEnemies.Count-1].Weapon = new RangedWeapon(enemyWeapons[currentEnemyFields[7]]);
                         break;
 
                     //####### TO-DO: Integrate this list of enemies into the game.. some helpful info: ######################################################
