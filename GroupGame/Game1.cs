@@ -323,7 +323,7 @@ namespace GroupGame
                             movementType = EnemyMovementType.UpDown;
 
                         // Add the enemy to the list of imported resource enemies
-                        resourceEnemies.Add(new Enemy(new Rectangle(0, 0, (int)(currentEnemyFields[4]*tileSize/10), (int)(currentEnemyFields[5]*tileSize)), // Enemy Size (position should be overridden in NextLevel()
+                        resourceEnemies.Add(new Enemy(new Rectangle(0, 0, (int)(currentEnemyFields[4]*tileSize/10), (int)(currentEnemyFields[5]*tileSize/10)), // Enemy Size (position should be overridden in NextLevel()
                                                       squareTexture, // Enemy Texture
                                                       currentEnemyFields[0], // Health
                                                       null, // Weapon
@@ -374,7 +374,7 @@ namespace GroupGame
                         weaponFieldsParsed[0] = int.Parse(currentWeaponFields[1]);
                         weaponFieldsParsed[1] = int.Parse(currentWeaponFields[2]);
                         weaponFieldsParsed[2] = int.Parse(currentWeaponFields[3]);
-                        +
+
                         // Add the weapon to the list of imported resource weapons
                         // based on its type: 0 - Sword, 1 - Spear, 2 - Wand, 3 - Bow
 
