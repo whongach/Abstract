@@ -354,7 +354,7 @@ namespace GroupGame
                     //   They are then parsed to an array of ints here, and act as ints. No need to TryParse, the external tool only allows integers > 0 to be used.
 
                     case "Weapon":
-                        // Weapon File Format (four parameters from .weapon file): name, damage, durability, type
+                        // Weapon File Format (four parameters from .weapon file): name, damage, size, type
                         //    -  All items are read in as strings, but the ints are parsed: (string, int, int, int)
 
                         // Skips file name
