@@ -79,6 +79,7 @@ namespace GroupGame
         private List<GameObject> gameObjects;
         private List<Map> maps;
         private List<Weapon> resourceWeapons;
+        private List<Weapon> enemyWeapons;
 
         // MonoGame Generated Constructors
         /// <summary>
@@ -258,6 +259,13 @@ namespace GroupGame
             resourceEnemies = new List<Enemy>();
             resourceWeapons = new List<Weapon>();
 
+            //creates the enemyWeapons list
+            enemyWeapons = new List<Weapon>();
+            enemyWeapons.Add(sword);
+            enemyWeapons.Add(spear);
+            enemyWeapons.Add(wand);
+            enemyWeapons.Add(bow);
+
             // Open FileStream and BinaryReader
             resources = File.OpenRead("../../../../../Resources/master.rsrc");
             reader = new BinaryReader(resources);
@@ -303,22 +311,22 @@ namespace GroupGame
 
                         // Sets the appropriate movement type based on the integer from the file
                         EnemyMovementType movementType = EnemyMovementType.Chase; // default type
-                        if (currentEnemyFields[7] == 0)
+                        if (currentEnemyFields[6] == 0)
                             movementType = EnemyMovementType.Chase;
-                        else if (currentEnemyFields[7] == 1)
+                        else if (currentEnemyFields[6] == 1)
                             movementType = EnemyMovementType.LeftRight;
-                        else if (currentEnemyFields[7] == 2)
+                        else if (currentEnemyFields[6] == 2)
                             movementType = EnemyMovementType.Random;
-                        else if (currentEnemyFields[7] == 3)
+                        else if (currentEnemyFields[6] == 3)
                             movementType = EnemyMovementType.Rectangle;
-                        else if (currentEnemyFields[7] == 4)
+                        else if (currentEnemyFields[6] == 4)
                             movementType = EnemyMovementType.UpDown;
 
                         // Add the enemy to the list of imported resource enemies
                         resourceEnemies.Add(new Enemy(new Rectangle(0, 0, currentEnemyFields[4], currentEnemyFields[5]), // Enemy Size (position should be overridden in NextLevel()
                                                       squareTexture, // Enemy Texture
                                                       currentEnemyFields[0], // Health
-                                                      null, // Weapon
+                                                      new Weapon(enemyWeapons[currentEnemyFields[7]]), // Weapon
                                                       currentEnemyFields[2], // Attack Interval
                                                       currentEnemyFields[1], // Body Damage
                                                       50, // Default Max Travel Width
