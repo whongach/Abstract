@@ -193,21 +193,49 @@ namespace GroupGame
             // Check the Player's x position and move Enemy towards it
             if (player.Position.X > position.X)
             {
-                position.X += speed;
+                if (player.Position.X - position.X < speed)
+                {
+                    position.X += player.Position.X - position.X;
+                }
+                else
+                {
+                    position.X += speed;
+                }
             }
             else if (player.Position.X < position.X)
             {
-                position.X -= speed;
+                if (position.X - player.Position.X < speed)
+                {
+                    position.X -= position.X - player.Position.X;
+                }
+                else
+                {
+                    position.X -= speed;
+                }
             }
 
             // Check the Player's y position and move Enemy towards it
             if (player.Position.Y > position.Y)
             {
-                position.Y += speed;
+                if (player.Position.Y - position.Y < speed)
+                {
+                    position.Y += player.Position.Y - position.Y;
+                }
+                else
+                {
+                    position.Y += speed;
+                }
             }
             else if (player.Position.Y < position.Y)
             {
-                position.Y -= speed;
+                if (position.Y - player.Position.Y < speed)
+                {
+                    position.Y -= position.Y - player.Position.Y;
+                }
+                else
+                {
+                    position.Y -= speed;
+                }
             }
         }
 
