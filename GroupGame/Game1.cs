@@ -322,8 +322,11 @@ namespace GroupGame
                         else if (currentEnemyFields[6] == 4)
                             movementType = EnemyMovementType.UpDown;
 
+                        //prints enemy size
+                        Console.WriteLine((currentEnemyFields[4]/10.0));
+
                         // Add the enemy to the list of imported resource enemies
-                        resourceEnemies.Add(new Enemy(new Rectangle(0, 0, (int)(currentEnemyFields[4]*tileSize/10), (int)(currentEnemyFields[5]*tileSize/10)), // Enemy Size (position should be overridden in NextLevel()
+                        resourceEnemies.Add(new Enemy(new Rectangle(0, 0, (int)(currentEnemyFields[4] / 10.0 * tileSize), (int)(currentEnemyFields[5] / 10.0 * tileSize)), // Enemy Size (position should be overridden in NextLevel()
                                                       squareTexture, // Enemy Texture
                                                       currentEnemyFields[0], // Health
                                                       null, // Weapon
@@ -549,7 +552,7 @@ namespace GroupGame
                 enemies.Add(new Enemy(resourceEnemies[random.Next(resourceEnemies.Count)]));
 
                 // Set the Enemy's position
-                enemies[i].Position = new Rectangle(GetEmptyTile(), new Point(enemies[i].Position.Width*40, enemies[i].Position.Height*40));
+                enemies[i].Position = new Rectangle(GetEmptyTile(), new Point(enemies[i].Position.Width, enemies[i].Position.Height));
 
                 // TO-DO ## needs additional code to fully implement enemies
             }
