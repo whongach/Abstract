@@ -323,7 +323,7 @@ namespace GroupGame
                             movementType = EnemyMovementType.UpDown;
 
                         // Add the enemy to the list of imported resource enemies
-                        resourceEnemies.Add(new Enemy(new Rectangle(0, 0, currentEnemyFields[4], currentEnemyFields[5]), // Enemy Size (position should be overridden in NextLevel()
+                        resourceEnemies.Add(new Enemy(new Rectangle(0, 0, (int)(currentEnemyFields[4]*tileSize/10), (int)(currentEnemyFields[5]*tileSize)), // Enemy Size (position should be overridden in NextLevel()
                                                       squareTexture, // Enemy Texture
                                                       currentEnemyFields[0], // Health
                                                       null, // Weapon
@@ -338,10 +338,13 @@ namespace GroupGame
                                                       random)); // Random Number Generator
 
                         //Adds the weapon to the enemy
-                        if(enemyWeapons[currentEnemyFields[7]] is MeleeWeapon)
-                            resourceEnemies[resourceEnemies.Count-1].Weapon = new MeleeWeapon((MeleeWeapon)enemyWeapons[currentEnemyFields[7]]);
-                        else if (enemyWeapons[currentEnemyFields[7]] is RangedWeapon)
-                            resourceEnemies[resourceEnemies.Count-1].Weapon = new RangedWeapon((RangedWeapon)enemyWeapons[currentEnemyFields[7]]);
+                        if(currentEnemyFields[7]<4 && currentEnemyFields[7]>-1)
+                        {
+                            if(enemyWeapons[currentEnemyFields[7]] is MeleeWeapon)
+                                resourceEnemies[resourceEnemies.Count-1].Weapon = new MeleeWeapon((MeleeWeapon)enemyWeapons[currentEnemyFields[7]]);
+                            else if (enemyWeapons[currentEnemyFields[7]] is RangedWeapon)
+                                resourceEnemies[resourceEnemies.Count-1].Weapon = new RangedWeapon((RangedWeapon)enemyWeapons[currentEnemyFields[7]]);
+                        }
                         break;
 
                     //####### TO-DO: Integrate this list of enemies into the game.. some helpful info: ######################################################
@@ -378,25 +381,25 @@ namespace GroupGame
                         // The weapon is a sword
                         if (weaponFieldsParsed[2] == 0)
                         {
-                            resourceWeapons.Add(new MeleeWeapon(new Point(40, 40), swordTexture, weaponFieldsParsed[0], 90, 5));
+                            resourceWeapons.Add(new MeleeWeapon(new Point((int)(weaponFieldsParsed[1] * tileSize / 10), (int)(weaponFieldsParsed[1] * tileSize / 10)), swordTexture, weaponFieldsParsed[0], 90, 5));
                         }
 
                         // The weapon is a spear
                         else if (weaponFieldsParsed[2] == 1)
                         {
-                            resourceWeapons.Add(new MeleeWeapon(new Point(80, 40), swordTexture, weaponFieldsParsed[0], 20));
+                            resourceWeapons.Add(new MeleeWeapon(new Point((int)(weaponFieldsParsed[1] * tileSize / 5), (int)(weaponFieldsParsed[1] * tileSize / 10)), swordTexture, weaponFieldsParsed[0], 20));
                         }
 
                         // The weapon is a wand
                         else if (weaponFieldsParsed[2] == 2)
                         {
-                            resourceWeapons.Add(new RangedWeapon(new Point(40, 40), wandTexture, weaponFieldsParsed[0], spell));
+                            resourceWeapons.Add(new RangedWeapon(new Point((int)(weaponFieldsParsed[1] * tileSize / 10), (int)(weaponFieldsParsed[1] * tileSize / 10)), wandTexture, weaponFieldsParsed[0], spell));
                         }
 
                         // The weapon is a bow
                         else
                         {
-                            resourceWeapons.Add(new RangedWeapon(new Point(40, 40), bowTexture, weaponFieldsParsed[0], arrow));
+                            resourceWeapons.Add(new RangedWeapon(new Point((int)(weaponFieldsParsed[1] * tileSize / 10), (int)(weaponFieldsParsed[1] * tileSize / 10)), bowTexture, weaponFieldsParsed[0], arrow));
                         }
 
                         // End weapon case
