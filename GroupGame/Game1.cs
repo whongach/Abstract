@@ -374,7 +374,7 @@ namespace GroupGame
                         weaponFieldsParsed[0] = int.Parse(currentWeaponFields[1]);
                         weaponFieldsParsed[1] = int.Parse(currentWeaponFields[2]);
                         weaponFieldsParsed[2] = int.Parse(currentWeaponFields[3]);
-
+                        +
                         // Add the weapon to the list of imported resource weapons
                         // based on its type: 0 - Sword, 1 - Spear, 2 - Wand, 3 - Bow
 
