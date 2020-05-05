@@ -17,7 +17,7 @@ namespace GroupGame
     /// <summary>
     /// Enumerations for various game states.
     /// </summary>
-    public enum GameState { MainMenu, Game, Pause, Shop, Stats, Gameover }
+    public enum GameState { MainMenu, Game, Pause, Stats, Gameover }
 
     /// <summary>
     /// This is the main type for your game.
@@ -653,19 +653,18 @@ namespace GroupGame
                         NextLevel();
                     }
 
-                    // If the user presses "B" (or presses the button) in the menu, show the shop
-                    if (SingleKeyPress(Keys.B) ||
-                        SingleMousePress(new Rectangle(graphics.PreferredBackBufferWidth / 2 - 45, 370, 100, 60)))
-                    {
-                        previousGameState = gameState;
-                        gameState = GameState.Shop;
-                    }
-
                     // If the user presses "S" (or presses the button) in the menu, show the statistics
                     if (SingleKeyPress(Keys.S) ||
-                        SingleMousePress(new Rectangle(graphics.PreferredBackBufferWidth / 2 - 45, 450, 100, 60)))
+                        SingleMousePress(new Rectangle(graphics.PreferredBackBufferWidth / 2 - 45, 370, 100, 60)))
                     {
                         gameState = GameState.Stats;
+                    }
+
+                    // If the user presses "Escape" (or presses the button) in the menu, quit the game
+                    if (SingleKeyPress(Keys.Escape) ||
+                        SingleMousePress(new Rectangle(graphics.PreferredBackBufferWidth / 2 - 45, 450, 100, 60)))
+                    {
+                        Exit();
                     }
 
                     break;
@@ -797,8 +796,8 @@ namespace GroupGame
                         }
                     }
 
-                    // If there are no Enemies, the Player has the key, and goes through the top of the level
-                    if (enemies.Count == 0 && player.CurrentItem == key && player.Position.Y <= 5)
+                    // If the Player has the key, and goes through the top of the level
+                    if (player.CurrentItem == key && player.Position.Y <= 5)
                     {
                         // Go to the next level
                         NextLevel();
@@ -814,33 +813,12 @@ namespace GroupGame
                         gameState = GameState.Game;
                     }
 
-                    // If the user presses "B" (or presses the button) in the pause menu, go to the shop
-                    if (SingleKeyPress(Keys.B) ||
-                        SingleMousePress(new Rectangle(graphics.PreferredBackBufferWidth / 2 - 63, 370, 130, 60)))
-                    {
-                        previousGameState = gameState;
-                        gameState = GameState.Shop;
-                    }
-
                     // If the user presses "Q" (or presses the button) in the pause menu, go to the game over screen
                     if (SingleKeyPress(Keys.Q) ||
                         SingleMousePress(new Rectangle(graphics.PreferredBackBufferWidth / 2 - 63, 450, 130, 60)))
                     {
                         gameState = GameState.Gameover;
                     }
-
-                    break;
-
-                case GameState.Shop:
-                    // If the user presses "Escape" (or presses the button) in the shop menu, return to the pause menu
-                    if (SingleKeyPress(Keys.Escape) ||
-                        SingleMousePress(new Rectangle(graphics.PreferredBackBufferWidth / 2 - 50, 630, 100, 60)))
-                    {
-                        gameState = previousGameState;
-                    }
-
-                    // Handle Here:
-                    // Player Updates
 
                     break;
 
@@ -915,11 +893,6 @@ namespace GroupGame
 
                     break;
 
-                case GameState.Shop:
-
-
-                    break;
-
                 case GameState.Stats:
 
 
@@ -949,8 +922,8 @@ namespace GroupGame
                     // Draw text for the main menu
                     sb.DrawString(titleFont, "GAME TITLE", new Vector2(graphics.PreferredBackBufferWidth / 2 - 220, 70), Color.Black);
                     sb.DrawString(buttonFont, "Start", new Vector2(graphics.PreferredBackBufferWidth / 2 - 30, 300), Color.Black);
-                    sb.DrawString(buttonFont, "Shop", new Vector2(graphics.PreferredBackBufferWidth / 2 - 31, 380), Color.Black);
-                    sb.DrawString(buttonFont, "Stats", new Vector2(graphics.PreferredBackBufferWidth / 2 - 31, 460), Color.Black);
+                    sb.DrawString(buttonFont, "Stats", new Vector2(graphics.PreferredBackBufferWidth / 2 - 31, 380), Color.Black);
+                    sb.DrawString(buttonFont, "Quit", new Vector2(graphics.PreferredBackBufferWidth / 2 - 31, 460), Color.Black);
                     break;
 
                 case GameState.Game:
@@ -1002,17 +975,7 @@ namespace GroupGame
                     // Draw text for the pause menu
                     sb.DrawString(headingFont, "PAUSED", new Vector2(graphics.PreferredBackBufferWidth / 2 - 65, 200), Color.Black);
                     sb.DrawString(buttonFont, "Resume", new Vector2(graphics.PreferredBackBufferWidth / 2 - 50, 300), Color.Black);
-                    sb.DrawString(buttonFont, "Shop", new Vector2(graphics.PreferredBackBufferWidth / 2 - 35, 380), Color.Black);
-                    sb.DrawString(buttonFont, "Quit", new Vector2(graphics.PreferredBackBufferWidth / 2 - 30, 460), Color.Black);
-                    break;
-
-                case GameState.Shop:
-                    // Draw buttons for the shop menu
-                    sb.Draw(squareTexture, new Rectangle(graphics.PreferredBackBufferWidth / 2 - 50, 630, 100, 60), Color.Gray);
-
-                    // Draw text for the shop menu
-                    sb.DrawString(headingFont, "SHOP", new Vector2(graphics.PreferredBackBufferWidth / 2 - 45, 50), Color.Black);
-                    sb.DrawString(buttonFont, "Back", new Vector2(graphics.PreferredBackBufferWidth / 2 - 33, 640), Color.Black);
+                    sb.DrawString(buttonFont, "Quit", new Vector2(graphics.PreferredBackBufferWidth / 2 - 35, 380), Color.Black);
                     break;
 
                 case GameState.Stats:
@@ -1027,7 +990,6 @@ namespace GroupGame
                     sb.DrawString(buttonFont, "Distance Travelled: " + player.TravelledDistance, new Vector2(graphics.PreferredBackBufferWidth / 2 - 125, 200), Color.White);
                     sb.DrawString(buttonFont, "Damage Taken: " + player.DamageTaken, new Vector2(graphics.PreferredBackBufferWidth / 2 - 125, 250), Color.White);
                     sb.DrawString(buttonFont, "Keys Collected: " + player.KeysCollected, new Vector2(graphics.PreferredBackBufferWidth / 2 - 125, 300), Color.White);
-                    sb.DrawString(buttonFont, "Rooms Cleared: ", new Vector2(graphics.PreferredBackBufferWidth / 2 - 125, 350), Color.White);
                     
                     break;
 
