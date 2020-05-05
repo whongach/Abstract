@@ -574,6 +574,9 @@ namespace GroupGame
         /// </summary>
         private void Reset()
         {
+            //playerHealth 
+            player.Health = 300;
+
             //Sets Level to 1
             levelNumber = 1;
 
@@ -598,6 +601,12 @@ namespace GroupGame
             // Removes any Items from the Player's inventory
             player.CurrentItem = null;
 
+            //heals player
+            if (player.Health <= 295)
+                player.Health += 5;
+            else
+                player.Health = 300;
+
             // Creates a new Map
             NewMap();
             levelNumber++;
@@ -619,7 +628,7 @@ namespace GroupGame
 
 
             // Adds a Weapon on the ground
-            if (random.Next(5) == 0)
+            if (random.Next(3) == 0)
             {
                 // Picks a random Weapon
                 int weaponIndex = random.Next(resourceWeapons.Count);
@@ -650,7 +659,7 @@ namespace GroupGame
             
 
             // Loop a random number of times up to five times
-            for (int i = 0; i < random.Next(5) + 1; i++)
+            for (int i = 0; i < random.Next(3+(int)(.1*levelNumber)) + 2; i++)
             {
                 // Add a new Enemy to the List of Enemies
                 enemies.Add(new Enemy(resourceEnemies[random.Next(resourceEnemies.Count)]));

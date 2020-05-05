@@ -44,6 +44,7 @@ namespace GroupGame
                     // Deal damage to the Player
                     player.Health -= enemy.BodyDamage;
                     player.DamageTaken += enemy.BodyDamage;
+                    enemy.Health -= enemy.BodyDamage / 2;
                 }
 
                 // Call the Collision between the Player and Tile to produce a knock back
