@@ -117,7 +117,7 @@ namespace GroupGame
                     // Set the Item state to collected
                     item.Collected = true;
 
-                    // If  item is a key, increment the stat
+                    // If Item is a key, increment the stat
                     if(item.IsKey)
                     {
                         player.KeysCollected += 1;
@@ -146,7 +146,7 @@ namespace GroupGame
                     meleeWeapon.Attacking = false;
                 }
 
-                // If character is player, add damage to the stat
+                // If Character is Player, add damage to the stat
                 if(character is Player)
                 {
                     Player pDownCasted = (Player)character;
@@ -186,7 +186,7 @@ namespace GroupGame
                 // Destroy the Projectile
                 projectile.Destroy();
 
-                // If character is player, add damage to the stat
+                // If Character is Player, add damage to the stat
                 if (character is Player)
                 {
                     Player pDownCasted = (Player)character;

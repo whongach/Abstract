@@ -29,6 +29,7 @@ namespace GroupGame
         private SpriteBatch spriteBatch;
 
         // C# Fields
+        private int randComment;
         private int score;
         private int tileSize;
         private Random random;
@@ -80,9 +81,6 @@ namespace GroupGame
         private List<Map> maps;
         private List<Weapon> enemyWeapons;
         private List<Weapon> resourceWeapons;
-
-        // Data Type Fields
-        int randComment;
 
         // MonoGame Generated Constructors
         /// <summary>
@@ -338,7 +336,7 @@ namespace GroupGame
             // Creates the enemyWeapons List
             enemyWeapons = new List<Weapon> { sword, spear, wand, bow };
 
-            //loads enemyTextures
+            // Loads Enemy Textures
             List<Texture2D> enemySprites = new List<Texture2D>();
             enemySprites.Add(Content.Load<Texture2D>("enemies/archer"));
             enemySprites.Add(Content.Load<Texture2D>("enemies/berserker"));
@@ -422,7 +420,7 @@ namespace GroupGame
                                                       player, // The Player
                                                       random)); // Random Number Generator
 
-                        //assigns sprite if applicable
+                        // Assigns Texture if applicable
                         if (resourceEnemies.Count <= enemySprites.Count)
                         {
                             resourceEnemies[resourceEnemies.Count - 1].Texture = enemySprites[resourceEnemies.Count - 1];
@@ -562,7 +560,7 @@ namespace GroupGame
             // Loop until the key is placed on a floor tile
             do
             {
-                // Randomly generate the position
+                // Randomly generate the Position
                 empty = new Point(random.Next(16), random.Next(10));
             } while (map.Layout[empty.X, empty.Y].Collidable);
 
@@ -658,7 +656,7 @@ namespace GroupGame
                 // TO-DO ## needs additional code to fully implement enemies
             }
 
-            // Set a random comment for the next death this level;
+            // Set a random comment for the next death this level
             randComment = random.Next(0, 5);
         }
 
