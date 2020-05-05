@@ -78,8 +78,8 @@ namespace GroupGame
         private List<Enemy> resourceEnemies;
         private List<GameObject> gameObjects;
         private List<Map> maps;
-        private List<Weapon> resourceWeapons;
         private List<Weapon> enemyWeapons;
+        private List<Weapon> resourceWeapons;
 
         // MonoGame Generated Constructors
         /// <summary>
@@ -259,12 +259,8 @@ namespace GroupGame
             resourceEnemies = new List<Enemy>();
             resourceWeapons = new List<Weapon>();
 
-            //creates the enemyWeapons list
-            enemyWeapons = new List<Weapon>();
-            enemyWeapons.Add(sword);
-            enemyWeapons.Add(spear);
-            enemyWeapons.Add(wand);
-            enemyWeapons.Add(bow);
+            // Creates the enemyWeapons List
+            enemyWeapons = new List<Weapon> { sword, spear, wand, bow };
 
             // Open FileStream and BinaryReader
             resources = File.OpenRead("../../../../../Resources/master.rsrc");
@@ -322,10 +318,10 @@ namespace GroupGame
                         else if (currentEnemyFields[6] == 4)
                             movementType = EnemyMovementType.UpDown;
 
-                        //prints enemy size
+                        // Prints Enemy size
                         Console.WriteLine((currentEnemyFields[4]/10.0));
 
-                        // Add the enemy to the list of imported resource enemies
+                        // Add the Enemy to the list of imported resource enemies
                         resourceEnemies.Add(new Enemy(new Rectangle(0, 0, (int)(currentEnemyFields[4] / 10.0 * tileSize), (int)(currentEnemyFields[5] / 10.0 * tileSize)), // Enemy Size (position should be overridden in NextLevel()
                                                       squareTexture, // Enemy Texture
                                                       currentEnemyFields[0], // Health
@@ -340,9 +336,11 @@ namespace GroupGame
                                                       player, // The Player
                                                       random)); // Random Number Generator
 
-                        //Adds the weapon to the enemy
-                        if(currentEnemyFields[7]<4 && currentEnemyFields[7]>-1)
+                        // Adds the Weapon to the Enemy
+                        // If the field is a valid Weapon type
+                        if(currentEnemyFields[7] < 4 && currentEnemyFields[7] > -1)
                         {
+                            // If the Weapon is a MeleeWeapon or RangedWeapon, set appropriately
                             if(enemyWeapons[currentEnemyFields[7]] is MeleeWeapon)
                                 resourceEnemies[resourceEnemies.Count-1].Weapon = new MeleeWeapon((MeleeWeapon)enemyWeapons[currentEnemyFields[7]]);
                             else if (enemyWeapons[currentEnemyFields[7]] is RangedWeapon)
