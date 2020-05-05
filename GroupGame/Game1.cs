@@ -563,7 +563,7 @@ namespace GroupGame
             do
             {
                 // Randomly generate the position
-                empty = new Point(random.Next(16), random.Next(14));
+                empty = new Point(random.Next(16), random.Next(10));
             } while (map.Layout[empty.X, empty.Y].Collidable);
 
             // Shifts the point to accurately fit the Map and returns it
