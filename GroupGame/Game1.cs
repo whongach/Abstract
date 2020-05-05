@@ -29,6 +29,7 @@ namespace GroupGame
         private SpriteBatch spriteBatch;
 
         // C# Fields
+        private int randComment;
         private int score;
         private int tileSize;
         private Random random;
@@ -81,9 +82,6 @@ namespace GroupGame
         private List<Weapon> enemyWeapons;
         private List<Weapon> resourceWeapons;
         int levelNumber;
-
-        // Data Type Fields
-        int randComment;
 
         // MonoGame Generated Constructors
         /// <summary>
@@ -339,7 +337,7 @@ namespace GroupGame
             // Creates the enemyWeapons List
             enemyWeapons = new List<Weapon> { sword, spear, wand, bow };
 
-            //loads enemyTextures
+            // Loads Enemy Textures
             List<Texture2D> enemySprites = new List<Texture2D>();
             enemySprites.Add(Content.Load<Texture2D>("enemies/archer"));
             enemySprites.Add(Content.Load<Texture2D>("enemies/berserker"));
@@ -423,7 +421,7 @@ namespace GroupGame
                                                       player, // The Player
                                                       random)); // Random Number Generator
 
-                        //assigns sprite if applicable
+                        // Assigns Texture if applicable
                         if (resourceEnemies.Count <= enemySprites.Count)
                         {
                             resourceEnemies[resourceEnemies.Count - 1].Texture = enemySprites[resourceEnemies.Count - 1];
@@ -563,7 +561,7 @@ namespace GroupGame
             // Loop until the key is placed on a floor tile
             do
             {
-                // Randomly generate the position
+                // Randomly generate the Position
                 empty = new Point(random.Next(16), random.Next(10));
             } while (map.Layout[empty.X, empty.Y].Collidable);
 
@@ -969,7 +967,8 @@ namespace GroupGame
 
                 case GameState.Game:
                     // Draw the underlying boxes for GUI
-                    sb.Draw(squareTexture, new Rectangle(0, 0, 300, 30), Color.LightGreen);
+                    sb.Draw(squareTexture, new Rectangle(0, 0, 300, 30), Color.Red);
+                    sb.Draw(squareTexture, new Rectangle(0, 0, player.Health, 30), Color.LightGreen);
                     sb.Draw(squareTexture, new Rectangle(Window.ClientBounds.Width - 300, 0, 300, 130), Color.Gray);
                     sb.Draw(squareTexture, new Rectangle(0, Window.ClientBounds.Height - 100, 100, 100), Color.Gray);
                     sb.Draw(squareTexture, new Rectangle(0, Window.ClientBounds.Height - 150, 50, 50), Color.Gray);
@@ -1049,7 +1048,7 @@ namespace GroupGame
                     else if (randComment == 2)
                         sb.DrawString(buttonFont, "maybe.. don't do that?", new Vector2(800, 350), Color.Yellow);
                     else if (randComment == 3)
-                        sb.DrawString(buttonFont, "oops!", new Vector2(1000, 350), Color.Yellow);
+                        sb.DrawString(buttonFont, "oops!", new Vector2(900, 350), Color.Yellow);
                     else if (randComment == 4)
                         sb.DrawString(buttonFont, "not a new highscore, that's for sure.", new Vector2(700, 350), Color.Yellow);
 
