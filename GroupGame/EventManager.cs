@@ -319,18 +319,6 @@ namespace GroupGame
                         // Adjust the location to the right
                         adjustedLocation.X += xOverlap;
                     }
-
-                    // If the Character was above of the Tile
-                    if (character.Position.Y < tile.Position.Y)
-                    {
-                        // Adjust the location upward
-                        adjustedLocation.Y -= yOverlap;
-                    }
-                    else
-                    {
-                        // Adjust the location downward
-                        adjustedLocation.Y += yOverlap;
-                    }
                 }
                 
 
