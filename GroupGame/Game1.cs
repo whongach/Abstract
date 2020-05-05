@@ -413,8 +413,8 @@ namespace GroupGame
                                                       null, // Weapon
                                                       currentEnemyFields[2], // Attack Interval
                                                       currentEnemyFields[1], // Body Damage
-                                                      50, // Default Max Travel Width
-                                                      50, // Default Max Travel Height
+                                                      150, // Default Max Travel Width
+                                                      150, // Default Max Travel Height
                                                       currentEnemyFields[3], // Travel Speed
                                                       currentEnemyName, // Enemy Name
                                                       movementType, // Enemy Movement Type
@@ -976,8 +976,10 @@ namespace GroupGame
 
                 case GameState.Game:
                     // Draw the underlying boxes for GUI
+                    sb.Draw(squareTexture, new Rectangle(0, 0, 302, 32), Color.DarkRed); 
                     sb.Draw(squareTexture, new Rectangle(0, 0, 300, 30), Color.Red);
                     sb.Draw(squareTexture, new Rectangle(0, 0, player.Health, 30), Color.LightGreen);
+                    sb.Draw(squareTexture, new Rectangle(Window.ClientBounds.Width - 302, 0, 305, 132), Color.DarkGray);
                     sb.Draw(squareTexture, new Rectangle(Window.ClientBounds.Width - 300, 0, 300, 130), Color.Gray);
                     sb.Draw(squareTexture, new Rectangle(0, Window.ClientBounds.Height - 100, 100, 100), Color.Gray);
                     sb.Draw(squareTexture, new Rectangle(0, Window.ClientBounds.Height - 150, 50, 50), Color.Gray);
@@ -989,9 +991,7 @@ namespace GroupGame
                     // Draw the text for in-game GUI
                     sb.DrawString(statFont, $"HP: {player.Health}/300", new Vector2(2, 2), Color.Black);
                     sb.DrawString(statFont, $"Score: {score}", new Vector2(Window.ClientBounds.Width - 290, 2), Color.Black);
-                    sb.DrawString(statFont, "Currency:", new Vector2(Window.ClientBounds.Width - 290, 22), Color.Black);
-                    sb.DrawString(statFont, "Keys:", new Vector2(Window.ClientBounds.Width - 290, 42), Color.Black);
-                    sb.DrawString(statFont, $"Current Damage: {player.Weapon.Damage}", new Vector2(Window.ClientBounds.Width - 290, 82), Color.Black);
+                    sb.DrawString(statFont, $"Equipped Weapon Damage: {player.Weapon.Damage}", new Vector2(Window.ClientBounds.Width - 290, 32), Color.Black);
 
                     // Loop through GameObjects
                     for (int i = 0; i < gameObjects.Count; i++)
@@ -1000,7 +1000,7 @@ namespace GroupGame
                         if(eventManager.CollisionCheck(player.Position, gameObjects[i].Position) == true && gameObjects[i] is Weapon)
                         {
                             // Displays damage of ground Weapon
-                            sb.DrawString(statFont, $"New Damage: {((Weapon)gameObjects[i]).Damage}", new Vector2(Window.ClientBounds.Width - 290, 102), Color.Black);
+                            sb.DrawString(statFont, $"Dropped Weapon Damage: {((Weapon)gameObjects[i]).Damage}", new Vector2(Window.ClientBounds.Width - 290, 62), Color.Black);
                         }
                     }
 
