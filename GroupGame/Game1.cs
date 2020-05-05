@@ -562,6 +562,9 @@ namespace GroupGame
 
             // Reset collected statistics
             score = -200;
+
+            // Reset Enemies
+            enemies.Clear();
         }
 
         /// <summary>
@@ -569,6 +572,9 @@ namespace GroupGame
         /// </summary>
         public void NextLevel()
         {
+            // Clear the List of Enemies
+            enemies.Clear();
+
             // Clear the List of GameObjects
             gameObjects.Clear();
 
