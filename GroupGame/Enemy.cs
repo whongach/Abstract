@@ -191,7 +191,7 @@ namespace GroupGame
         protected void Chase(Player player)
         {
             // Check the Player's x position and move Enemy towards it
-            if (player.Position.X > position.X)
+            if (player.Position.X > position.X && currentFrame % 2 == 0)
             {
                 if (player.Position.X - position.X < speed)
                 {
@@ -199,10 +199,10 @@ namespace GroupGame
                 }
                 else
                 {
-                    position.X += speed;
+                    position.X += (int)(speed*1.8);
                 }
             }
-            else if (player.Position.X < position.X)
+            else if (player.Position.X < position.X && currentFrame % 2 == 0)
             {
                 if (position.X - player.Position.X < speed)
                 {
@@ -210,12 +210,12 @@ namespace GroupGame
                 }
                 else
                 {
-                    position.X -= speed;
+                    position.X -= (int)(speed * 1.8);
                 }
             }
 
             // Check the Player's y position and move Enemy towards it
-            if (player.Position.Y > position.Y)
+            if (player.Position.Y > position.Y && currentFrame % 2 == 1)
             {
                 if (player.Position.Y - position.Y < speed)
                 {
@@ -223,18 +223,18 @@ namespace GroupGame
                 }
                 else
                 {
-                    position.Y += speed;
+                    position.Y += (int)(speed * 1.8);
                 }
             }
             else if (player.Position.Y < position.Y)
             {
-                if (position.Y - player.Position.Y < speed)
+                if (position.Y - player.Position.Y < speed && currentFrame % 2 == 1)
                 {
                     position.Y -= position.Y - player.Position.Y;
                 }
                 else
                 {
-                    position.Y -= speed;
+                    position.Y -= (int)(speed * 1.8);
                 }
             }
         }
