@@ -191,7 +191,7 @@ namespace GroupGame
         protected void Chase(Player player)
         {
             // Check the Player's x position and move Enemy towards it
-            if (player.Position.X > position.X && currentFrame % 2 == 0)
+            if (player.Position.X > position.X)
             {
                 if (player.Position.X - position.X < speed)
                 {
@@ -199,10 +199,10 @@ namespace GroupGame
                 }
                 else
                 {
-                    position.X += (int)(speed*1.8);
+                    position.X += speed;
                 }
             }
-            else if (player.Position.X < position.X && currentFrame % 2 == 0)
+            else if (player.Position.X < position.X)
             {
                 if (position.X - player.Position.X < speed)
                 {
@@ -210,12 +210,12 @@ namespace GroupGame
                 }
                 else
                 {
-                    position.X -= (int)(speed * 1.8);
+                    position.X -= speed;
                 }
             }
 
             // Check the Player's y position and move Enemy towards it
-            if (player.Position.Y > position.Y && currentFrame % 2 == 1)
+            if (player.Position.Y > position.Y)
             {
                 if (player.Position.Y - position.Y < speed)
                 {
@@ -223,18 +223,18 @@ namespace GroupGame
                 }
                 else
                 {
-                    position.Y += (int)(speed * 1.8);
+                    position.Y += speed;
                 }
             }
             else if (player.Position.Y < position.Y)
             {
-                if (position.Y - player.Position.Y < speed && currentFrame % 2 == 1)
+                if (position.Y - player.Position.Y < speed)
                 {
                     position.Y -= position.Y - player.Position.Y;
                 }
                 else
                 {
-                    position.Y -= (int)(speed * 1.8);
+                    position.Y -= speed;
                 }
             }
         }
