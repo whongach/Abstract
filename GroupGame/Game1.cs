@@ -80,6 +80,7 @@ namespace GroupGame
         private List<Map> maps;
         private List<Weapon> enemyWeapons;
         private List<Weapon> resourceWeapons;
+        int levelNumber;
 
         // Data Type Fields
         int randComment;
@@ -575,8 +576,8 @@ namespace GroupGame
         /// </summary>
         private void Reset()
         {
-            // Reset the Player's Health
-            player.Health = 10;
+            //Sets Level to 1
+            levelNumber = 1;
 
             // Reset collected statistics
             score = -200;
@@ -601,6 +602,7 @@ namespace GroupGame
 
             // Creates a new Map
             NewMap();
+            levelNumber++;
 
             // Sets the Player's position
             player.Position = new Rectangle(new Point((int)(mapOrigin.X + 8.5 * tileSize), mapOrigin.Y + 15 * tileSize), new Point(player.Position.Width, player.Position.Height));
@@ -642,6 +644,9 @@ namespace GroupGame
 
                 // Sets the Weapon's position
                 gameObjects[1].Position = new Rectangle(GetEmptyTile(), new Point(gameObjects[1].Position.Width, gameObjects[1].Position.Height));
+
+                //Scales Weapon stats
+                ((Weapon)gameObjects[1]).Damage = (int)(((Weapon)gameObjects[1]).Damage * (2.5 * Math.Sqrt(levelNumber) * Math.Pow(Math.Log(levelNumber+1, 2.0), .8))/10);
             }
             
             
@@ -655,8 +660,14 @@ namespace GroupGame
                 // Set the Enemy's position
                 enemies[i].Position = new Rectangle(GetEmptyTile(), new Point(enemies[i].Position.Width, enemies[i].Position.Height));
 
-                // TO-DO ## needs additional code to fully implement enemies
+                // Scales Enemies
+                enemies[i].BodyDamage = (int)((enemies[i].BodyDamage) * 2.5 * Math.Sqrt(levelNumber) * Math.Pow(Math.Log(levelNumber + 1, 2.0), .8)/10);
+                if(enemies[i].Weapon!=null)
+                    enemies[i].Weapon.Damage = (int)((enemies[i].Weapon.Damage) * 2.5 * Math.Sqrt(levelNumber) * Math.Pow(Math.Log(levelNumber + 1, 2.0), .8)/10);
+                enemies[i].Health = (int)((enemies[i].Health) * 2.5 * Math.Sqrt(levelNumber) * Math.Pow(Math.Log(levelNumber + 1, 2.0), .8)/10);
+                Console.WriteLine(enemies[i].Health);
             }
+
 
             // Set a random comment for the next death this level;
             randComment = random.Next(0, 5);

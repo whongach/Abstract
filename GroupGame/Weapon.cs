@@ -24,7 +24,7 @@ namespace GroupGame
         /// <summary>
         /// Gets the damage that the Weapon deals.
         /// </summary>
-        public int Damage { get { return damage; } }
+        public int Damage { get { return damage; } set { damage = value; } }
 
         // Constructors
         /// <summary>
