@@ -958,7 +958,8 @@ namespace GroupGame
 
                 case GameState.Game:
                     // Draw the underlying boxes for GUI
-                    sb.Draw(squareTexture, new Rectangle(0, 0, 300, 30), Color.LightGreen);
+                    sb.Draw(squareTexture, new Rectangle(0, 0, 300, 30), Color.Red);
+                    sb.Draw(squareTexture, new Rectangle(0, 0, player.Health, 30), Color.LightGreen);
                     sb.Draw(squareTexture, new Rectangle(Window.ClientBounds.Width - 300, 0, 300, 130), Color.Gray);
                     sb.Draw(squareTexture, new Rectangle(0, Window.ClientBounds.Height - 100, 100, 100), Color.Gray);
                     sb.Draw(squareTexture, new Rectangle(0, Window.ClientBounds.Height - 150, 50, 50), Color.Gray);
@@ -1038,7 +1039,7 @@ namespace GroupGame
                     else if (randComment == 2)
                         sb.DrawString(buttonFont, "maybe.. don't do that?", new Vector2(800, 350), Color.Yellow);
                     else if (randComment == 3)
-                        sb.DrawString(buttonFont, "oops!", new Vector2(1000, 350), Color.Yellow);
+                        sb.DrawString(buttonFont, "oops!", new Vector2(900, 350), Color.Yellow);
                     else if (randComment == 4)
                         sb.DrawString(buttonFont, "not a new highscore, that's for sure.", new Vector2(700, 350), Color.Yellow);
 
