@@ -177,7 +177,7 @@ namespace GroupGame
             if (weapon != null)
             {
                 // Attack every attackInterval
-                if (currentFrame%(100*attackInterval) == 0)
+                if (currentFrame%(50*attackInterval) == 0)
                 {
                     weapon.Attack();
                 }
