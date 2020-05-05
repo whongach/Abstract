@@ -75,7 +75,7 @@ namespace GroupGame
             // Initialize Fields
             this.attackInterval = attackInterval;
             this.bodyDamage = bodyDamage;
-            this.currentFrame = 0;
+            this.currentFrame = random.Next(1000);
             this.maxHeight = maxHeight;
             this.maxWidth = maxWidth;
             this.speed = speed;
@@ -113,7 +113,6 @@ namespace GroupGame
             // Initialize Fields
             this.attackInterval = enemy.attackInterval;
             this.bodyDamage = enemy.bodyDamage;
-            this.currentFrame = 0;
             this.maxHeight = enemy.maxHeight;
             this.maxWidth = enemy.maxWidth;
             this.speed = enemy.speed;
@@ -122,6 +121,7 @@ namespace GroupGame
             this.enemyMovementType = enemy.enemyMovementType;
             this.player = enemy.player;
             this.random = enemy.random;
+            this.currentFrame = random.Next(1000);
 
             // Initialize start direction dependent on the EnemyMovementType
             if (enemyMovementType == EnemyMovementType.LeftRight)

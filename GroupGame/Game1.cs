@@ -266,6 +266,19 @@ namespace GroupGame
             enemyWeapons.Add(wand);
             enemyWeapons.Add(bow);
 
+            //loads enemyTextures
+            List<Texture2D> enemySprites = new List<Texture2D>();
+            enemySprites.Add(Content.Load<Texture2D>("enemies/archer"));
+            enemySprites.Add(Content.Load<Texture2D>("enemies/berserker"));
+            enemySprites.Add(Content.Load<Texture2D>("enemies/bug"));
+            enemySprites.Add(Content.Load<Texture2D>("enemies/sentry"));
+            enemySprites.Add(Content.Load<Texture2D>("enemies/knight"));
+            enemySprites.Add(Content.Load<Texture2D>("enemies/Wizard"));
+            enemySprites.Add(Content.Load<Texture2D>("enemies/tank"));
+            enemySprites.Add(Content.Load<Texture2D>("enemies/sentry"));
+            enemySprites.Add(Content.Load<Texture2D>("enemies/viking"));
+            enemySprites.Add(Content.Load<Texture2D>("enemies/wanderer"));
+
             // Open FileStream and BinaryReader
             resources = File.OpenRead("../../../../../Resources/master.rsrc");
             reader = new BinaryReader(resources);
@@ -322,9 +335,6 @@ namespace GroupGame
                         else if (currentEnemyFields[6] == 4)
                             movementType = EnemyMovementType.UpDown;
 
-                        //prints enemy size
-                        Console.WriteLine((currentEnemyFields[4]/10.0));
-
                         // Add the enemy to the list of imported resource enemies
                         resourceEnemies.Add(new Enemy(new Rectangle(0, 0, (int)(currentEnemyFields[4] / 10.0 * tileSize), (int)(currentEnemyFields[5] / 10.0 * tileSize)), // Enemy Size (position should be overridden in NextLevel()
                                                       squareTexture, // Enemy Texture
@@ -339,6 +349,12 @@ namespace GroupGame
                                                       movementType, // Enemy Movement Type
                                                       player, // The Player
                                                       random)); // Random Number Generator
+
+                        //assigns sprite if applicable
+                        if (resourceEnemies.Count <= enemySprites.Count)
+                        {
+                            resourceEnemies[resourceEnemies.Count - 1].Texture = enemySprites[resourceEnemies.Count - 1];
+                        }
 
                         //Adds the weapon to the enemy
                         if(currentEnemyFields[7]<4 && currentEnemyFields[7]>-1)
