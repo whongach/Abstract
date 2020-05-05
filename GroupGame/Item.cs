@@ -12,11 +12,10 @@ namespace GroupGame
     /// </summary>
     class Item : Collectible
     {
-        // Stat Field
+        // Fields
         private bool isKey;
 
-        // Stat Property
-
+        // Properties
         /// <summary>
         /// Tracks if the item is a key.
         /// </summary>
@@ -31,6 +30,7 @@ namespace GroupGame
         /// <param name="collected">Whether or not the Item is collected.</param>
         public Item(Rectangle position, Texture2D texture, bool collected, bool isKey = false) : base(position, texture, collected) 
         {
+            // Initialize Fields
             this.isKey = isKey;
         }
 

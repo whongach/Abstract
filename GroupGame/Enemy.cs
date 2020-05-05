@@ -29,7 +29,7 @@ namespace GroupGame
         // Fields
         private double weaponAngle;
         private readonly int attackInterval;
-        private readonly int bodyDamage;
+        private int bodyDamage;
         private int currentFrame;
         private readonly int maxHeight;
         private readonly int maxWidth;
@@ -46,7 +46,7 @@ namespace GroupGame
         /// <summary>
         /// Gets the damage that the Enemy deals when it collides with something.
         /// </summary>
-        public int BodyDamage { get { return bodyDamage; } }
+        public int BodyDamage { get { return bodyDamage; } set { bodyDamage = value; } }
 
         /// <summary>
         /// Gets the name of the Enemy.
