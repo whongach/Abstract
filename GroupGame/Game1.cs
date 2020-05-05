@@ -666,7 +666,6 @@ namespace GroupGame
                 if(enemies[i].Weapon!=null)
                     enemies[i].Weapon.Damage = (int)((enemies[i].Weapon.Damage) * 2.5 * Math.Sqrt(levelNumber) * Math.Pow(Math.Log(levelNumber + 1, 2.0), .8)/10)+1;
                 enemies[i].Health = (int)((enemies[i].Health) * 2.5 * Math.Sqrt(levelNumber) * Math.Pow(Math.Log(levelNumber + 1, 2.0), .8)/10)+1;
-                Console.WriteLine(enemies[i].Health);
             }
 
 
