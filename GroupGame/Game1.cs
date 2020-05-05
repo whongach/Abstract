@@ -158,6 +158,9 @@ namespace GroupGame
             // Load Resources
             LoadResources();
 
+            // Load Stats
+            LoadStats();
+
             // Initialize Player
             player.OffHand = bow;
             player.Debug = false;
@@ -171,6 +174,9 @@ namespace GroupGame
         {
             // MonoGame Generated Content Unloading
             // TODO: Unload any non ContentManager content here
+
+            // Save stats
+            SaveStats();
         }
 
         /// <summary>
@@ -227,6 +233,73 @@ namespace GroupGame
             base.Draw(gameTime);
         }
 
+        /// <summary>
+        /// Loads all stats from the stat file.
+        /// </summary>
+        public void LoadStats()
+        {
+            // Create the stream and reader
+            FileStream inStream = null;
+            BinaryReader reader = null;
+
+            try
+            {
+                // Initialize stream and the reader
+                inStream = File.OpenRead("../../../../../Resources/master.stat");
+                reader = new BinaryReader(inStream);
+
+                // Read in the three stats from file
+                player.TravelledDistance = reader.ReadDouble();
+                player.DamageTaken = reader.ReadDouble();
+                player.KeysCollected = reader.ReadInt32();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error loading stats: " + e.Message);
+            }
+            finally
+            {
+                if (reader != null)
+                {
+                    reader.Close();
+                }
+            }
+
+        }
+            
+        /// <summary>
+        /// Saves all stats to the stat file.
+        /// </summary>
+        public void SaveStats()
+        {
+            // Create the stream and writer
+            FileStream outStream = null;
+            BinaryWriter writer = null;
+
+            try
+            {
+                // Initialize the stream and the writer
+                outStream = File.OpenWrite("../../../../../Resources/master.stat");
+                writer = new BinaryWriter(outStream);
+
+                // Write the three stats to the file
+                writer.Write(player.TravelledDistance);
+                writer.Write(player.DamageTaken);
+                writer.Write(player.KeysCollected);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error saving stats: " + e.Message);
+            }
+            finally
+            {
+                if (writer != null)
+                {
+                    writer.Close();
+                }
+            }
+        }
+
         // Methods
         /// <summary>
         /// Loads all maps, weapons and enemies from the resource file
@@ -247,7 +320,7 @@ namespace GroupGame
 
             // Initialize Class Fields
             tileSize = 68;
-            key = new Item(new Rectangle(500, 500, (int)(.75*tileSize), (int)(.75*tileSize)), keyTexture, false);
+            key = new Item(new Rectangle(500, 500, (int)(.75*tileSize), (int)(.75*tileSize)), keyTexture, false, true);
             spear = new MeleeWeapon(new Point((int)(1.2*tileSize), (int)(.6*tileSize)), swordTexture, 8, 20);
             sword = new MeleeWeapon(new Point((int)(.6*tileSize), (int)(.6*tileSize)), swordTexture, 5, 90, 5);
             player = new Player(new Rectangle(0, 0, (int)(.75*tileSize), (int)(.75*tileSize)), playerTexture, 300, sword);
@@ -951,10 +1024,11 @@ namespace GroupGame
                     sb.DrawString(buttonFont, "Back", new Vector2(graphics.PreferredBackBufferWidth / 2 - 33, 640), Color.Black);
 
                     // Draw text for the tracked stats
-                    sb.DrawString(buttonFont, "Keys Collected: ", new Vector2(graphics.PreferredBackBufferWidth / 2 - 400, 150), Color.White);
-                    sb.DrawString(buttonFont, "Monsters Defeated: ", new Vector2(graphics.PreferredBackBufferWidth / 2 - 400, 200), Color.White);
-                    sb.DrawString(buttonFont, "Rooms Cleared: ", new Vector2(graphics.PreferredBackBufferWidth / 2 - 400, 250), Color.White);
-                    sb.DrawString(buttonFont, "Distance Travelled: " + player.TravelledDistance, new Vector2(graphics.PreferredBackBufferWidth / 2 - 400, 300), Color.White);
+                    sb.DrawString(buttonFont, "Distance Travelled: " + player.TravelledDistance, new Vector2(graphics.PreferredBackBufferWidth / 2 - 125, 200), Color.White);
+                    sb.DrawString(buttonFont, "Damage Taken: " + player.DamageTaken, new Vector2(graphics.PreferredBackBufferWidth / 2 - 125, 250), Color.White);
+                    sb.DrawString(buttonFont, "Keys Collected: " + player.KeysCollected, new Vector2(graphics.PreferredBackBufferWidth / 2 - 125, 300), Color.White);
+                    sb.DrawString(buttonFont, "Rooms Cleared: ", new Vector2(graphics.PreferredBackBufferWidth / 2 - 125, 350), Color.White);
+                    
                     break;
 
                 case GameState.Gameover:

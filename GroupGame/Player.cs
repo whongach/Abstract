@@ -19,10 +19,14 @@ namespace GroupGame
         // Fields
         private bool debug;
         private double angle;
-        private double travelledDistance;
         private int speed;
         private Item currentItem;
         private Weapon offHand;
+
+        // Stat-tracked fields
+        private double travelledDistance;
+        private double damageTaken;
+        private int keysCollected;
 
         // Properties
         /// <summary>
@@ -33,7 +37,17 @@ namespace GroupGame
         /// <summary>
         /// Gets the distance travelled by the Player.
         /// </summary>
-        public double TravelledDistance { get { return travelledDistance; } }
+        public double TravelledDistance { get { return travelledDistance; } set { travelledDistance = value; } }
+
+        /// <summary>
+        /// Gets the total damage taken by the Player.
+        /// </summary>
+        public double DamageTaken { get { return damageTaken; } set { damageTaken = value; } }
+
+        /// <summary>
+        /// Gets the total number of keys collected by the Player.
+        /// </summary>
+        public int KeysCollected { get { return keysCollected; } set { keysCollected = value; } }
 
         /// <summary>
         /// Gets and sets the speed of the Player.
@@ -64,9 +78,13 @@ namespace GroupGame
             this.debug = false;
             this.angle = 0;
             this.speed = 4;
-            this.travelledDistance = 0;
             this.currentItem = null;
             this.offHand = null;
+
+            // Initialize stat fields
+            this.travelledDistance = 0;
+            this.damageTaken = 0;
+            this.keysCollected = 0;
         }
 
         // Methods

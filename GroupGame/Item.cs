@@ -12,6 +12,16 @@ namespace GroupGame
     /// </summary>
     class Item : Collectible
     {
+        // Stat Field
+        private bool isKey;
+
+        // Stat Property
+
+        /// <summary>
+        /// Tracks if the item is a key.
+        /// </summary>
+        public bool IsKey { get { return isKey; } }
+
         // Constructors
         /// <summary>
         /// Constructs an Item Collectible.
@@ -19,7 +29,10 @@ namespace GroupGame
         /// <param name="position">The Rectangle representing the Item's position and size.</param>
         /// <param name="texture">The Texture2D representing the Item's texture.</param>
         /// <param name="collected">Whether or not the Item is collected.</param>
-        public Item(Rectangle position, Texture2D texture, bool collected) : base(position, texture, collected) { }
+        public Item(Rectangle position, Texture2D texture, bool collected, bool isKey = false) : base(position, texture, collected) 
+        {
+            this.isKey = isKey;
+        }
 
         // Methods
         /// <summary>

@@ -43,6 +43,7 @@ namespace GroupGame
                 {
                     // Deal damage to the Player
                     player.Health -= enemy.BodyDamage;
+                    player.DamageTaken += enemy.BodyDamage;
                 }
 
                 // Call the Collision between the Player and Tile to produce a knock back
@@ -115,6 +116,12 @@ namespace GroupGame
 
                     // Set the Item state to collected
                     item.Collected = true;
+
+                    // If  item is a key, increment the stat
+                    if(item.IsKey)
+                    {
+                        player.KeysCollected += 1;
+                    }
                 }
             }
         }
@@ -137,6 +144,13 @@ namespace GroupGame
 
                     // Stop the attack
                     meleeWeapon.Attacking = false;
+                }
+
+                // If character is player, add damage to the stat
+                if(character is Player)
+                {
+                    Player pDownCasted = (Player)character;
+                    pDownCasted.DamageTaken += meleeWeapon.Damage;
                 }
             }
         }
@@ -171,6 +185,13 @@ namespace GroupGame
 
                 // Destroy the Projectile
                 projectile.Destroy();
+
+                // If character is player, add damage to the stat
+                if (character is Player)
+                {
+                    Player pDownCasted = (Player)character;
+                    pDownCasted.DamageTaken += projectile.Damage;
+                }
             }
         }
 
