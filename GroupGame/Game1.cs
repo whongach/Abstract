@@ -81,6 +81,9 @@ namespace GroupGame
         private List<Weapon> enemyWeapons;
         private List<Weapon> resourceWeapons;
 
+        // Data Type Fields
+        int randComment;
+
         // MonoGame Generated Constructors
         /// <summary>
         /// Constructs the Game1 class.
@@ -630,6 +633,9 @@ namespace GroupGame
 
                 // TO-DO ## needs additional code to fully implement enemies
             }
+
+            // Set a random comment for the next death this level;
+            randComment = random.Next(0, 5);
         }
 
         /// <summary>
@@ -815,7 +821,7 @@ namespace GroupGame
 
                     // If the user presses "Q" (or presses the button) in the pause menu, go to the game over screen
                     if (SingleKeyPress(Keys.Q) ||
-                        SingleMousePress(new Rectangle(graphics.PreferredBackBufferWidth / 2 - 63, 450, 130, 60)))
+                        SingleMousePress(new Rectangle(graphics.PreferredBackBufferWidth / 2 - 63, 370, 130, 60)))
                     {
                         gameState = GameState.Gameover;
                     }
@@ -970,7 +976,6 @@ namespace GroupGame
                     sb.Draw(squareTexture, new Rectangle(graphics.PreferredBackBufferWidth / 2 - 175, 150, 350, 400), Color.Gray);
                     sb.Draw(squareTexture, new Rectangle(graphics.PreferredBackBufferWidth / 2 - 63, 290, 130, 60), Color.DimGray);
                     sb.Draw(squareTexture, new Rectangle(graphics.PreferredBackBufferWidth / 2 - 63, 370, 130, 60), Color.DimGray);
-                    sb.Draw(squareTexture, new Rectangle(graphics.PreferredBackBufferWidth / 2 - 63, 450, 130, 60), Color.DimGray);
 
                     // Draw text for the pause menu
                     sb.DrawString(headingFont, "PAUSED", new Vector2(graphics.PreferredBackBufferWidth / 2 - 65, 200), Color.Black);
@@ -1000,7 +1005,20 @@ namespace GroupGame
 
                     // Draw text for the gameover screen
                     sb.DrawString(titleFont, "GAME OVER", new Vector2(graphics.PreferredBackBufferWidth / 2 - 240, 200), Color.Black);
-                    sb.DrawString(headingFont, "You died lol", new Vector2(680, 300), Color.Black);
+
+                    // Draw a funny comment, at random
+                    if(randComment == 0)
+                        sb.DrawString(buttonFont, "you died lol", new Vector2(680, 300), Color.Yellow);
+                    else if(randComment == 1)
+                        sb.DrawString(buttonFont, "well.. that was quick.", new Vector2(680, 300), Color.Yellow);
+                    else if (randComment == 2)
+                        sb.DrawString(buttonFont, "maybe.. don't do that?", new Vector2(680, 300), Color.Yellow);
+                    else if (randComment == 3)
+                        sb.DrawString(buttonFont, "oops!", new Vector2(680, 300), Color.Yellow);
+                    else if (randComment == 4)
+                        sb.DrawString(buttonFont, "not a new highscore, that's for sure", new Vector2(680, 300), Color.Yellow);
+
+
                     sb.DrawString(buttonFont, "Menu", new Vector2(graphics.PreferredBackBufferWidth / 2 - 120, 430), Color.Black);
                     sb.DrawString(buttonFont, "Quit", new Vector2(graphics.PreferredBackBufferWidth / 2 + 20, 430), Color.Black);
                     break;
