@@ -601,12 +601,6 @@ namespace GroupGame
             // Removes any Items from the Player's inventory
             player.CurrentItem = null;
 
-            //heals player
-            if (player.Health <= 295)
-                player.Health += 5;
-            else
-                player.Health = 300;
-
             // Creates a new Map
             NewMap();
             levelNumber++;
@@ -653,7 +647,7 @@ namespace GroupGame
                 gameObjects[1].Position = new Rectangle(GetEmptyTile(), new Point(gameObjects[1].Position.Width, gameObjects[1].Position.Height));
 
                 //Scales Weapon stats
-                ((Weapon)gameObjects[1]).Damage = (int)(((Weapon)gameObjects[1]).Damage * (2.5 * Math.Sqrt(levelNumber) * Math.Pow(Math.Log(levelNumber+1, 2.0), .8))/10);
+                ((Weapon)gameObjects[1]).Damage = (int)(((Weapon)gameObjects[1]).Damage * (2.5 * Math.Sqrt(levelNumber) * Math.Pow(Math.Log(levelNumber+1, 2.0), .8))/10)+1;
             }
             
             
@@ -670,8 +664,8 @@ namespace GroupGame
                 // Scales Enemies
                 enemies[i].BodyDamage = (int)((enemies[i].BodyDamage) * 2.5 * Math.Sqrt(levelNumber) * Math.Pow(Math.Log(levelNumber + 1, 2.0), .8)/10);
                 if(enemies[i].Weapon!=null)
-                    enemies[i].Weapon.Damage = (int)((enemies[i].Weapon.Damage) * 2.5 * Math.Sqrt(levelNumber) * Math.Pow(Math.Log(levelNumber + 1, 2.0), .8)/10);
-                enemies[i].Health = (int)((enemies[i].Health) * 2.5 * Math.Sqrt(levelNumber) * Math.Pow(Math.Log(levelNumber + 1, 2.0), .8)/10);
+                    enemies[i].Weapon.Damage = (int)((enemies[i].Weapon.Damage) * 2.5 * Math.Sqrt(levelNumber) * Math.Pow(Math.Log(levelNumber + 1, 2.0), .8)/10)+1;
+                enemies[i].Health = (int)((enemies[i].Health) * 2.5 * Math.Sqrt(levelNumber) * Math.Pow(Math.Log(levelNumber + 1, 2.0), .8)/10)+1;
                 Console.WriteLine(enemies[i].Health);
             }
 

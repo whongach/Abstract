@@ -43,7 +43,7 @@ namespace GroupGame
                 {
                     // Deal damage to the Player
                     player.Health -= enemy.BodyDamage;
-                    player.DamageTaken += enemy.BodyDamage;
+                    player.DamageTaken += enemy.BodyDamage+1;
                     enemy.Health -= enemy.BodyDamage / 2;
                 }
 
