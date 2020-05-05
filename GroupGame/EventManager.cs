@@ -314,7 +314,7 @@ namespace GroupGame
                         // Adjust the location to the left
                         adjustedLocation.X -= xOverlap;
                     }
-                    else
+                    else if (character.Position.X > tile.Position.X)
                     {
                         // Adjust the location to the right
                         adjustedLocation.X += xOverlap;
