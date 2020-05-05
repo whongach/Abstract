@@ -576,6 +576,8 @@ namespace GroupGame
         {
             //playerHealth 
             player.Health = 300;
+            player.Weapon = sword;
+            player.OffHand = bow;
 
             //Sets Level to 1
             levelNumber = 1;

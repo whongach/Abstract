@@ -42,9 +42,10 @@ namespace GroupGame
                 if (!player.Debug)
                 {
                     // Deal damage to the Player
-                    player.Health -= enemy.BodyDamage;
+                    player.Health -= enemy.BodyDamage+1;
                     player.DamageTaken += enemy.BodyDamage+1;
-                    enemy.Health -= enemy.BodyDamage / 2;
+                    if(enemy.MovementType == EnemyMovementType.Chase)
+                        enemy.Health -= (int)(enemy.BodyDamage / 2)+1;
                 }
 
                 // Call the Collision between the Player and Tile to produce a knock back
@@ -305,6 +306,33 @@ namespace GroupGame
                         adjustedLocation.Y += yOverlap;
                     }
                 }
+                else if(character is Enemy)
+                {
+                    // If the Character was to the left of the Tile
+                    if (character.Position.X < tile.Position.X)
+                    {
+                        // Adjust the location to the left
+                        adjustedLocation.X -= xOverlap;
+                    }
+                    else
+                    {
+                        // Adjust the location to the right
+                        adjustedLocation.X += xOverlap;
+                    }
+
+                    // If the Character was above of the Tile
+                    if (character.Position.Y < tile.Position.Y)
+                    {
+                        // Adjust the location upward
+                        adjustedLocation.Y -= yOverlap;
+                    }
+                    else
+                    {
+                        // Adjust the location downward
+                        adjustedLocation.Y += yOverlap;
+                    }
+                }
+                
 
                 // Adjust the Character's location
                 character.Position = adjustedLocation;
