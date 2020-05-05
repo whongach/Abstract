@@ -1008,15 +1008,15 @@ namespace GroupGame
 
                     // Draw a funny comment, at random
                     if(randComment == 0)
-                        sb.DrawString(buttonFont, "you died lol", new Vector2(680, 300), Color.Yellow);
+                        sb.DrawString(buttonFont, "you are dead.", new Vector2(850, 350), Color.Yellow);
                     else if(randComment == 1)
-                        sb.DrawString(buttonFont, "well.. that was quick.", new Vector2(680, 300), Color.Yellow);
+                        sb.DrawString(buttonFont, "well.. that was quick.", new Vector2(810, 350), Color.Yellow);
                     else if (randComment == 2)
-                        sb.DrawString(buttonFont, "maybe.. don't do that?", new Vector2(680, 300), Color.Yellow);
+                        sb.DrawString(buttonFont, "maybe.. don't do that?", new Vector2(800, 350), Color.Yellow);
                     else if (randComment == 3)
-                        sb.DrawString(buttonFont, "oops!", new Vector2(680, 300), Color.Yellow);
+                        sb.DrawString(buttonFont, "oops!", new Vector2(1000, 350), Color.Yellow);
                     else if (randComment == 4)
-                        sb.DrawString(buttonFont, "not a new highscore, that's for sure", new Vector2(680, 300), Color.Yellow);
+                        sb.DrawString(buttonFont, "not a new highscore, that's for sure.", new Vector2(700, 350), Color.Yellow);
 
 
                     sb.DrawString(buttonFont, "Menu", new Vector2(graphics.PreferredBackBufferWidth / 2 - 120, 430), Color.Black);
