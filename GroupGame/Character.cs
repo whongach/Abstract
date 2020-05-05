@@ -39,7 +39,12 @@ namespace GroupGame
         {
             // Initialize Fields
             this.health = health;
-            this.weapon = weapon;
+            if(weapon!=null){
+                if(weapon is RangedWeapon)
+                    this.weapon = new RangedWeapon((RangedWeapon)weapon);
+                if(weapon is MeleeWeapon)
+                    this.weapon = new MeleeWeapon((MeleeWeapon)weapon);
+            }
         }
     }
 }

@@ -108,7 +108,7 @@ namespace GroupGame
         /// Constructs a copy of an Enemy Character.
         /// </summary>
         /// <param name="enemy">The Enemy to copy.</param>
-        public Enemy(Enemy enemy) : base(enemy.Position, enemy.Texture, enemy.Health, enemy.Weapon)
+        public Enemy(Enemy enemy) : base(new Rectangle(enemy.Position.X, enemy.Position.Y, enemy.Position.Width, enemy.Position.Height), enemy.Texture, enemy.Health, enemy.Weapon)
         {
             // Initialize Fields
             this.attackInterval = enemy.attackInterval;

@@ -519,31 +519,34 @@ namespace GroupGame
             // Updates the Player's score
             score += 200;
 
-            /*
+
             // Adds a Weapon on the ground
-
-            // Picks a random Weapon
-            int weaponIndex = random.Next(resourceWeapons.Count);
-
-            // Adds the appropriate Weapon type
-            if(resourceWeapons[weaponIndex] is RangedWeapon)
+            if (random.Next(5) == 0)
             {
-                gameObjects.Add(new RangedWeapon((RangedWeapon)(resourceWeapons[weaponIndex])));
-            }
-            if(resourceWeapons[weaponIndex] is MeleeWeapon)
-            {
-                gameObjects.Add(new MeleeWeapon((MeleeWeapon)(resourceWeapons[weaponIndex])));
+                // Picks a random Weapon
+                int weaponIndex = random.Next(resourceWeapons.Count);
+
+                // Adds the appropriate Weapon type
+                if (resourceWeapons[weaponIndex] is RangedWeapon)
+                {
+                    gameObjects.Add(new RangedWeapon((RangedWeapon)(resourceWeapons[weaponIndex])));
+                }
+                if (resourceWeapons[weaponIndex] is MeleeWeapon)
+                {
+                    gameObjects.Add(new MeleeWeapon((MeleeWeapon)(resourceWeapons[weaponIndex])));
+                }
+
+
+                // Fixes variables in the Weapon
+
+                // Sets the Weapon to be uncollected
+                ((Weapon)gameObjects[1]).Collected = false;
+
+                // Sets the Weapon's position
+                gameObjects[1].Position = new Rectangle(GetEmptyTile(), new Point(gameObjects[1].Position.Width, gameObjects[1].Position.Height));
             }
             
-
-            // Fixes variables in the Weapon
-
-            // Sets the Weapon to be uncollected
-            ((Weapon)gameObjects[1]).Collected = false;
-
-            // Sets the Weapon's position
-            gameObjects[1].Position = new Rectangle(GetEmptyTile(), new Point(gameObjects[1].Position.Width, gameObjects[1].Position.Height));
-            */
+            
 
             // Loop a random number of times up to five times
             for (int i = 0; i < random.Next(5) + 1; i++)

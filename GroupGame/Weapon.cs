@@ -45,7 +45,7 @@ namespace GroupGame
         /// Constructs a copy of a Weapon.
         /// </summary>
         /// <param name="weapon">The Weapon to copy.</param>
-        public Weapon(Weapon weapon) : base(weapon.Position, weapon.Texture, weapon.Collected)
+        public Weapon(Weapon weapon) : base(new Rectangle(weapon.Position.X, weapon.Position.Y, weapon.Position.Width, weapon.Position.Height), weapon.Texture, weapon.Collected)
         {
             // Initialize Fields
             this.damage = weapon.Damage;

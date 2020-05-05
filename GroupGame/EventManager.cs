@@ -286,6 +286,14 @@ namespace GroupGame
 
                 // Adjust the Character's location
                 character.Position = adjustedLocation;
+
+            }
+            
+            //checks for character's projectile collision against the wall
+            if(character.Weapon!=null)
+            {
+                if(character.Weapon is RangedWeapon)
+                    Collision(tile, character.Weapon);
             }
         }
 
