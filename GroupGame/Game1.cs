@@ -951,7 +951,7 @@ namespace GroupGame
                     sb.Draw(squareTexture, new Rectangle(graphics.PreferredBackBufferWidth / 2 - 45, 450, 100, 60), Color.Gray);
 
                     // Draw text for the main menu
-                    sb.DrawString(titleFont, "THE DARKEST DUNGEON", new Vector2(graphics.PreferredBackBufferWidth / 2 - 420, 70), Color.White);
+                    sb.DrawString(titleFont, "THE DARKEST DIMENSION", new Vector2(graphics.PreferredBackBufferWidth / 2 - 470, 70), Color.White);
                     sb.DrawString(buttonFont, "Start", new Vector2(graphics.PreferredBackBufferWidth / 2 - 30, 300), Color.Black);
                     sb.DrawString(buttonFont, "Stats", new Vector2(graphics.PreferredBackBufferWidth / 2 - 31, 380), Color.Black);
                     sb.DrawString(buttonFont, "Quit", new Vector2(graphics.PreferredBackBufferWidth / 2 - 24, 460), Color.Black);
