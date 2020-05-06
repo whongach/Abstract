@@ -581,7 +581,7 @@ namespace GroupGame
             player.OffHand = bow;
 
             // Sets Level to 1
-            levelNumber = 1;
+            levelNumber = 0;
 
             // Reset collected statistics
             score = -200;
