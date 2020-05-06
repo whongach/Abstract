@@ -29,6 +29,7 @@ namespace GroupGame
         private SpriteBatch spriteBatch;
 
         // C# Fields
+        private int levelNumber;
         private int randComment;
         private int score;
         private int tileSize;
@@ -59,7 +60,6 @@ namespace GroupGame
 
         // Enumeration Fields
         private GameState gameState;
-        private GameState previousGameState;
 
         // Class Fields
         private EventManager eventManager;
@@ -81,7 +81,6 @@ namespace GroupGame
         private List<Map> maps;
         private List<Weapon> enemyWeapons;
         private List<Weapon> resourceWeapons;
-        int levelNumber;
 
         // MonoGame Generated Constructors
         /// <summary>
@@ -241,7 +240,7 @@ namespace GroupGame
         public void LoadStats()
         {
             // Create the stream and reader
-            FileStream inStream = null;
+            FileStream inStream;
             BinaryReader reader = null;
 
             try
@@ -275,7 +274,7 @@ namespace GroupGame
         public void SaveStats()
         {
             // Create the stream and writer
-            FileStream outStream = null;
+            FileStream outStream;
             BinaryWriter writer = null;
 
             try
@@ -338,17 +337,19 @@ namespace GroupGame
             enemyWeapons = new List<Weapon> { sword, spear, wand, bow };
 
             // Loads Enemy Textures
-            List<Texture2D> enemySprites = new List<Texture2D>();
-            enemySprites.Add(Content.Load<Texture2D>("enemies/archer"));
-            enemySprites.Add(Content.Load<Texture2D>("enemies/berserker"));
-            enemySprites.Add(Content.Load<Texture2D>("enemies/bug"));
-            enemySprites.Add(Content.Load<Texture2D>("enemies/sentry"));
-            enemySprites.Add(Content.Load<Texture2D>("enemies/knight"));
-            enemySprites.Add(Content.Load<Texture2D>("enemies/Wizard"));
-            enemySprites.Add(Content.Load<Texture2D>("enemies/tank"));
-            enemySprites.Add(Content.Load<Texture2D>("enemies/sentry"));
-            enemySprites.Add(Content.Load<Texture2D>("enemies/viking"));
-            enemySprites.Add(Content.Load<Texture2D>("enemies/wanderer"));
+            List<Texture2D> enemySprites = new List<Texture2D>
+            {
+                Content.Load<Texture2D>("enemies/archer"),
+                Content.Load<Texture2D>("enemies/berserker"),
+                Content.Load<Texture2D>("enemies/bug"),
+                Content.Load<Texture2D>("enemies/sentry"),
+                Content.Load<Texture2D>("enemies/knight"),
+                Content.Load<Texture2D>("enemies/Wizard"),
+                Content.Load<Texture2D>("enemies/tank"),
+                Content.Load<Texture2D>("enemies/sentry"),
+                Content.Load<Texture2D>("enemies/viking"),
+                Content.Load<Texture2D>("enemies/wanderer")
+            };
 
             // Open FileStream and BinaryReader
             resources = File.OpenRead("../../../../../Resources/master.rsrc");
@@ -574,12 +575,12 @@ namespace GroupGame
         /// </summary>
         private void Reset()
         {
-            //playerHealth 
+            // Reset Player settings
             player.Health = 300;
             player.Weapon = sword;
             player.OffHand = bow;
 
-            //Sets Level to 1
+            // Sets Level to 1
             levelNumber = 1;
 
             // Reset collected statistics
@@ -648,7 +649,7 @@ namespace GroupGame
                 // Sets the Weapon's position
                 gameObjects[1].Position = new Rectangle(GetEmptyTile(), new Point(gameObjects[1].Position.Width, gameObjects[1].Position.Height));
 
-                //Scales Weapon stats
+                // Scales Weapon stats
                 ((Weapon)gameObjects[1]).Damage = (int)(((Weapon)gameObjects[1]).Damage * (2.5 * Math.Sqrt(levelNumber) * Math.Pow(Math.Log(levelNumber+1, 2.0), .8))/10)+1;
             }
             
@@ -663,13 +664,19 @@ namespace GroupGame
                 // Set the Enemy's position
                 enemies[i].Position = new Rectangle(GetEmptyTile(), new Point(enemies[i].Position.Width, enemies[i].Position.Height));
 
-                // Scales Enemies
+                // Scale Enemy body damage
                 enemies[i].BodyDamage = (int)((enemies[i].BodyDamage) * 2.5 * Math.Sqrt(levelNumber) * Math.Pow(Math.Log(levelNumber + 1, 2.0), .8)/10);
-                if(enemies[i].Weapon!=null)
-                    enemies[i].Weapon.Damage = (int)((enemies[i].Weapon.Damage) * 2.5 * Math.Sqrt(levelNumber) * Math.Pow(Math.Log(levelNumber + 1, 2.0), .8)/10)+1;
+
+                // If the Enemy has a Weapon
+                if (enemies[i].Weapon != null)
+                {
+                    // Scale Weapon damage
+                    enemies[i].Weapon.Damage = (int)((enemies[i].Weapon.Damage) * 2.5 * Math.Sqrt(levelNumber) * Math.Pow(Math.Log(levelNumber + 1, 2.0), .8) / 10) + 1;
+                }
+
+                // Scale Enemy health
                 enemies[i].Health = (int)((enemies[i].Health) * 2.5 * Math.Sqrt(levelNumber) * Math.Pow(Math.Log(levelNumber + 1, 2.0), .8)/10)+1;
             }
-
 
             // Set a random comment for the next death this level;
             randComment = random.Next(0, 5);

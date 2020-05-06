@@ -54,12 +54,9 @@ namespace GroupGame
         public string Name { get { return name; } }
 
         /// <summary>
-        /// Gets the movement type of the enemy
+        /// Gets the movement type of the Enemy.
         /// </summary>
-        public EnemyMovementType MovementType
-        {
-            get { return enemyMovementType; }
-        }
+        public EnemyMovementType MovementType{ get { return enemyMovementType; } }
 
         // Constructors
         /// <summary>

@@ -19,14 +19,12 @@ namespace GroupGame
         // Fields
         private bool debug;
         private double angle;
+        private double damageTaken;
+        private double travelledDistance;
+        private int keysCollected;
         private int speed;
         private Item currentItem;
         private Weapon offHand;
-
-        // Stat-tracked fields
-        private double travelledDistance;
-        private double damageTaken;
-        private int keysCollected;
 
         // Properties
         /// <summary>
@@ -77,14 +75,12 @@ namespace GroupGame
             // Initialize Fields
             this.debug = false;
             this.angle = 0;
+            this.damageTaken = 0;
+            this.travelledDistance = 0;
+            this.keysCollected = 0;
             this.speed = 4;
             this.currentItem = null;
             this.offHand = null;
-
-            // Initialize stat fields
-            this.travelledDistance = 0;
-            this.damageTaken = 0;
-            this.keysCollected = 0;
         }
 
         // Methods

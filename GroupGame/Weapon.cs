@@ -22,7 +22,7 @@ namespace GroupGame
 
         // Properties
         /// <summary>
-        /// Gets the damage that the Weapon deals.
+        /// Gets and sets the damage that the Weapon deals.
         /// </summary>
         public int Damage { get { return damage; } set { damage = value; } }
 

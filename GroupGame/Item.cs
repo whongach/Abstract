@@ -13,7 +13,7 @@ namespace GroupGame
     class Item : Collectible
     {
         // Fields
-        private bool isKey;
+        private readonly bool isKey;
 
         // Properties
         /// <summary>

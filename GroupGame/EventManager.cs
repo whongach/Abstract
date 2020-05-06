@@ -151,8 +151,7 @@ namespace GroupGame
                 // If Character is Player, add damage to the stat
                 if(character is Player)
                 {
-                    Player pDownCasted = (Player)character;
-                    pDownCasted.DamageTaken += meleeWeapon.Damage;
+                    ((Player)character).DamageTaken += meleeWeapon.Damage;
                 }
             }
         }
@@ -191,8 +190,7 @@ namespace GroupGame
                 // If Character is Player, add damage to the stat
                 if (character is Player)
                 {
-                    Player pDownCasted = (Player)character;
-                    pDownCasted.DamageTaken += projectile.Damage;
+                    ((Player)character).DamageTaken += projectile.Damage;
                 }
             }
         }
