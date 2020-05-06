@@ -44,7 +44,7 @@ namespace GroupGame
                     // Deal damage to the Player
                     player.Health -= enemy.BodyDamage+1;
                     player.DamageTaken += enemy.BodyDamage+1;
-                    if(enemy.MovementType == EnemyMovementType.Chase)
+                    if(enemy.MovementType == EnemyMovementType.Chase && enemy.Weapon == null)
                         enemy.Health -= (int)(enemy.BodyDamage / 2)+1;
                 }
 
