@@ -212,7 +212,7 @@ namespace GroupGame
         protected override void Draw(GameTime gameTime)
         {
             // MonoGame Generated Drawing
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
             // End MonoGame Generated Drawing
 
             // Start the SpriteBatch
@@ -908,10 +908,6 @@ namespace GroupGame
         {
             switch (gameState)
             {
-                case GameState.MainMenu:
-
-                    break;
-
                 case GameState.Game:
                     // Draw the Map
                     map.Draw(spriteBatch);
@@ -937,21 +933,6 @@ namespace GroupGame
                     }
 
                     break;
-
-                case GameState.Pause:
-
-
-                    break;
-
-                case GameState.Stats:
-
-
-                    break;
-
-                case GameState.Gameover:
-
-
-                    break;
             }
         }
 
@@ -970,10 +951,10 @@ namespace GroupGame
                     sb.Draw(squareTexture, new Rectangle(graphics.PreferredBackBufferWidth / 2 - 45, 450, 100, 60), Color.Gray);
 
                     // Draw text for the main menu
-                    sb.DrawString(titleFont, "GAME TITLE", new Vector2(graphics.PreferredBackBufferWidth / 2 - 220, 70), Color.Black);
+                    sb.DrawString(titleFont, "THE DARKEST DUNGEON", new Vector2(graphics.PreferredBackBufferWidth / 2 - 420, 70), Color.White);
                     sb.DrawString(buttonFont, "Start", new Vector2(graphics.PreferredBackBufferWidth / 2 - 30, 300), Color.Black);
                     sb.DrawString(buttonFont, "Stats", new Vector2(graphics.PreferredBackBufferWidth / 2 - 31, 380), Color.Black);
-                    sb.DrawString(buttonFont, "Quit", new Vector2(graphics.PreferredBackBufferWidth / 2 - 31, 460), Color.Black);
+                    sb.DrawString(buttonFont, "Quit", new Vector2(graphics.PreferredBackBufferWidth / 2 - 24, 460), Color.Black);
                     break;
 
                 case GameState.Game:
@@ -981,8 +962,8 @@ namespace GroupGame
                     sb.Draw(squareTexture, new Rectangle(0, 0, 302, 32), Color.DarkRed); 
                     sb.Draw(squareTexture, new Rectangle(0, 0, 300, 30), Color.Red);
                     sb.Draw(squareTexture, new Rectangle(0, 0, player.Health, 30), Color.LightGreen);
-                    sb.Draw(squareTexture, new Rectangle(Window.ClientBounds.Width - 302, 0, 305, 132), Color.DarkGray);
-                    sb.Draw(squareTexture, new Rectangle(Window.ClientBounds.Width - 300, 0, 300, 130), Color.Gray);
+                    sb.Draw(squareTexture, new Rectangle(Window.ClientBounds.Width - 302, 0, 305, 242), Color.DarkGray);
+                    sb.Draw(squareTexture, new Rectangle(Window.ClientBounds.Width - 300, 0, 300, 240), Color.Gray);
                     sb.Draw(squareTexture, new Rectangle(0, Window.ClientBounds.Height - 100, 100, 100), Color.Gray);
                     sb.Draw(squareTexture, new Rectangle(0, Window.ClientBounds.Height - 150, 50, 50), Color.Gray);
                     sb.Draw(squareTexture, new Rectangle(50, Window.ClientBounds.Height - 150, 50, 50), Color.Gray);
@@ -992,8 +973,9 @@ namespace GroupGame
 
                     // Draw the text for in-game GUI
                     sb.DrawString(statFont, $"HP: {player.Health}/300", new Vector2(2, 2), Color.Black);
-                    sb.DrawString(statFont, $"Score: {score}", new Vector2(Window.ClientBounds.Width - 290, 2), Color.Black);
-                    sb.DrawString(statFont, $"Equipped Weapon Damage: {player.Weapon.Damage}", new Vector2(Window.ClientBounds.Width - 290, 32), Color.Black);
+                    sb.DrawString(statFont, $"Level: {levelNumber}", new Vector2(Window.ClientBounds.Width - 290, 2), Color.Black);
+                    sb.DrawString(statFont, $"Score: {score}", new Vector2(Window.ClientBounds.Width - 290, 32), Color.Black);
+                    sb.DrawString(statFont, $"Equipped Weapon Damage: {player.Weapon.Damage}", new Vector2(Window.ClientBounds.Width - 290, 62), Color.Black);
 
                     // Loop through GameObjects
                     for (int i = 0; i < gameObjects.Count; i++)
@@ -1002,9 +984,14 @@ namespace GroupGame
                         if(eventManager.CollisionCheck(player.Position, gameObjects[i].Position) == true && gameObjects[i] is Weapon)
                         {
                             // Displays damage of ground Weapon
-                            sb.DrawString(statFont, $"Dropped Weapon Damage: {((Weapon)gameObjects[i]).Damage}", new Vector2(Window.ClientBounds.Width - 290, 62), Color.Black);
+                            sb.DrawString(statFont, $"Dropped Weapon Damage: {((Weapon)gameObjects[i]).Damage}", new Vector2(Window.ClientBounds.Width - 290, 92), Color.Black);
                         }
                     }
+
+                    // Draw additional instructions
+                    sb.DrawString(statFont, $"Movement: WASD", new Vector2(Window.ClientBounds.Width - 290, 152), Color.Black);
+                    sb.DrawString(statFont, $"Change Weapon: Q", new Vector2(Window.ClientBounds.Width - 290, 182), Color.Black);
+                    sb.DrawString(statFont, $"Pick Up Weapon: E", new Vector2(Window.ClientBounds.Width - 290, 212), Color.Black);
 
                     // Draw the icons for GUI
                     if (player.CurrentItem != null)
@@ -1025,7 +1012,7 @@ namespace GroupGame
                     // Draw text for the pause menu
                     sb.DrawString(headingFont, "PAUSED", new Vector2(graphics.PreferredBackBufferWidth / 2 - 65, 200), Color.Black);
                     sb.DrawString(buttonFont, "Resume", new Vector2(graphics.PreferredBackBufferWidth / 2 - 50, 300), Color.Black);
-                    sb.DrawString(buttonFont, "Quit", new Vector2(graphics.PreferredBackBufferWidth / 2 - 35, 380), Color.Black);
+                    sb.DrawString(buttonFont, "Quit", new Vector2(graphics.PreferredBackBufferWidth / 2 - 24, 380), Color.Black);
                     break;
 
                 case GameState.Stats:
@@ -1049,7 +1036,7 @@ namespace GroupGame
                     sb.Draw(squareTexture, new Rectangle(graphics.PreferredBackBufferWidth / 2, 420, 100, 60), Color.Gray);
 
                     // Draw text for the gameover screen
-                    sb.DrawString(titleFont, "GAME OVER", new Vector2(graphics.PreferredBackBufferWidth / 2 - 240, 200), Color.Black);
+                    sb.DrawString(titleFont, "GAME OVER", new Vector2(graphics.PreferredBackBufferWidth / 2 - 240, 200), Color.White);
 
                     // Draw a funny comment, at random
                     if(randComment == 0)
